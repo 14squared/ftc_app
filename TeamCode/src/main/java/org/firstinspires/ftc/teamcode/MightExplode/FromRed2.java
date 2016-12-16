@@ -143,7 +143,24 @@ public class FromRed2 extends LinearOpMode {
         robot.rightMotor.setPower(0);
     }
 
+    public void shoot(double distance, double power){
+        try {
+            encoderDrive(1.0, distance, distance, 20);
 
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+
+        }
+        robot.LeftBallLauncher.setPower(1);
+        robot.RightBallLauncher.setPower(1);
+        sleep(3000);
+        robot.BallElevator.setPower(1);
+        sleep(2000);
+        robot.BallElevator.setPower(0);
+        robot.LeftBallLauncher.setPower(0);
+        robot.RightBallLauncher.setPower(0);
+
+    }
 
 
     @Override
