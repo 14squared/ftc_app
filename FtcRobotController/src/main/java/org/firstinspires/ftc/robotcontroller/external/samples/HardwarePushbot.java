@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.robotcontroller.external.samples;
 
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -35,10 +37,13 @@ public class HardwarePushbot
     public DcMotor  RightBallLauncher   = null;
     public Servo    pusher  = null;
     public Servo    beacon  = null;
+    public GyroSensor gyro  = null;
+    public ColorSensor colorSensor = null;
 
     public static final double MID_SERVO       =  0.5 ;
     public static final double ARM_UP_POWER    =  0.45 ;
     public static final double ARM_DOWN_POWER  = -0.45 ;
+
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
