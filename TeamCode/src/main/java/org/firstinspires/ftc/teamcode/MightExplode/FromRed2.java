@@ -143,7 +143,7 @@ public class FromRed2 extends LinearOpMode {
         robot.rightMotor.setPower(0);
     }
 
-    public void 
+
 
 
     @Override
