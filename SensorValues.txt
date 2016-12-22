@@ -1,0 +1,15 @@
+red: r=25 g=29 b=33
+red test #2: r=6 g=0 b=0
+blue rgb (0,1,8)
+blue test #2 (0,1,9)
+white test from about 3 inches away(1,1,1)
+white test up close (0,0,0)
+dark grey (0,0,0)
+light grey (0,0,0)
+green (0,1,0)
+
+
+works better from about 3-4 inches away
+
+right turn, heading goes down
+left turn, heading goes up
