@@ -45,8 +45,8 @@ public class redbeaconleft extends LinearOpMode {
     // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
 
     // Step 1:  Drive forward for .5 seconds
-    robot.leftMotor.setPower(FORWARD_SPEED);
-    robot.rightMotor.setPower(FORWARD_SPEED);
+    robot.frontLeft.setPower(FORWARD_SPEED);
+    robot.frontRight.setPower(FORWARD_SPEED);
     runtime.reset();
     //while (
 
@@ -58,8 +58,8 @@ public class redbeaconleft extends LinearOpMode {
     }
 
 // Step 3:  Drive Backwards for 1 Second
-        /*robot.leftMotor.setPower(-FORWARD_SPEED);
-        robot.rightMotor.setPower(-FORWARD_SPEED);
+        /*robot.frontLeft.setPower(-FORWARD_SPEED);
+        robot.frontRight.setPower(-FORWARD_SPEED);
         runtime.reset();
         while (blue1beacons() && (runtime.seconds() < 1.0)) {
             telemetry.addData("Path", "Leg 3: %2.5f S Elapsed", runtime.seconds());
@@ -68,10 +68,10 @@ public class redbeaconleft extends LinearOpMode {
 
 
     // Step 2:  Spin right for 1.0 seconds
-    //robot.leftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-    //robot.leftMotor.setPower(TURN_SPEED);
-    //robot.leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-    //robot.rightMotor.setPower(TURN_SPEED);
+    //robot.frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+    //robot.frontLeft.setPower(TURN_SPEED);
+    //robot.frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+    //robot.frontRight.setPower(TURN_SPEED);
     //runtime.reset();
     //while (
 
@@ -83,8 +83,8 @@ public class redbeaconleft extends LinearOpMode {
 
 
     // Step 3:  Drive Backwards for 1 Second
-       /* robot.leftMotor.setPower(-FORWARD_SPEED);
-        robot.rightMotor.setPower(-FORWARD_SPEED);
+       /* robot.frontLeft.setPower(-FORWARD_SPEED);
+        robot.frontRight.setPower(-FORWARD_SPEED);
         runtime.reset();
         while (blue1beacons() && (runtime.seconds() < 1.2)) {
             telemetry.addData("Path", "Leg 3: %2.5f S Elapsed", runtime.seconds());
@@ -94,8 +94,8 @@ public class redbeaconleft extends LinearOpMode {
 
 
     // Step 3:  Drive forward for .7 second
-    //robot.leftMotor.setPower(FORWARD_SPEED);
-    //robot.rightMotor.setPower(FORWARD_SPEED);
+    //robot.frontLeft.setPower(FORWARD_SPEED);
+    //robot.frontRight.setPower(FORWARD_SPEED);
     //runtime.reset();
     //while (
 /*
@@ -107,10 +107,10 @@ public class redbeaconleft extends LinearOpMode {
     }
 
     // Step 4:  Spin left for 1.3 seconds
-   // robot.leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-    //robot.leftMotor.setPower(TURN_SPEED);
-    //robot.leftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-    //robot.rightMotor.setPower(TURN_SPEED);
+   // robot.frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+    //robot.frontLeft.setPower(TURN_SPEED);
+    //robot.frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+    //robot.frontRight.setPower(TURN_SPEED);
     //runtime.reset();
     //while (
 
@@ -121,8 +121,8 @@ public class redbeaconleft extends LinearOpMode {
    // }
 
     // Step 5:  Drive forward for .6 seconds
-    //robot.leftMotor.setPower(FORWARD_SPEED);
-    //robot.rightMotor.setPower(FORWARD_SPEED);
+    //robot.frontLeft.setPower(FORWARD_SPEED);
+    //robot.frontRight.setPower(FORWARD_SPEED);
     //runtime.reset();
     //while (
 
@@ -134,10 +134,10 @@ public class redbeaconleft extends LinearOpMode {
     //}
 
     // Step 6:  Spin right for 1.3 seconds
-    //robot.leftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-    //robot.leftMotor.setPower(TURN_SPEED);
-    //robot.leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-    //robot.rightMotor.setPower(TURN_SPEED);
+    //robot.frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+    //robot.frontLeft.setPower(TURN_SPEED);
+    //robot.frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+    //robot.frontRight.setPower(TURN_SPEED);
     //runtime.reset();
     //while (
 
@@ -148,8 +148,8 @@ public class redbeaconleft extends LinearOpMode {
     //}
 
     // Step 7:  Drive forward for 0.5 seconds
-    //robot.leftMotor.setPower(FORWARD_SPEED);
-    //robot.rightMotor.setPower(FORWARD_SPEED);
+    //robot.frontLeft.setPower(FORWARD_SPEED);
+    //robot.frontRight.setPower(FORWARD_SPEED);
     //runtime.reset();
     //while (
 
@@ -161,8 +161,8 @@ public class redbeaconleft extends LinearOpMode {
     //}
 
     // Step 8:  Stop and close the claw.
-    //robot.leftMotor.setPower(3);
-    //robot.rightMotor.setPower(3);
+    //robot.frontLeft.setPower(3);
+    //robot.frontRight.setPower(3);
     //robot.leftClaw.setPosition(1.0);
     //robot.rightClaw.setPosition(1.0);
 

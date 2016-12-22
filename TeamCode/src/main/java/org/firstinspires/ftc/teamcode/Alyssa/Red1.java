@@ -95,17 +95,17 @@ public class Red1 extends LinearOpMode {
         telemetry.addData("Status", "Resetting Encoders");    //
         telemetry.update();
 
-        robot.leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         idle();
 
-        robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Path0",  "Starting at %7d :%7d",
-                robot.leftMotor.getCurrentPosition(),
-                robot.rightMotor.getCurrentPosition());
+                robot.frontLeft.getCurrentPosition(),
+                robot.frontRight.getCurrentPosition());
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
@@ -144,30 +144,30 @@ public class Red1 extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newLeftTarget = robot.leftMotor.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newRightTarget = robot.rightMotor.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-            robot.leftMotor.setTargetPosition(newLeftTarget);
-            robot.rightMotor.setTargetPosition(newRightTarget);
+            newLeftTarget = robot.frontLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
+            newRightTarget = robot.frontRight.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            robot.frontLeft.setTargetPosition(newLeftTarget);
+            robot.frontRight.setTargetPosition(newRightTarget);
             // reset the timeout time and start motion.
             runtime.reset();
-            robot.leftMotor.setPower(Math.abs(speed));
-            robot.rightMotor.setPower(Math.abs(speed));
+            robot.frontLeft.setPower(Math.abs(speed));
+            robot.frontRight.setPower(Math.abs(speed));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
+                    (robot.frontLeft.isBusy() && robot.frontRight.isBusy())) {
 
                 // Turn On RUN_TO_POSITION
-                robot.leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
                 // Display it for the driver.
                 telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
                 telemetry.addData("Path2",  "Running at %7d :%7d",
-                        robot.leftMotor.getCurrentPosition(),
-                        robot.rightMotor.getCurrentPosition());
+                        robot.frontLeft.getCurrentPosition(),
+                        robot.frontRight.getCurrentPosition());
                 telemetry.update();
 
                 // Allow time for other processes to run.
@@ -175,12 +175,12 @@ public class Red1 extends LinearOpMode {
             }
 
             // Stop all motion;
-            robot.leftMotor.setPower(0);
-            robot.rightMotor.setPower(0);
+            robot.frontLeft.setPower(0);
+            robot.frontRight.setPower(0);
 
             // Turn off RUN_TO_POSITION
-            robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             //  sleep(250);   // optional pause after each move
         }

@@ -79,8 +79,8 @@ public class PushbotAutoDriveToLine_Linear extends LinearOpMode {
         robot.init(hardwareMap);
 
         // If there are encoders connected, switch to RUN_USING_ENCODER mode for greater accuracy
-        // robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        // robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        // robot.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        // robot.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // get a reference to our Light Sensor object.
         lightSensor = hardwareMap.lightSensor.get("light sensor");                // Primary LEGO Light Sensor
@@ -103,8 +103,8 @@ public class PushbotAutoDriveToLine_Linear extends LinearOpMode {
         }
 
         // Start the robot moving forward, and then begin looking for a white line.
-        robot.leftMotor.setPower(APPROACH_SPEED);
-        robot.rightMotor.setPower(APPROACH_SPEED);
+        robot.frontLeft.setPower(APPROACH_SPEED);
+        robot.frontRight.setPower(APPROACH_SPEED);
 
         // run until the white line is seen OR the driver presses STOP;
         while (opModeIsActive() && (lightSensor.getLightDetected() < WHITE_THRESHOLD)) {
@@ -116,7 +116,7 @@ public class PushbotAutoDriveToLine_Linear extends LinearOpMode {
         }
 
         // Stop all motors
-        robot.leftMotor.setPower(0);
-        robot.rightMotor.setPower(0);
+        robot.frontLeft.setPower(0);
+        robot.frontRight.setPower(0);
     }
 }

@@ -26,8 +26,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class HardwareK9bot
 {
     /* Public OpMode members. */
-    public DcMotor  leftMotor   = null;
-    public DcMotor  rightMotor  = null;
+    public DcMotor  frontLeft   = null;
+    public DcMotor  frontRight  = null;
     public Servo    arm         = null;
     public Servo    claw        = null;
 
@@ -52,18 +52,18 @@ public class HardwareK9bot
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        leftMotor   = hwMap.dcMotor.get("left motor");
-        rightMotor  = hwMap.dcMotor.get("right motor");
-        leftMotor.setDirection(DcMotor.Direction.REVERSE);
+        frontLeft   = hwMap.dcMotor.get("left motor");
+        frontRight  = hwMap.dcMotor.get("right motor");
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
 
         // Set all motors to zero power
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
+        frontLeft.setPower(0);
+        frontRight.setPower(0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
-        leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Define and initialize ALL installed servos.
         arm = hwMap.servo.get("arm");

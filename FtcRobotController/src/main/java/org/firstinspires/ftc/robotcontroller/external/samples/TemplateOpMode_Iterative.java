@@ -64,8 +64,8 @@ public class TemplateOpMode_Iterative extends OpMode
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
 
-    // private DcMotor leftMotor = null;
-    // private DcMotor rightMotor = null;
+    // private DcMotor frontLeft = null;
+    // private DcMotor frontRight = null;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -78,13 +78,13 @@ public class TemplateOpMode_Iterative extends OpMode
          * to 'get' must correspond to the names assigned during the robot configuration
          * step (using the FTC Robot Controller app on the phone).
          */
-        // leftMotor  = hardwareMap.dcMotor.get("left motor");
-        // rightMotor = hardwareMap.dcMotor.get("right motor");
+        // frontLeft  = hardwareMap.dcMotor.get("left motor");
+        // frontRight = hardwareMap.dcMotor.get("right motor");
 
         // eg: Set the drive motor directions:
         // Reverse the motor that runs backwards when connected directly to the battery
-        // leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        //  rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        // frontLeft.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        //  frontRight.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
         // telemetry.addData("Status", "Initialized");
     }
 
@@ -111,8 +111,8 @@ public class TemplateOpMode_Iterative extends OpMode
         telemetry.addData("Status", "Running: " + runtime.toString());
 
         // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
-        // leftMotor.setPower(-gamepad1.left_stick_y);
-        // rightMotor.setPower(-gamepad1.right_stick_y);
+        // frontLeft.setPower(-gamepad1.left_stick_y);
+        // frontRight.setPower(-gamepad1.right_stick_y);
     }
 
     /*

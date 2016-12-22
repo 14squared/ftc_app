@@ -48,8 +48,8 @@ public class Encoder_Test {
 
                 for (int i = 0; i < 100; i++) {
 
-                    int RightEncoderValue = robot.rightMotor.getCurrentPosition();
-                    int LeftEncoderValue = robot.leftMotor.getCurrentPosition();
+                    int RightEncoderValue = robot.frontRight.getCurrentPosition();
+                    int LeftEncoderValue = robot.frontLeft.getCurrentPosition();
 
                     telemetry.addData("RightEnc ", RightEncoderValue);
                     telemetry.addData("LeftEnc ", LeftEncoderValue);
@@ -68,8 +68,8 @@ public class Encoder_Test {
                     right /= max;
                 }
 
-                robot.leftMotor.setPower(left);
-                robot.rightMotor.setPower(right);
+                robot.frontLeft.setPower(left);
+                robot.frontRight.setPower(right);
 
                 // Use gamepad left & right Bumpers to open and close the claw
                 if (gamepad1.right_bumper)

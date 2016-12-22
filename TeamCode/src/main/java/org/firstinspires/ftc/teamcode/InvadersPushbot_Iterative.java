@@ -77,7 +77,8 @@ public class InvadersPushbot_Iterative extends OpMode{
     // Will be connected to PushBot's Limit Switch
     TouchSensor limitSwitch;                         // Will be connected to PushBot's Limit Switch
 
-    ColorSensor colorSensor;
+    ColorSensor colorSensor1;
+    ColorSensor colorSensor2;
 
     OpticalDistanceSensor distanceSensor;
 
@@ -101,8 +102,10 @@ public class InvadersPushbot_Iterative extends OpMode{
 
         // Send telemetry message to signify robot waiting;
          updateTelemetry(telemetry);
-        colorSensor = hardwareMap.colorSensor.get("color");
-        colorSensor.enableLed(false);
+        colorSensor1 = hardwareMap.colorSensor.get("color1");
+        colorSensor2 = hardwareMap.colorSensor.get("color2");
+        colorSensor1.enableLed(true);
+        colorSensor2.enableLed(true);
         distanceSensor = hardwareMap.opticalDistanceSensor.get("ODS");
     }
 
@@ -138,8 +141,10 @@ public class InvadersPushbot_Iterative extends OpMode{
         right = Range.clip(y+x, -1, +1);
 
         // Call the setPower functions with our calculated values to activate the motors
-        robot.leftMotor.setPower(left);
-        robot.rightMotor.setPower(right);
+        robot.frontLeft.setPower(left);
+        robot.frontRight.setPower(right);
+        robot.backRight.setPower(right);
+        robot.backLeft.setPower(left);
 
         // Read our limit switch to see if the arm is too high
         boolean limitTriggered = limitSwitch.isPressed();
@@ -154,7 +159,8 @@ public class InvadersPushbot_Iterative extends OpMode{
         telemetry.addData("switch", "%s", limitTriggered ? "Triggered" : "Open");
         telemetry.addData("Pusher", robot.pusher.getPosition());
         telemetry.addData("beacon", robot.beacon.getPosition());
-        telemetry.addData("Color: ", "R%d,G%d,B%d", colorSensor.red(), colorSensor.green(), colorSensor.blue());
+        telemetry.addData("Color1: ", "R%d,G%d,B%d", colorSensor1.red(), colorSensor1.green(), colorSensor1.blue());
+        telemetry.addData("Color2: ", "R%d,G%d,B%d", colorSensor2.red(), colorSensor2.green(), colorSensor2.blue());
         telemetry.addData("Distance:", "Light%.2f", distanceSensor.getLightDetected());
         updateTelemetry(telemetry);
 
@@ -211,10 +217,12 @@ public class InvadersPushbot_Iterative extends OpMode{
     @Override
     public void stop() {
         robot.pusher.setPosition(0.5);
-        robot.beacon.setPosition(0.5);
+        robot.beacon.setPosition(0.1);
         robot.BallElevator.setPower(0);
-        robot.leftMotor.setPower(0.0);
-        robot.rightMotor.setPower(0.0);
+        robot.frontRight.setPower(0.0);
+        robot.frontLeft.setPower(0.0);
+        robot.backRight.setPower(0.0);
+        robot.backLeft.setPower(0.0);
         robot.LeftBallLauncher.setPower(0.0);
         robot.RightBallLauncher.setPower(0.0);
     }

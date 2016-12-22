@@ -121,8 +121,8 @@ public class Matthew_Teleop_Iterative extends OpMode {
         right = Range.clip(y + x, -1, +1);
 
         // Call the setPower functions with our calculated values to activate the motors
-        robot.leftMotor.setPower(left);
-        robot.rightMotor.setPower(right);
+        robot.frontLeft.setPower(left);
+        robot.frontRight.setPower(right);
 
 
         if (gamepad1.x) {
