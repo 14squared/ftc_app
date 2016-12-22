@@ -39,6 +39,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -79,6 +80,7 @@ public class InvadersPushbot_Iterative extends OpMode{
 
     ColorSensor colorSensor1;
     ColorSensor colorSensor2;
+    GyroSensor gyroSensor;
 
     OpticalDistanceSensor distanceSensor;
 
@@ -104,6 +106,7 @@ public class InvadersPushbot_Iterative extends OpMode{
          updateTelemetry(telemetry);
         colorSensor1 = hardwareMap.colorSensor.get("color1");
         colorSensor2 = hardwareMap.colorSensor.get("color2");
+        gyroSensor = hardwareMap.gyroSensor.get("gyro");
         colorSensor1.enableLed(true);
         colorSensor2.enableLed(true);
         distanceSensor = hardwareMap.opticalDistanceSensor.get("ODS");
@@ -162,6 +165,9 @@ public class InvadersPushbot_Iterative extends OpMode{
         telemetry.addData("Color1: ", "R%d,G%d,B%d", colorSensor1.red(), colorSensor1.green(), colorSensor1.blue());
         telemetry.addData("Color2: ", "R%d,G%d,B%d", colorSensor2.red(), colorSensor2.green(), colorSensor2.blue());
         telemetry.addData("Distance:", "Light%.2f", distanceSensor.getLightDetected());
+        telemetry.addData("RawGyro:", "X%d, Y%d, Z%d", gyroSensor.rawX(), gyroSensor.rawY(), gyroSensor.rawZ());
+        telemetry.addData("GyroHeading:", "Heading%d", gyroSensor.getHeading());
+
         updateTelemetry(telemetry);
 
         //Beacon button and pusher button
