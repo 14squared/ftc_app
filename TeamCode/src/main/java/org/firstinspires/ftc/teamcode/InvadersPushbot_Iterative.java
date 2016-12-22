@@ -110,6 +110,7 @@ public class InvadersPushbot_Iterative extends OpMode{
         colorSensor1.enableLed(true);
         colorSensor2.enableLed(true);
         distanceSensor = hardwareMap.opticalDistanceSensor.get("ODS");
+        gyroSensor.calibrate();
     }
 
     /*
