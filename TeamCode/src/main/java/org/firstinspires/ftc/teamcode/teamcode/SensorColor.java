@@ -29,40 +29,37 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode.teamcode;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.View;
 
 import com.qualcomm.ftcrobotcontroller.R;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
 /*
  *
  * This is an example LinearOpMode that shows how to use
- * a Modern Robotics Color Sensor.
- *
- * The op mode assumes that the color sensor
- * is configured with a name of "sensor_color".
+ * a legacy (NXT-compatible) Hitechnic Color Sensor v2.
+ * It assumes that the color sensor is configured with a name of "color sensor".
  *
  * You can use the X button on gamepad1 to toggle the LED on and off.
  *
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@TeleOp(name = "Sensor: MR Color2", group = "Sensor")
+@Autonomous(name = "Sensor: HT color", group = "Sensor")
 //@Disabled
-public class SensorMRColor extends LinearOpMode {
+public class SensorColor extends LinearOpMode {
 
-  ColorSensor colorSensor;    // Hardware Device Object
+  ColorSensor colorSensor;  // Hardware Device Object
 
 
   @Override
-  public void runOpMode() {
+  public void runOpMode() throws InterruptedException {
 
     // hsvValues is an array that will hold the hue, saturation, and value information.
     float hsvValues[] = {0F,0F,0F};
@@ -76,23 +73,23 @@ public class SensorMRColor extends LinearOpMode {
 
     // bPrevState and bCurrState represent the previous and current state of the button.
     boolean bPrevState = false;
-    boolean bCurrState = false;
+    boolean bCurrState = true;
 
     // bLedOn represents the state of the LED.
     boolean bLedOn = true;
 
     // get a reference to our ColorSensor object.
-    colorSensor = hardwareMap.colorSensor.get("beaconSensor");
+    colorSensor = hardwareMap.colorSensor.get("color sensor");
 
-    // Set the LED in the beginning
+    // turn the LED on in the beginning, just so user will know that the sensor is active.
     colorSensor.enableLed(bLedOn);
 
     // wait for the start button to be pressed.
     waitForStart();
 
-    // while the op mode is active, loop and read the RGB data.
+    // loop and read the RGB data.
     // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
-    while (opModeIsActive()) {
+    while (opModeIsActive())  {
 
       // check the status of the x button on either gamepad.
       bCurrState = gamepad1.x;
@@ -100,7 +97,8 @@ public class SensorMRColor extends LinearOpMode {
       // check for button state transitions.
       if ((bCurrState == true) && (bCurrState != bPrevState))  {
 
-        // button is transitioning to a pressed state. So Toggle LED
+        // button is transitioning to a pressed state.  Toggle LED.
+        // on button press, enable the LED.
         bLedOn = !bLedOn;
         colorSensor.enableLed(bLedOn);
       }
@@ -109,7 +107,7 @@ public class SensorMRColor extends LinearOpMode {
       bPrevState = bCurrState;
 
       // convert the RGB values to HSV values.
-      Color.RGBToHSV(colorSensor.red() * 8, colorSensor.green() * 8, colorSensor.blue() * 8, hsvValues);
+      Color.RGBToHSV(colorSensor.red(), colorSensor.green(), colorSensor.blue(), hsvValues);
 
       // send the info back to driver station using telemetry function.
       telemetry.addData("LED", bLedOn ? "On" : "Off");
@@ -129,6 +127,7 @@ public class SensorMRColor extends LinearOpMode {
       });
 
       telemetry.update();
+      idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
     }
   }
 }
