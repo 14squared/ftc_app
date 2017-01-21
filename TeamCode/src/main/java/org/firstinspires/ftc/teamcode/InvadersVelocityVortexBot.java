@@ -613,7 +613,7 @@ public class InvadersVelocityVortexBot
         ODS = hwMap.opticalDistanceSensor.get("ODS");
         beaconSensor = hwMap.colorSensor.get("beaconSensor");
         floorSensor = hwMap.colorSensor.get("floorSensor");
-        floorSensor.setI2cAddress(I2cAddr.create7bit(0x3A));
+        floorSensor.setI2cAddress(I2cAddr.create8bit(0x3A));
         floorSensor.enableLed(true);
         gyro = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("gyroSensor");
 
