@@ -66,7 +66,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * is explained in {@link ConceptVuforiaNavigation}.
  */
 
-@Autonomous(name="Look for Left", group ="Concept")
+@Autonomous(name="vuMarkFinder", group ="Concept")
 //@Disabled
 public class ConceptVuMarkIdentification extends LinearOpMode {
 
@@ -138,19 +138,25 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
              * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
              * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
              */
+
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            if (vuMark == RelicRecoveryVuMark.LEFT) {
-
-                /* Found an instance of the template. In the actual game, you will probably
-                 * loop until this condition occurs, then move on to act accordingly depending
-                 * on which VuMark was visible. */
-                telemetry.addData("VuMark", "%s visible", vuMark);
 
 
+            switch(vuMark){
+                case LEFT:
+                    telemetry.addData("VuMark LEFT", "is visible", vuMark);
+                    break;
+                case CENTER:
+                    telemetry.addData("VuMark CENTER", "is visible", vuMark);
+                    break;
+                case RIGHT:
+                    telemetry.addData("VuMark RIGHT", "is visible", vuMark);
+                    break;
+                case UNKNOWN:
+                    telemetry.addData("VuMark", "Not Found", vuMark);
+                    break;
             }
-            else {
-                telemetry.addData("VuMark", "not visible");
-            }
+
 
             telemetry.update();
         }
