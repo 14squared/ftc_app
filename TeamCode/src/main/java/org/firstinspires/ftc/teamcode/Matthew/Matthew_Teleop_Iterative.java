@@ -39,7 +39,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.InvadersVelocityVortexBot;
+import org.firstinspires.ftc.teamcode.Competition.InvadersVelocityVortexBot;
 
 
 /**
@@ -121,8 +121,8 @@ public class Matthew_Teleop_Iterative extends OpMode {
         right = Range.clip(y + x, -1, +1);
 
         // Call the setPower functions with our calculated values to activate the motors
-        robot.leftMotor.setPower(left);
-        robot.rightMotor.setPower(right);
+        robot.leftDrive.setPower(left);
+        robot.rightDrive.setPower(right);
 
 
         if (gamepad1.x) {

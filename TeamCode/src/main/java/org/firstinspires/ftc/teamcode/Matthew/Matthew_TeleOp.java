@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.InvadersVelocityVortexBot;
+import org.firstinspires.ftc.teamcode.Competition.InvadersVelocityVortexBot;
 
 /**
  * Created by matth on 11/5/2016.
@@ -72,8 +72,8 @@ public class Matthew_TeleOp {
                     right /= max;
                 }
 
-                robot.leftMotor.setPower(left);
-                robot.rightMotor.setPower(right);
+                robot.leftDrive.setPower(left);
+                robot.rightDrive.setPower(right);
 
                 // Use gamepad left & right Bumpers to open and close the claw
                 if (gamepad1.right_bumper)

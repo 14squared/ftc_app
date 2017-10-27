@@ -35,15 +35,11 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
-import com.qualcomm.robotcore.hardware.TouchSensor;
-import com.qualcomm.robotcore.hardware.UltrasonicSensor;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.Competition.InvadersVelocityVortexBot;
 
 
 /**
@@ -66,7 +62,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 //This opmode lets the driver drive with only one stick. This means that we have a lot of buttons to map to other things.
 
 @TeleOp(name="Bigly", group="Pushbot")
-//@Disabled
+@Disabled
 public class InvadersPushbot_Iterative extends OpMode{
 
     /* Declare OpMode members. */
@@ -123,8 +119,8 @@ public class InvadersPushbot_Iterative extends OpMode{
         right = Range.clip(y - x, -1, +1);
 
         // Call the setPower functions with our calculated values to activate the motors
-        robot.leftMotor.setPower(left);
-        robot.rightMotor.setPower(right);
+        robot.leftDrive.setPower(left);
+        robot.rightDrive.setPower(right);
 
         // Read our limit switch to see if the arm is too high
         boolean limitTriggered = robot.touchSensor.isPressed();
@@ -212,8 +208,8 @@ public class InvadersPushbot_Iterative extends OpMode{
 
         // Stop the motors
         robot.sweeper.setPower(0);
-        robot.leftMotor.setPower(0.0);
-        robot.rightMotor.setPower(0.0);
+        robot.leftDrive.setPower(0.0);
+        robot.rightDrive.setPower(0.0);
         robot.leftBallLauncher.setPower(0.0);
         robot.rightBallLauncher.setPower(0.0);
     }
