@@ -20,113 +20,73 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 /**
  * This is NOT an opmode.
- *
+ * <p>
  * This class can be used to define all the specific hardware for a single robot.
  * In this case that robot is the IfSpace Invaders 2016/2017 Velocity Vortex season robot.
- *
+ * <p>
  * This hardware class assumes the following device names have been configured on the robot:
  * Ref: .\IfSpaceInvaders_ModernRobotics_Hardware_Defintions.txt for details
  */
-public class InvadersRelicRecoveryBot
-{
-    public static final double MID_SERVO       =  0.5 ;
+public class InvadersRelicRecoveryBot {
+    public static final double MID_SERVO = 0.5;
     /* local OpMode members. */
-    HardwareMap hwMap           = null;
-    Telemetry telemetry         = null;
-    OpMode activeOpMode         = null;
+    HardwareMap hwMap = null;
+    Telemetry telemetry = null;
+    OpMode activeOpMode = null;
 
-
-    /* Matthew, Willow, Alyssa - I just changed the 'period' variable below from private to public.
-       This means that you can see this variable from your opModes (e.g. robot.period.reset()).
-       This is a useful object for calculating how much time has elapsed (in milliseconds)
-       Usage Example:
-       // 1st: Define a variable for how many milliseconds you want to do something
-       int maxTimeInMilliSecondsIwantMyFunctionToTake = 5000; // 5000mS = 5 seconds
-
-       // 2nd: Reset the elapsed timer with the reset() method
-       period.reset(); // Call reset to 'start' the timer
-
-       // 3rd: Do a bunch of work inside a while loop()
-       // Here is an example that shows how you could try to see a blue beacon while driving and then
-       // stop either when you found it, or when your timer expired.
-          boolean iSawBlue = false;
-
-          // Start Driving Forwards
-          leftDrive.setPower(1);
-          leftDrive.setPower(1);
-          while(period.time() < maxTimeInMilliSecondsIwantMyFunctionToTake) {
-             // Keep checking the soIseeBlueLeft() function inside this while loop to look for the beacon
-             if(soIseeBlueLeft()) {
-                 // Hooray: We found the beacon!  Set our boolean variable to true!
-                 iSawBlue = true;
-                 break; // This 'break' will halt the while loop.
-          }
-          // Stop driving.  We either saw blue, or we timed out after 5 seconds.
-          leftDrive.setPower(0);
-          rightDrive.setPower(0);
-
-          if(iSawBlue == true) {
-             // Do something neat if we saw blue (maybe activate our beacon pusher (or drive again until we see red)
-          }
-     */
-    public ElapsedTime period  = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+    public ElapsedTime period = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
     /* Public OpMode members. */
-    public DcMotor leftDrive   = null;
-    public DcMotor rightDrive  = null;
+    public DcMotor leftDrive = null;
+    public DcMotor rightDrive = null;
 
-//FUNCTIONS
-    private boolean opModeIsActive(){
+    //FUNCTIONS
+    private boolean opModeIsActive() {
         boolean isActive = true;
         // If we're running a linear op mode, then make sure we stop when our opmode is no longer active
-        if(activeOpMode instanceof LinearOpMode)
-        {
-            isActive = ((LinearOpMode)activeOpMode).opModeIsActive();
+        if (activeOpMode instanceof LinearOpMode) {
+            isActive = ((LinearOpMode) activeOpMode).opModeIsActive();
         }
         return isActive;
     }
 
 
-
-    public void setDriveTrainPower(double power)
-    {
-        setDriveTrainPower(power,power);
+    public void setDriveTrainPower(double power) {
+        setDriveTrainPower(power, power);
     }
 
-    public void setDriveTrainPower(double leftPower, double rightPower)
-    {
-        if(leftDrive != null) leftDrive.setPower(leftPower);
-        if(rightDrive != null) rightDrive.setPower(rightPower);
+    public void setDriveTrainPower(double leftPower, double rightPower) {
+        if (leftDrive != null) leftDrive.setPower(leftPower);
+        if (rightDrive != null) rightDrive.setPower(rightPower);
     }
 
 
-
-    public void stop()
-    {
+    public void stop() {
         setDriveTrainPower(0);
     }
 
 
-    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
-    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+    static final double COUNTS_PER_MOTOR_REV = 1440;    // eg: TETRIX Motor Encoder
+    static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
+    static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
+    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
-    static final double     P_TURN_COEFF            = 0.1;     // Larger is more responsive, but also less stable
-    static final double     P_DRIVE_COEFF           = 0.15;     // Larger is more responsive, but also less stable
+    static final double HEADING_THRESHOLD = 1;      // As tight as we can make it with an integer gyro
+    static final double P_TURN_COEFF = 0.1;     // Larger is more responsive, but also less stable
+    static final double P_DRIVE_COEFF = 0.15;     // Larger is more responsive, but also less stable
     /**
      * getError determines the error between the target angle and the robot's current heading
      * @param   targetAngle  Desired angle (relative to global reference established at last Gyro Reset).
-     * @return  error angle: Degrees in the range +/- 180. Centered on the robot's frame of reference
+     * @return error angle: Degrees in the range +/- 180. Centered on the robot's frame of reference
      *          +ve error means the robot should turn LEFT (CCW) to reduce error.
      */
 
 
     /**
      * returns desired steering force.  +/- 1 range.  +ve = steer left
-     * @param error   Error angle in robot relative degrees
-     * @param PCoeff  Proportional Gain Coefficient
+     *
+     * @param error  Error angle in robot relative degrees
+     * @param PCoeff Proportional Gain Coefficient
      * @return
      */
     public double getSteer(double error, double PCoeff) {
@@ -134,13 +94,15 @@ public class InvadersRelicRecoveryBot
     }
 
     /* Constructor */
-    public InvadersRelicRecoveryBot(){
+    public InvadersRelicRecoveryBot() {
 
     }
 
-    public void sleepMs(int millis)
-    {
-        try { Thread.sleep(millis); } catch (Exception e) {}
+    public void sleepMs(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (Exception e) {
+        }
     }
 
 
@@ -182,7 +144,7 @@ public class InvadersRelicRecoveryBot
      */
     public void waitForTick(long periodMs) {
 
-        long  remaining = periodMs - (long)period.milliseconds();
+        long remaining = periodMs - (long) period.milliseconds();
 
         // sleep for the remaining portion of the regular cycle period.
         if (remaining > 0) {
@@ -197,15 +159,12 @@ public class InvadersRelicRecoveryBot
         period.reset();
     }
 
-//Cold pizza normally.
+    //Cold pizza normally.
     public enum CapBallState {
         UP,
         DOWN,
         OFF
     }
-
-
-
 
 
     /*
@@ -268,7 +227,7 @@ public class InvadersRelicRecoveryBot
         if (opModeIsActive()) {
             setDriveTrainPower(speed);
             period.reset();
-            while((period.time() < durationMs) && opModeIsActive()) {
+            while ((period.time() < durationMs) && opModeIsActive()) {
             }
             // Stop all motion;
             setDriveTrainPower(0);
