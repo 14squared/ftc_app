@@ -8,43 +8,25 @@ Servo Ctrl	45-2204	S503506	AL00XOBP	N/A
 Core DIM	45-2201	D503575	AL00VGJS	"Sensor Controller"
 
 
-Velocity Vortex Config
+Relic Recovery Config
 -----------------------
-"Cap Ball"
-	Motor 1: "CapBall"
-	Motor 2: "Sweeper"
+"Stuff"
+    Expansion Hub 2
+        "Motors"
+            Motor 0: leftDrive
+            Motor 1: rightDrive
+            Motor 2: lifter
+        "Servos"
+            Servo 0: leftGrab
+            Servo 1: rightGrab
+            Servo 2: jewelPush
+        "Digital Devices"
+        "PVM Devices"
+        "Analog Input Devices"
+        "I2C Bus 0"
+            REV Expansion Hub IMU: imu
+        "I2C Bus 1"
+        "I2C Bus 2"
+        "I2C Bus 3"
 
-"Sensor Controller"
-	PWM Devices: N/A
-	I2C Devices:
-		0	Color Sensor	"beaconSensorRight" (I2C: 0x36)
-		1	Color Sensor	"floorSensor" (I2C: 0x3A)
-		2	Gyro		    "gyroSensor" (I2C: 0x20)
-		3	MR Range Sensor	"UDSRight" (I2C: 0x28g)
-		4	Color Sensor    "beaconSensorLeft" (I2C: 0x32)
-		5   MR Range Sensor 26 "UDSLeft" (I2C: 0x26)
 
-	Analog Input Devices:
-		0
-		1
-		2
-		3
-		4
-		5
-		6
-		7
-	Digital Sensors:
-		0	Touch Sensor	"downLimit"
-
-"Shooter"
-	Motor 1: "LeftLauncher"
-	Motor 2: "RightLauncher"
-
-"Servo Controller"
-	1	CR Servo	"BallElevator"
-	2	Servo		"beaconLeft"
-	3	Servo		"beaconRight"
-
-"Drive Controller"
-	Motor 1: "backLeft"
-	Motor 2: "backRight"

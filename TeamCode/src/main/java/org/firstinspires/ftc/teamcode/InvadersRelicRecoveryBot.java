@@ -22,7 +22,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
  * This is NOT an opmode.
  *
  * This class can be used to define all the specific hardware for a single robot.
- * In this case that robot is the IfSpace Invaders 2016/2017 Velocity Vortex season robot.
+ * In this case that robot is the IfSpace Invaders 2017/2018 Relic Recovery season robot.
  *
  * This hardware class assumes the following device names have been configured on the robot:
  * Ref: .\IfSpaceInvaders_ModernRobotics_Hardware_Defintions.txt for details
@@ -71,14 +71,21 @@ public class InvadersRelicRecoveryBot
      */
     public ElapsedTime period  = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
+
+
+    // Add the new Motors/Servos from the .txt file into the Relic
+
+
+
     /* Public OpMode members. */
+
     public DcMotor leftDrive   = null;
     public DcMotor rightDrive  = null;
-    public CRServo ballElevator = null;
-    public DcMotor leftBallLauncher = null;
-    public DcMotor rightBallLauncher = null;
-    public DcMotor sweeper = null;
-    public DcMotor capBall  = null;
+    public Servo leftGrab = null;
+    public Servo rightGrab = null;
+    public Servo jewelPush = null;
+    public DcMotor liftMotor = null;
+
 
     public Servo   beaconLeft  = null;
     public Servo   beaconRight  = null;
@@ -99,38 +106,26 @@ public class InvadersRelicRecoveryBot
     public FtcI2cDeviceState gyroState;
 
     public TouchSensor touchSensor = null;
-/*
-     @todo Matthew, Willow, or Alyssa - Please add in a new state variable for each old-style
-     I2C sensor on our robot (we should have two color sensors total, one gyro sensor) of type
-     FtcI2cDeviceState.  Note: The Ultrasonic sensor is a newer I2C device that doesn't work with
-     the FtcI2cDeviceState class.
-
-     Reference GitHub Commit: https://github.com/IfSpace/ftc_app/commit/9bc2de71a8464b4a608382e7af89070efbdd0301
-     An example variable for our ultrasonic distance sensor (which we declared on line 46 above as
-     'UDSLeft' would look like this:
-          public FtcI2cDeviceState UDSLeftstate;
-     Notes:
-     1) Don't forget to #import the new FtcI2cDeviceState class at the top of this file so the
-        FtcI2cDeviceState class type is recognized.  e.g. "import org.firstinspires.ftc.teamcode.FtcI2cDeviceState;"
-     2) Don't forget to instantiate your new sensor-state variables at the same time you create
-        the sensor variables.  Hint: This is done in the init() function in this class.
-     3) We probably want to disable all of our sensors by default in our init(), so after you new
-        up each sensor-state variable, you should disable it by calling its setEnabled(false)
-        function.
-     4) Don't forget to delete all of these comments once you have finished the work so it doesn't
-        clutter up this file with leftover notes.
-*/
 
 //FUNCTIONS
 
     /**
      * GyroTurn function allows our robot to do make precise +/- degrees turns using the gyro sensor
-     * @param speed currently unused.
-     * @param degrees indicates the number of degrees to turn left or right.  Positive numbers
+     //* @param speed currently unused.
+     //* @param degrees indicates the number of degrees to turn left or right.  Positive numbers
      *                will turn the robot right the specified degrees, negative numbers will turn the
      *                robot left the specified number of degrees.
      *
      */
+    public boolean isJewelRed(){
+        ///@todo Add Color Sensing here when we create the color sensor
+        return false;
+    }
+    public boolean isJewelBlue(){
+        ///@todo Add Color Sensing here when we create the color sensor
+        return false;
+    }
+
     public void GyroTurn(double speed, double degrees,int timeoutMs) {
         simpleGyroTurn(speed,degrees,timeoutMs);
     }
@@ -224,112 +219,6 @@ public class InvadersRelicRecoveryBot
     {
         if(leftDrive != null) leftDrive.setPower(leftPower);
         if(rightDrive != null) rightDrive.setPower(rightPower);
-    }
-
-    public void sensorTroubleshoot(boolean wiggletest){
-        int leftDrivestartpos = leftDrive.getCurrentPosition();
-        int rightDrivestartpos = rightDrive.getCurrentPosition();
-        double rightbeaconstartpos = beaconRight.getPosition();
-        double leftbeaconstartpos = beaconLeft.getPosition();
-        double gyrostartpos = gyro.getHeading();
-        int leftstartblue = beaconSensorLeft.blue();
-        int leftstartred = beaconSensorLeft.red();
-        int rightstartred = beaconSensorRight.red();
-        int rightstartblue = beaconSensorRight.blue();
-        int floorsensorastart = floorSensor.alpha();
-        double rightudsstart = UDSRight.getDistance(DistanceUnit.INCH);
-        double leftudsstart = UDSLeft.getDistance(DistanceUnit.INCH);
-        int Errors = 0;
-
-        rightDrive.setPower(0.2);
-        leftDrive.setPower(0.2);
-        sleepMs(500);
-        rightDrive.setPower(0);
-        leftDrive.setPower(0);
-        if (rightDrivestartpos != rightDrive.getCurrentPosition()){
-            telemetry.addData("Right Encoder Functioning Properly", "");
-        }
-        else{
-            telemetry.addData("Check Right Encoder", "");
-            Errors ++;
-        }
-        if(leftDrivestartpos != leftDrive.getCurrentPosition()){
-            telemetry.addData("Left Encoder Functioning Properly", "");
-        }
-        else {
-            telemetry.addData("Check Left Encoder", "");
-            Errors ++;
-        }
-        if (leftudsstart != UDSLeft.getDistance(DistanceUnit.INCH)){
-            telemetry.addData("Left UDS Functioning Properly.", "");
-        }
-        else {
-            telemetry.addData("Check Left UDS", "");
-        }
-        if (rightudsstart != UDSRight.getDistance(DistanceUnit.INCH)){
-            telemetry.addData("Right UDS Functioning Properly","");
-        }
-        else {
-            telemetry.addData("Check Right UDS", "");
-        }
-
-        beaconRight.setPosition(0.3);
-        beaconLeft.setPosition(0.3);
-        sleepMs(1000);
-        beaconLeft.setPosition(leftbeaconstartpos);
-        beaconRight.setPosition(rightbeaconstartpos);
-
-        leftDrive.setPower(0.5);
-        rightDrive.setPower(-0.5);
-        sleepMs(500);
-        leftDrive.setPower(0);
-        rightDrive.setPower(0);
-        if (gyro.getHeading() != gyrostartpos){
-            telemetry.addData("Gyro Function Correctly", "");
-        }
-        else {
-            telemetry.addData("Check Gyro Sensor", "");
-            Errors ++;
-        }
-
-
-        telemetry.update();
-        sleepMs(10000);
-
-        if (wiggletest == true){
-            leftDrive.setPower(1);
-            sleepMs(500);
-            leftDrive.setPower(0);
-            sleepMs(1000);
-            rightDrive.setPower(1);
-            sleepMs(500);
-            rightDrive.setPower(0);
-            sleepMs(1000);
-            beaconLeft.setPosition(1);
-            sleepMs(500);
-            beaconLeft.setPosition(0);
-            sleepMs(1000);
-            beaconRight.setPosition(1);
-            sleepMs(500);
-            beaconRight.setPosition(0);
-            sleepMs(1000);
-            leftBallLauncher.setPower(1);
-            sleepMs(500);
-            leftBallLauncher.setPower(0);
-            sleepMs(1000);
-            rightBallLauncher.setPower(1);
-            sleepMs(500);
-            rightBallLauncher.setPower(0);
-            sleepMs(1000);
-            capBall.setPower(-1);
-            sleepMs(250);
-            capBall.setPower(1);
-            sleepMs(250);
-            capBall.setPower(0);
-            sleepMs(1000);
-        }
-
-
     }
 
 
@@ -428,13 +317,13 @@ public class InvadersRelicRecoveryBot
         return (beaconSensorRight.red() >= 5);
     }
 
-    public void stop()
+    /*public void stop()
     {
         setCapBallMotorPower(0, CapBallState.OFF);
         setSweeperPower(0, SweeperDirection.IN);
         setLauncherState(LauncherState.OFF);
         setDriveTrainPower(0);
-    }
+    }*/
 
     public void turnToAbsoluteHeading(double speed, double absoluteHeading, int timeoutMs) {
         simpleGyroTurn(speed,absoluteHeading-gyro.getIntegratedZValue(),timeoutMs);
@@ -603,7 +492,7 @@ public class InvadersRelicRecoveryBot
     public void  ohshoot()
     {
         // turn on the shooter wheels
-        setLauncherState(InvadersRelicRecoveryBot.LauncherState.ON);
+        /*setLauncherState(InvadersRelicRecoveryBot.LauncherState.ON);
 
         //three second delay
         sleepMs(3000);
@@ -632,7 +521,7 @@ public class InvadersRelicRecoveryBot
 
 
     /* Initialize standard Hardware interfaces */
-    public void init(OpMode activeOpMode) {
+    /*public void init(OpMode activeOpMode) {
         // Save reference to Hardware map
         hwMap = activeOpMode.hardwareMap;
 
@@ -640,28 +529,29 @@ public class InvadersRelicRecoveryBot
         telemetry = activeOpMode.telemetry;
 
         // Save reference to the active OpMode
-        this.activeOpMode = activeOpMode;
+        this.activeOpMode = activeOpMode;*/
 
         // Define and Initialize Motors
-        leftDrive   = hwMap.dcMotor.get("backLeft");
-        rightDrive  = hwMap.dcMotor.get("backRight");
-        rightBallLauncher = hwMap.dcMotor.get("RightLauncher");
-        leftBallLauncher = hwMap.dcMotor.get("LeftLauncher");
-        capBall = hwMap.dcMotor.get("CapBall");
-        sweeper = hwMap.dcMotor.get("Sweeper");
+        leftDrive = hwMap.get(DcMotor.class, "leftDrive");
+        rightDrive = hwMap.get(DcMotor.class, "rightDrive");
+        leftGrab = hwMap.get(Servo.class, "leftGrab");
+        rightGrab = hwMap.get(Servo.class, "rightGrab");
+        jewelPush = hwMap.get(Servo.class, "jewelPush");
+        liftMotor = hwMap.get(DcMotor.class, "liftMotor");
+
 
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightBallLauncher.setDirection(DcMotor.Direction.FORWARD);
-        leftBallLauncher.setDirection(DcMotor.Direction.REVERSE);
-        capBall.setDirection(DcMotorSimple.Direction.REVERSE);
-        sweeper.setDirection(DcMotorSimple.Direction.FORWARD);
+        //rightBallLauncher.setDirection(DcMotor.Direction.FORWARD);
+        //leftBallLauncher.setDirection(DcMotor.Direction.REVERSE);
+        //capBall.setDirection(DcMotorSimple.Direction.REVERSE);
+        //sweeper.setDirection(DcMotorSimple.Direction.FORWARD);
 
         // Set all motors to zero power
         setDriveTrainPower(0);
         setCapBallMotorPower(0, CapBallState.UP);
-        setSweeperPower(0, SweeperDirection.IN);
-        setLauncherState(LauncherState.OFF);
+        /*setSweeperPower(0, SweeperDirection.IN);
+        setLauncherState(LauncherState.OFF);*/
 
         // Set all non-driving motors to run without encoders.
         leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -669,16 +559,16 @@ public class InvadersRelicRecoveryBot
         leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        rightBallLauncher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftBallLauncher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        capBall.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        sweeper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //rightBallLauncher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //leftBallLauncher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //capBall.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //sweeper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Define installed servos
         beaconLeft = hwMap.servo.get("beaconLeft");
         beaconRight = hwMap.servo.get("beaconRight");
-        ballElevator = hwMap.crservo.get("BallElevator");
-        ballElevator.setPower(0.0);
+        //ballElevator = hwMap.crservo.get("BallElevator");
+        //ballElevator.setPower(0.0);
 
         // Define our sensors
         touchSensor = hwMap.touchSensor.get("downLimit");
@@ -704,7 +594,7 @@ public class InvadersRelicRecoveryBot
 
         // make sure the gyro is calibrated before continuing
         while (gyro.isCalibrating())  {
-            sleepMs(50);
+            //sleepMs(50);
         }
         gyro.resetZAxisIntegrator();
     }
@@ -744,9 +634,9 @@ public class InvadersRelicRecoveryBot
     public void setCapBallMotorPower(double power, CapBallState state)
     {
         // Early return if our config doesn't have a CapBall
-        if(capBall == null) return;
+        //if(capBall == null) return;
 
-        switch(state) {
+        /*switch(state) {
             case UP:
                 capBall.setPower(Math.abs(power));
                 break;
@@ -758,14 +648,15 @@ public class InvadersRelicRecoveryBot
                 break;
         }
     }
+    */
 
-    public enum BallElevatorState {
+    /*public enum BallElevatorState {
         UP,
         DOWN,
         OFF
-    }
+    }*/
 
-    public void setBallElevator(double power, BallElevatorState state)
+    /*public void setBallElevator(double power, BallElevatorState state)
     {
         // Early return if we don't have a ball elevator
         if(ballElevator == null) return;
@@ -784,31 +675,31 @@ public class InvadersRelicRecoveryBot
                 ballElevator.setPower(0);
                 break;
         }
+    }*/
+
+    //public enum LauncherState {
+      //  ON,
+        //OFF
     }
 
-    public enum LauncherState {
-        ON,
-        OFF
-    }
-
-    public void setLauncherState(LauncherState onOrOff){
+    //public void setLauncherState(LauncherState onOrOff){
         double power = 0; // Initialize power to OFF condition
         // If the onOrOff parameter equals ON, then set the power
-        if(onOrOff == LauncherState.ON)
+      //  if(onOrOff == LauncherState.ON)
         {
             // Launchers are always at full power
             power = -1;
         }
-        if(rightBallLauncher != null) rightBallLauncher.setPower(power);
-        if(leftBallLauncher != null) leftBallLauncher.setPower(power);
-    }
+        //if(rightBallLauncher != null) rightBallLauncher.setPower(power);
+        //if(leftBallLauncher != null) leftBallLauncher.setPower(power);
+    //}
 
-    public enum SweeperDirection {
-        IN,
-        OUT
-    }
+    //public enum SweeperDirection {
+        //IN,
+      //  OUT
+    //}
 
-    public void setSweeperPower(float power, SweeperDirection direction) {
+    /*public void setSweeperPower(float power, SweeperDirection direction) {
         if(sweeper != null) {
             if(direction == SweeperDirection.IN) {
                 sweeper.setPower(-Math.abs(power));
@@ -817,7 +708,7 @@ public class InvadersRelicRecoveryBot
                 sweeper.setPower(Math.abs(power));
             }
         }
-    }
+    }*/
 
 
     /*
@@ -870,7 +761,7 @@ public class InvadersRelicRecoveryBot
             leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            sleepMs(250);   // optional pause after each move
+            //sleepMs(250);   // optional pause after each move
         }
     }
 
@@ -892,7 +783,7 @@ public class InvadersRelicRecoveryBot
             // Stop all motion;
             setDriveTrainPower(0);
 
-            sleepMs(250);
+            //sleepMs(250);
         }
     }
 }
