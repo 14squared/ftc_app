@@ -113,6 +113,7 @@ public class BasicOpModeAsher_Iterative extends OpMode
         double leftPower;
         double rightPower;
         double liftPower;
+        double JewelPushPowerUp;
 
         // Choose to drive using either Tank Mode or POV Mode
         // Comment out the method that's not used.  The default below is POV.
@@ -127,6 +128,9 @@ public class BasicOpModeAsher_Iterative extends OpMode
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
          leftPower  = -gamepad1.left_stick_y ;
          rightPower = -gamepad1.right_stick_y ;
+        JewelPushPowerUp = -gamepad1.right_stick_x;
+
+
          //Code for the Lifter
         if(gamepad1.y) {
             liftPower = 1;
@@ -138,6 +142,10 @@ public class BasicOpModeAsher_Iterative extends OpMode
 
         else{
             liftPower = 0;
+        }
+
+        if(gamepad1.x){
+
         }
 
         // Send calculated power to wheels//
