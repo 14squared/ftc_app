@@ -76,8 +76,43 @@ public class BasicOpModeAsher_Linear extends LinearOpMode {
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
 
+    enum TurnDirection {Left, Right}
+
+    //Move in a straight line forward or backwards
+    //speed is positive for forward, negative for backwards
+    //speed can be between -1.0 and 1.0
+    private void moveStraight(double speed){
+        leftDrive.setPower(speed);
+        rightDrive.setPower(speed);
+    }
+
+    private void tankTurn(double speed, TurnDirection direction){
+        if (direction == TurnDirection.Left){
+            leftDrive.setPower(-speed);
+            rightDrive.setPower(speed);
+        } else {
+            leftDrive.setPower(speed);
+            rightDrive.setPower(-speed);
+        }
+    }
+
+    private void forwardTurn(double speed, TurnDirection direction){
+        if (direction == TurnDirection.Left){
+            leftDrive.setPower(speed/2);
+            rightDrive.setPower(speed);
+        } else {
+            leftDrive.setPower(speed);
+            rightDrive.setPower(speed/2);
+        }
+    }
+
+    private void stopMotors(){
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+    }
+
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -101,15 +136,36 @@ public class BasicOpModeAsher_Linear extends LinearOpMode {
 
             runtime.reset();
             // Send calculated power to wheels
-            while(runtime.time() < 3 ) {
-                leftDrive.setPower(.5);
-                rightDrive.setPower(.5);
+            while(runtime.time() < 1 ) {
+                moveStraight(.5);
             }
 
-            while(runtime.time() < 6 ) {
-                leftDrive.setPower(0);
-                rightDrive.setPower(0);
+            runtime.reset();
+            while(runtime.time() < 3 ) {
+                stopMotors();
             }
+
+            runtime.reset();
+            while(runtime.time() < 2 ) {
+                tankTurn(.25, TurnDirection.Right);
+            }
+
+            runtime.reset();
+            while(runtime.time() < 3 ) {
+                stopMotors();
+            }
+
+            runtime.reset();
+            while(runtime.time() < 2 ) {
+                forwardTurn(.25, TurnDirection.Right);
+            }
+
+            runtime.reset();
+            while(runtime.time() < 3 ) {
+                stopMotors();
+            }
+
+
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
