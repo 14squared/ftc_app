@@ -496,39 +496,16 @@ public class InvadersRelicRecoveryBot
 
     }
 
-    public void  ohshoot()
-    {
-        // turn on the shooter wheels
-        /*setLauncherState(InvadersRelicRecoveryBot.LauncherState.ON);
-
-        //three second delay
-        sleepMs(3000);
-
-        //turn on the elevator
-        setBallElevator(1, BallElevatorState.UP);
-
-        // 3 second delay
-        sleepMs(3000);
-
-        // turn on the sweeper to load second shot (elevator is still on)
-        setSweeperPower(1, SweeperDirection.IN);
-        sleepMs(6000);
-
-        //turn everything off
-        setBallElevator(0, BallElevatorState.OFF);
-        setSweeperPower(0, SweeperDirection.IN);
-        setLauncherState(LauncherState.OFF);
-    }
-
-
-    public void sleepMs(int millis)
-    {
-        try { Thread.sleep(millis); } catch (Exception e) {}
+    public void sleepMs(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (Exception e) {
+        }
     }
 
 
     /* Initialize standard Hardware interfaces */
-    /*public void init(OpMode activeOpMode) {
+    public void init(OpMode activeOpMode){
         // Save reference to Hardware map
         hwMap = activeOpMode.hardwareMap;
 
@@ -536,7 +513,8 @@ public class InvadersRelicRecoveryBot
         telemetry = activeOpMode.telemetry;
 
         // Save reference to the active OpMode
-        this.activeOpMode = activeOpMode;*/
+        this.activeOpMode = activeOpMode;
+
 
         // Define and Initialize Motors
         leftDrive = hwMap.get(DcMotor.class, "leftDrive");

@@ -71,6 +71,7 @@ import com.qualcomm.robotcore.util.Range;
 */
 public class BasicOpModeAsher_Linear extends LinearOpMode {
 
+    private InvadersRelicRecoveryBot homeCode = null;
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
@@ -119,6 +120,8 @@ public class BasicOpModeAsher_Linear extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
+        homeCode = new InvadersRelicRecoveryBot( );
+
         leftDrive  = hardwareMap.get(DcMotor.class, "m2");
         rightDrive = hardwareMap.get(DcMotor.class, "m1");
 
@@ -136,33 +139,15 @@ public class BasicOpModeAsher_Linear extends LinearOpMode {
 
             runtime.reset();
             // Send calculated power to wheels
-            while(runtime.time() < 1 ) {
-                moveStraight(.5);
-            }
+            boolean e = true;
 
-            runtime.reset();
-            while(runtime.time() < 3 ) {
-                stopMotors();
-            }
+            while(runtime.time() < 3) {
+                if (e) {
+                    moveStraight(.5);
+                } else {
+                    moveStraight(.1);
+                }
 
-            runtime.reset();
-            while(runtime.time() < 2 ) {
-                tankTurn(.25, TurnDirection.Right);
-            }
-
-            runtime.reset();
-            while(runtime.time() < 3 ) {
-                stopMotors();
-            }
-
-            runtime.reset();
-            while(runtime.time() < 2 ) {
-                forwardTurn(.25, TurnDirection.Right);
-            }
-
-            runtime.reset();
-            while(runtime.time() < 3 ) {
-                stopMotors();
             }
 
 
