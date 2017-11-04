@@ -90,7 +90,7 @@ public class InvadersRelicRecoveryBot
     public DcMotor rightDrive  = null;
     public Servo leftGrab = null;
     public Servo rightGrab = null;
-    public Servo jewelPush = null;
+    //public Servo jewelPush = null;
     public DcMotor liftMotor = null;
 
 
@@ -113,6 +113,82 @@ public class InvadersRelicRecoveryBot
     public FtcI2cDeviceState gyroState;
 
     public TouchSensor touchSensor = null;
+
+
+    public void init(OpMode activeOpMode) {
+        // Save reference to Hardware map
+        hwMap = activeOpMode.hardwareMap;
+
+        // Save reference to the OpMode's Telemetry
+        telemetry = activeOpMode.telemetry;
+
+        // Save reference to the active OpMode
+        this.activeOpMode = activeOpMode;
+
+
+        // Define and Initialize Motors
+        leftDrive = hwMap.get(DcMotor.class, "leftDrive");
+        rightDrive = hwMap.get(DcMotor.class, "rightDrive");
+        leftGrab = hwMap.get(Servo.class, "leftGrab");
+        rightGrab = hwMap.get(Servo.class, "rightGrab");
+        //jewelPush = hwMap.get(Servo.class, "jewelPush");
+        liftMotor = hwMap.get(DcMotor.class, "liftMotor");
+
+
+        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        //rightBallLauncher.setDirection(DcMotor.Direction.FORWARD);
+        //leftBallLauncher.setDirection(DcMotor.Direction.REVERSE);
+        //capBall.setDirection(DcMotorSimple.Direction.REVERSE);
+        //sweeper.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        // Set all motors to zero power
+        setDriveTrainPower(0);
+        setCapBallMotorPower(0, CapBallState.UP);
+        /*setSweeperPower(0, SweeperDirection.IN);
+        setLauncherState(LauncherState.OFF);*/
+
+        // Set all non-driving motors to run without encoders.
+        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //rightBallLauncher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //leftBallLauncher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //capBall.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //sweeper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        // Define installed servos
+        //beaconLeft = hwMap.servo.get("beaconLeft");
+        //beaconRight = hwMap.servo.get("beaconRight");
+        //ballElevator = hwMap.crservo.get("BallElevator");
+        //ballElevator.setPower(0.0);
+
+        // Define our sensors
+        //touchSensor = hwMap.touchSensor.get("downLimit");
+        //UDSLeft = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSLeft");
+        //UDSRight = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSRight");
+        //beaconSensorLeft = hwMap.colorSensor.get("beaconSensorLeft");
+        //beaconSensorRight = hwMap.colorSensor.get("beaconSensorRight");
+        //floorSensor = hwMap.colorSensor.get("floorSensor");
+
+        // Custom I2C Addresses Go Here!
+        ///@todo Need to validate that UDSLeft.setI2cAddress is working with new SDK.  Hasn't been tested since VelocityVortex championship
+        //UDSLeft.setI2cAddress(I2cAddr.create8bit(0x26));
+        //floorSensor.setI2cAddress(I2cAddr.create8bit(0x3A));
+        //beaconSensorRight.setI2cAddress(I2cAddr.create8bit(0x36));
+
+        // Initialize Color Sensor LEDs to off
+        //beaconSensorLeft.enableLed(false);
+        //beaconSensorRight.enableLed(false);
+        //floorSensor.enableLed(false);
+
+        //gyro = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("gyroSensor");
+        //gyro.calibrate();
+
+    }
+
 
 //FUNCTIONS
 
@@ -505,84 +581,7 @@ public class InvadersRelicRecoveryBot
 
 
     /* Initialize standard Hardware interfaces */
-    public void init(OpMode activeOpMode){
-        // Save reference to Hardware map
-        hwMap = activeOpMode.hardwareMap;
 
-        // Save reference to the OpMode's Telemetry
-        telemetry = activeOpMode.telemetry;
-
-        // Save reference to the active OpMode
-        this.activeOpMode = activeOpMode;
-
-
-        // Define and Initialize Motors
-        leftDrive = hwMap.get(DcMotor.class, "leftDrive");
-        rightDrive = hwMap.get(DcMotor.class, "rightDrive");
-        leftGrab = hwMap.get(Servo.class, "leftGrab");
-        rightGrab = hwMap.get(Servo.class, "rightGrab");
-        jewelPush = hwMap.get(Servo.class, "jewelPush");
-        liftMotor = hwMap.get(DcMotor.class, "liftMotor");
-
-
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
-        //rightBallLauncher.setDirection(DcMotor.Direction.FORWARD);
-        //leftBallLauncher.setDirection(DcMotor.Direction.REVERSE);
-        //capBall.setDirection(DcMotorSimple.Direction.REVERSE);
-        //sweeper.setDirection(DcMotorSimple.Direction.FORWARD);
-
-        // Set all motors to zero power
-        setDriveTrainPower(0);
-        setCapBallMotorPower(0, CapBallState.UP);
-        /*setSweeperPower(0, SweeperDirection.IN);
-        setLauncherState(LauncherState.OFF);*/
-
-        // Set all non-driving motors to run without encoders.
-        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        //rightBallLauncher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //leftBallLauncher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //capBall.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //sweeper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        // Define installed servos
-        beaconLeft = hwMap.servo.get("beaconLeft");
-        beaconRight = hwMap.servo.get("beaconRight");
-        //ballElevator = hwMap.crservo.get("BallElevator");
-        //ballElevator.setPower(0.0);
-
-        // Define our sensors
-        touchSensor = hwMap.touchSensor.get("downLimit");
-        UDSLeft = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSLeft");
-        UDSRight = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSRight");
-        beaconSensorLeft = hwMap.colorSensor.get("beaconSensorLeft");
-        beaconSensorRight = hwMap.colorSensor.get("beaconSensorRight");
-        floorSensor = hwMap.colorSensor.get("floorSensor");
-
-        // Custom I2C Addresses Go Here!
-        ///@todo Need to validate that UDSLeft.setI2cAddress is working with new SDK.  Hasn't been tested since VelocityVortex championship
-        UDSLeft.setI2cAddress(I2cAddr.create8bit(0x26));
-        floorSensor.setI2cAddress(I2cAddr.create8bit(0x3A));
-        beaconSensorRight.setI2cAddress(I2cAddr.create8bit(0x36));
-
-        // Initialize Color Sensor LEDs to off
-        beaconSensorLeft.enableLed(false);
-        beaconSensorRight.enableLed(false);
-        floorSensor.enableLed(false);
-
-        gyro = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("gyroSensor");
-        gyro.calibrate();
-
-        // make sure the gyro is calibrated before continuing
-        while (gyro.isCalibrating())  {
-            //sleepMs(50);
-        }
-        gyro.resetZAxisIntegrator();
-    }
 
     /***
      *

@@ -53,7 +53,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="Matthew Iterative OpMode", group="Iterative Opmode")
 //@Disabled
-public class BasicIterativeOpmodeMatthew extends OpMode
+public class MatthewTeleop extends OpMode
 {
     // Declare OpMode members.
     InvadersRelicRecoveryBot robot = new InvadersRelicRecoveryBot();
@@ -65,10 +65,11 @@ public class BasicIterativeOpmodeMatthew extends OpMode
      */
     @Override
     public void init() {
+        robot.init(this);
         telemetry.addData("Status", "Initialized");
-        robot.leftGrab.setDirection(Servo.Direction.FORWARD);
-        robot.rightGrab.setDirection(Servo.Direction.REVERSE);
-        telemetry.addData("Status", "Initialized");
+        //robot.leftGrab.setDirection(Servo.Direction.FORWARD);
+        //robot.rightGrab.setDirection(Servo.Direction.REVERSE);
+
 
     }
 
@@ -102,8 +103,9 @@ public class BasicIterativeOpmodeMatthew extends OpMode
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
-        double drive = -gamepad1.left_stick_y;
+        double drive = gamepad1.left_stick_y;
         double turn  =  gamepad1.right_stick_x;
+
         leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
         rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
@@ -115,9 +117,24 @@ public class BasicIterativeOpmodeMatthew extends OpMode
         // Send calculated power to wheels
         robot.leftDrive.setPower(leftPower);
         robot.rightDrive.setPower(rightPower);
+        robot.liftMotor.setPower(gamepad1.left_trigger);
+        robot.liftMotor.setPower(-gamepad1.right_trigger);
+        if (gamepad1.left_bumper == true){
+            robot.leftGrab.setPosition(1);
+        }
+        else {
+            robot.leftGrab.setPosition(0);
+        }
 
-        robot.leftGrab.setPosition(gamepad1.left_trigger);
-        robot.rightGrab.setPosition(gamepad1.right_trigger);
+        if(gamepad1.right_bumper == true){
+            robot.rightGrab.setPosition(1);
+        }
+        else {
+            robot.rightGrab.setPosition(0);
+        }
+
+        //robot.leftGrab.setPosition(gamepad1.left_trigger);
+        //robot.rightGrab.setPosition(gamepad1.right_trigger);
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
