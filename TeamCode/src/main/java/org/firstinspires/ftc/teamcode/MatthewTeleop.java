@@ -96,7 +96,8 @@ public class MatthewTeleop extends OpMode
         // Setup a variable for each drive wheel to save power level for telemetry
         double leftPower;
         double rightPower;
-        
+        double armPower;
+        double armPos;
 
         // Choose to drive using either Tank Mode, or POV Mode
         // Comment out the method that's not used.  The default below is POV.
@@ -106,17 +107,30 @@ public class MatthewTeleop extends OpMode
         double drive = gamepad1.left_stick_y;
         double turn  =  gamepad1.right_stick_x;
 
-        leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-        rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
+
+        armPos = robot.liftMotor.getCurrentPosition();
 
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
         // leftPower  = -gamepad1.left_stick_y ;
         // rightPower = -gamepad1.right_stick_y ;
 
-        // Send calculated power to wheels
-        robot.leftDrive.setPower(leftPower);
-        robot.rightDrive.setPower(rightPower);
+        //This is where we figure out if we should switch the direction of the controls or not.
+        //This initial if statement keeps us from suddenly reversing when the arm passes 180. The direction change only takes effect once the driver has stopped moving the robot.
+        if (gamepad1.left_stick_y == 0) {
+            if (armPos < 180) {
+                leftPower = Range.clip(drive - turn, -1.0, 1.0);
+                rightPower = Range.clip(drive + turn, -1.0, 1.0);
+                robot.leftDrive.setPower(leftPower);
+                robot.rightDrive.setPower(rightPower);
+            } else {
+                leftPower = Range.clip(drive + turn, -1.0, 1.0);
+                rightPower = Range.clip(drive - turn, -1.0, 1.0);
+                robot.leftDrive.setPower(-leftPower);
+                robot.rightDrive.setPower(-rightPower);
+            }
+        }
+
         robot.liftMotor.setPower(gamepad1.left_trigger);
         robot.liftMotor.setPower(-gamepad1.right_trigger);
         if (gamepad1.left_bumper == true){
@@ -138,7 +152,7 @@ public class MatthewTeleop extends OpMode
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+        //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
     }
 
     /*

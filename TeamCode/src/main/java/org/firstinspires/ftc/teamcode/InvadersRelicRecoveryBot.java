@@ -43,46 +43,8 @@ public class InvadersRelicRecoveryBot
     OpMode activeOpMode         = null;
 
 
-    /* Matthew, Willow, Alyssa - I just changed the 'period' variable below from private to public.
-       This means that you can see this variable from your opModes (e.g. robot.period.reset()).
-       This is a useful object for calculating how much time has elapsed (in milliseconds)
-       Usage Example:
-       // 1st: Define a variable for how many milliseconds you want to do something
-       int maxTimeInMilliSecondsIwantMyFunctionToTake = 5000; // 5000mS = 5 seconds
 
-       // 2nd: Reset the elapsed timer with the reset() method
-       period.reset(); // Call reset to 'start' the timer
-
-       // 3rd: Do a bunch of work inside a while loop()
-       // Here is an example that shows how you could try to see a blue beacon while driving and then
-       // stop either when you found it, or when your timer expired.
-          boolean iSawBlue = false;
-
-          // Start Driving Forwards
-          leftDrive.setPower(1);
-          leftDrive.setPower(1);
-          while(period.time() < maxTimeInMilliSecondsIwantMyFunctionToTake) {
-             // Keep checking the soIseeBlueLeft() function inside this while loop to look for the beacon
-             if(soIseeBlueLeft()) {
-                 // Hooray: We found the beacon!  Set our boolean variable to true!
-                 iSawBlue = true;
-                 break; // This 'break' will halt the while loop.
-          }
-          // Stop driving.  We either saw blue, or we timed out after 5 seconds.
-          leftDrive.setPower(0);
-          rightDrive.setPower(0);
-
-          if(iSawBlue == true) {
-             // Do something neat if we saw blue (maybe activate our beacon pusher (or drive again until we see red)
-          }
-     */
     public ElapsedTime period  = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-
-
-
-    // Add the new Motors/Servos from the .txt file into the Relic
-
-
 
     /* Public OpMode members. */
 
@@ -137,56 +99,15 @@ public class InvadersRelicRecoveryBot
 
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
-        //rightBallLauncher.setDirection(DcMotor.Direction.FORWARD);
-        //leftBallLauncher.setDirection(DcMotor.Direction.REVERSE);
-        //capBall.setDirection(DcMotorSimple.Direction.REVERSE);
-        //sweeper.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        // Set all motors to zero power
-        setDriveTrainPower(0);
-        setCapBallMotorPower(0, CapBallState.UP);
-        /*setSweeperPower(0, SweeperDirection.IN);
-        setLauncherState(LauncherState.OFF);*/
 
         // Set all non-driving motors to run without encoders.
         leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        //rightBallLauncher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //leftBallLauncher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //capBall.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //sweeper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        // Define installed servos
-        //beaconLeft = hwMap.servo.get("beaconLeft");
-        //beaconRight = hwMap.servo.get("beaconRight");
-        //ballElevator = hwMap.crservo.get("BallElevator");
-        //ballElevator.setPower(0.0);
-
-        // Define our sensors
-        //touchSensor = hwMap.touchSensor.get("downLimit");
-        //UDSLeft = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSLeft");
-        //UDSRight = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSRight");
-        //beaconSensorLeft = hwMap.colorSensor.get("beaconSensorLeft");
-        //beaconSensorRight = hwMap.colorSensor.get("beaconSensorRight");
-        //floorSensor = hwMap.colorSensor.get("floorSensor");
-
-        // Custom I2C Addresses Go Here!
-        ///@todo Need to validate that UDSLeft.setI2cAddress is working with new SDK.  Hasn't been tested since VelocityVortex championship
-        //UDSLeft.setI2cAddress(I2cAddr.create8bit(0x26));
-        //floorSensor.setI2cAddress(I2cAddr.create8bit(0x3A));
-        //beaconSensorRight.setI2cAddress(I2cAddr.create8bit(0x36));
-
-        // Initialize Color Sensor LEDs to off
-        //beaconSensorLeft.enableLed(false);
-        //beaconSensorRight.enableLed(false);
-        //floorSensor.enableLed(false);
-
-        //gyro = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("gyroSensor");
-        //gyro.calibrate();
-
+        leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
 
@@ -238,11 +159,7 @@ public class InvadersRelicRecoveryBot
         double rightDistance = UDSRight.getDistance(unit);
         double leftDistance = UDSLeft.getDistance(unit);
         int timeoutMs = 3000; // Limit this function to a maximum of 3s
-        //@todo getMaxSpeed and setMaxSpeed were removed from ftc_app SDK v3.0
-        //int oldMaxSpeedRight = rightDrive.getMaxSpeed();
-        //int oldMaxSpeedLeft = leftDrive.getMaxSpeed();
-        //leftDrive.setMaxSpeed(250);
-        //rightDrive.setMaxSpeed(250);
+        //@TODO: 11/4/2017 Figure out what the replacements for get and set maxspeed are. They were removed in version 3 of the SDK.
 
         if(leftDistance > rightDistance == true){
             telemetry.addData("ATW TURNING", "RIGHT");
@@ -265,8 +182,7 @@ public class InvadersRelicRecoveryBot
             telemetry.addData("ATW TURNING", "LEFT");
             telemetry.addData("RANGE: ","R: %.02f, L: %.02f", rightDistance, leftDistance);
             telemetry.update();
-            //Thread.yield();
-            //sleepMs(3000);
+
 
             period.reset();
             leftDrive.setPower(-1);
@@ -283,14 +199,10 @@ public class InvadersRelicRecoveryBot
             telemetry.addData("TURNING", "-----");
             telemetry.addData("RANGE: ","R: %.02f, L: %.02f", rightDistance, leftDistance);
             telemetry.update();
-            //Thread.yield();
-            //sleepMs(3000);
+
         }
         rightDrive.setPower(0);
         leftDrive.setPower(0);
-        //@todo getMaxSpeed and setMaxSpeed were removed from ftc_app SDK v3.0
-        //leftDrive.setMaxSpeed(oldMaxSpeedLeft);
-        //rightDrive.setMaxSpeed(oldMaxSpeedRight);
     }
 
     public void setDriveTrainPower(double power)
@@ -305,129 +217,17 @@ public class InvadersRelicRecoveryBot
     }
 
 
-//// This function is currently disabled.
-    public void gyroDrive ( double speed,
-                            double distance,
-                            double angle) {
-
-        int     newLeftTarget;
-        int     newRightTarget;
-        int     moveCounts;
-        double  max;
-        double  error;
-        double  steer;
-        double  leftSpeed;
-        double  rightSpeed;}
-
-
-        // Ensure that the opmode is still active
-//        if (opModeIsActive()) {
-//
-//            // Determine new target position, and pass to motor controller
-//            moveCounts = (int)(distance * COUNTS_PER_INCH);
-//            newLeftTarget = leftDrive.getCurrentPosition() + moveCounts;
-//            newRightTarget = rightDrive.getCurrentPosition() + moveCounts;
-//
-//            // Set Target and Turn On RUN_TO_POSITION
-//            leftDrive.setTargetPosition(newLeftTarget);
-//            rightDrive.setTargetPosition(newRightTarget);
-//
-//            leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//            rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//
-//            // start motion.
-//            speed = Range.clip(Math.abs(speed), 0.0, 1.0);
-//            leftDrive.setPower(speed);
-//            rightDrive.setPower(speed);
-//
-//            // keep looping while we are still active, and BOTH motors are running.
-//            while (opModeIsActive() &&
-//                    (leftDrive.isBusy() && rightDrive.isBusy())) {
-//
-//                error = getError(angle);
-//                steer = getSteer(error, P_DRIVE_COEFF);
-//
-//                // if driving in reverse, the motor correction also needs to be reversed
-//                if (distance < 0)
-//                    steer *= -1.0;
-//
-//                leftSpeed = speed - steer;
-//                rightSpeed = speed + steer;
-//
-//                // Normalize speeds if any one exceeds +/- 1.0;
-//                max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
-//                if (max > 1.0)
-//                {
-//                    leftSpeed /= max;
-//                    rightSpeed /= max;
-//                }
-//
-//                leftDrive.setPower(leftSpeed);
-//                rightDrive.setPower(rightSpeed);
-//
-//                // Display drive status for the driver.
-//                //telemetry.addData("Err/St",  "%5.1f/%5.1f",  error, steer);
-//                //telemetry.addData("Target",  "%7d:%7d",      newLeftTarget,  newRightTarget);
-//                //telemetry.addData("Actual",  "%7d:%7d",      robot.leftDrive.getCurrentPosition(),
-//                        rightDrive.getCurrentPosition();
-//                //telemetry.addData("Speed",   "%5.2f:%5.2f",  leftSpeed, rightSpeed);
-//                //telemetry.update();
-//            }
-//
-//            // Stop all motion;
-//            leftDrive.setPower(0);
-//            rightDrive.setPower(0);
-//
-//            // Turn off RUN_TO_POSITION
-//            leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//            rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        }
-//    }
-
-    public boolean doIseeBlueLeft () {
-        return (beaconSensorLeft.blue() >= 5);
-    }
-
-    public boolean doIseeRedLeft () {
-        return (beaconSensorLeft.red() >= 5);
-    }
-
-    public boolean doIseeBlueRight () {
-        return (beaconSensorRight.blue() >= 5);
-    }
-
-    public boolean doIseeRedRight () {
-        return (beaconSensorRight.red() >= 5);
-    }
-
-    /*public void stop()
-    {
-        setCapBallMotorPower(0, CapBallState.OFF);
-        setSweeperPower(0, SweeperDirection.IN);
-        setLauncherState(LauncherState.OFF);
-        setDriveTrainPower(0);
-    }*/
 
     public void turnToAbsoluteHeading(double speed, double absoluteHeading, int timeoutMs) {
         simpleGyroTurn(speed,absoluteHeading-gyro.getIntegratedZValue(),timeoutMs);
     }
 
-    // Right/Clockwise = Positive Turn Degrees
-    // Left/CounterClockwise = Negative Turn Degrees
-    // timeoutMs provides a sanity check to make sure we don't turn forever
     public void simpleGyroTurn(double speed, double turnDegrees, int timeoutMs)
     {
-        // Our turn by degrees algorithm has a bit of slop in it.
-        // Try to correct the user input to match reality
-        // If turnDegrees == 100, then reset to 90 (which makes our robot turn 100)
-        //turnDegrees *= .90;
-
         int currentHeading = gyro.getIntegratedZValue();
         double targetHeading = currentHeading - turnDegrees;
-
         // Early Return (do nothing) if we are giving a zero degree turn
         if(turnDegrees == 0) return;
-
         // Start our timeout-detection timer
         period.reset();
 
@@ -445,7 +245,7 @@ public class InvadersRelicRecoveryBot
                 currentHeading = gyro.getIntegratedZValue();
                 // Exit our while loop because we're at our destination
                 if((targetHeading - currentHeading) <= 0) break;
-             }
+            }
         }
         setDriveTrainPower(0);
     }
@@ -608,101 +408,13 @@ public class InvadersRelicRecoveryBot
         period.reset();
     }
 
-//Cold pizza normally.
+    //Cold pizza normally.
     public enum CapBallState {
         UP,
         DOWN,
         OFF
     }
 
-    public void setCapBallMotorPower(double power, CapBallState state)
-    {
-        // Early return if our config doesn't have a CapBall
-        //if(capBall == null) return;
-
-        /*switch(state) {
-            case UP:
-                capBall.setPower(Math.abs(power));
-                break;
-            case DOWN:
-                capBall.setPower(-Math.abs(power));
-                break;
-            case OFF:
-                capBall.setPower(0);
-                break;
-        }
-    }
-    */
-
-    /*public enum BallElevatorState {
-        UP,
-        DOWN,
-        OFF
-    }*/
-
-    /*public void setBallElevator(double power, BallElevatorState state)
-    {
-        // Early return if we don't have a ball elevator
-        if(ballElevator == null) return;
-
-        //@todo Write to a file what we're about to do to the motor here
-        switch(state) {
-            case UP:
-                // Set positive value regardless of power positive/negative
-                ballElevator.setPower(-Math.abs(power));
-                break;
-            case DOWN:
-                // Set negative value regardless of power positive/negative
-                ballElevator.setPower(Math.abs(power));
-                break;
-            case OFF:
-                ballElevator.setPower(0);
-                break;
-        }
-    }*/
-
-    //public enum LauncherState {
-      //  ON,
-        //OFF
-    }
-
-    //public void setLauncherState(LauncherState onOrOff){
-        double power = 0; // Initialize power to OFF condition
-        // If the onOrOff parameter equals ON, then set the power
-      //  if(onOrOff == LauncherState.ON)
-        {
-            // Launchers are always at full power
-            power = -1;
-        }
-        //if(rightBallLauncher != null) rightBallLauncher.setPower(power);
-        //if(leftBallLauncher != null) leftBallLauncher.setPower(power);
-    //}
-
-    //public enum SweeperDirection {
-        //IN,
-      //  OUT
-    //}
-
-    /*public void setSweeperPower(float power, SweeperDirection direction) {
-        if(sweeper != null) {
-            if(direction == SweeperDirection.IN) {
-                sweeper.setPower(-Math.abs(power));
-            }
-            else {
-                sweeper.setPower(Math.abs(power));
-            }
-        }
-    }*/
-
-
-    /*
- *  Method to perfmorm a relative move, based on encoder counts.
- *  Encoders are not reset as the move is based on the current position.
- *  Move will stop if any of three conditions occur:
- *  1) Move gets to the desired position
- *  2) Move runs out of time
- *  3) Driver stops the opmode running.
- */
     public void encoderDrive(double speed,
                              double leftInches, double rightInches,
                              double timeoutS) {
@@ -779,22 +491,6 @@ public class InvadersRelicRecoveryBot
          */
         int cameraMonitorViewId = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-
-        // OR...  Do Not Activate the Camera Monitor View, to save power
-        // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
-
-        /*
-         * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
-         * 'parameters.vuforiaLicenseKey' is initialized is for illustration only, and will not function.
-         * A Vuforia 'Development' license key, can be obtained free of charge from the Vuforia developer
-         * web site at https://developer.vuforia.com/license-manager.
-         *
-         * Vuforia license keys are always 380 characters long, and look as if they contain mostly
-         * random data. As an example, here is a example of a fragment of a valid key:
-         *      ... yIgIzTqZ4mWjk9wd3cZO9T1axEqzuhxoGlfOOI2dRzKS4T0hQ8kT ...
-         * Once you've obtained a license key, copy the string from the Vuforia web site
-         * and paste it in to your code on the next line, between the double quotes.
-         */
         parameters.vuforiaLicenseKey = "AeLUXiL/////AAAAGYerUEv7r0F7nofgcRK24JQpfTb4xU+veUOD5pc/T5znab3eZ685JtMtKTR9fDT7en0PyNfozvli09GISBHVm7J/k6go7TmM9d4Shx7gjAFpPI0d/56kfPA8g7PtWdubIEMN66TY6iQKPN4sQBJXv6pNa+w2ThxOrTJwn4dvo5rgBG9HGm+WyD/ZwMo/f6dKgG20pvukjc2+dtbrUsPKAuE6MChQ2xPRISjtvfQ18Ajg6Gcy6A4c0zXLMehjewwhNRTxL4eYYAAUZzboVhA/o/Peh5/5LZIT9le1hlBBoT7WhzwAtAO54CFV0M80TYO66pOdTZqAsAYtvUUgmU3ZANb5/0PRK9346UZu4Ty1uhgU";
 
         /*
