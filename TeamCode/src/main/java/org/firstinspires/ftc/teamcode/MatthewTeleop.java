@@ -117,7 +117,7 @@ public class MatthewTeleop extends OpMode
 
         //This is where we figure out if we should switch the direction of the controls or not.
         //This initial if statement keeps us from suddenly reversing when the arm passes 180. The direction change only takes effect once the driver has stopped moving the robot.
-        if (gamepad1.left_stick_y == 0) {
+        //@ TODO: 11/5/2017 Figure out how to make it so that the controls don't change unless we are stopped. This will be tricky because of the way this loop works.
             if (armPos < 180) {
                 leftPower = Range.clip(drive - turn, -1.0, 1.0);
                 rightPower = Range.clip(drive + turn, -1.0, 1.0);
@@ -129,7 +129,7 @@ public class MatthewTeleop extends OpMode
                 robot.leftDrive.setPower(-leftPower);
                 robot.rightDrive.setPower(-rightPower);
             }
-        }
+
 
         robot.liftMotor.setPower(gamepad1.left_trigger);
         robot.liftMotor.setPower(-gamepad1.right_trigger);
