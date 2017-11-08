@@ -109,14 +109,22 @@ public class InvadersRelicRecoveryBot
     public TouchSensor touchSensor = null;
 
 //FUNCTIONS
-    public boolean isJewelRed(){
+    public boolean isRightJewelRed(){
         ///@todo Add Color Sensing here when we create the color sensor
         return false;
     }
-    public boolean isJewelBlue(){
+    public boolean isRightJewelBlue(){
+        ///@todo Add Color Sensing here when we create the color sensor
+        return false;
+    }public boolean isLeftJewelRed(){
+    ///@todo Add Color Sensing here when we create the color sensor
+    return false;
+}
+    public boolean isLeftJewelBlue(){
         ///@todo Add Color Sensing here when we create the color sensor
         return false;
     }
+
 
     /**
      * GyroTurn function allows our robot to do make precise +/- degrees turns using the gyro sensor
