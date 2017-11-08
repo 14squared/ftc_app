@@ -90,7 +90,7 @@ public class InvadersRelicRecoveryBot
     public DcMotor rightDrive  = null;
     public Servo leftGrab = null;
     public Servo rightGrab = null;
-    public Servo jewelPush = null;
+    //public Servo jewelPush = null;
     public DcMotor liftMotor = null;
 
 
@@ -521,7 +521,7 @@ public class InvadersRelicRecoveryBot
         rightDrive = hwMap.get(DcMotor.class, "rightDrive");
         leftGrab = hwMap.get(Servo.class, "leftGrab");
         rightGrab = hwMap.get(Servo.class, "rightGrab");
-        jewelPush = hwMap.get(Servo.class, "jewelPush");
+        //jewelPush = hwMap.get(Servo.class, "jewelPush");
         liftMotor = hwMap.get(DcMotor.class, "liftMotor");
 
 
@@ -772,7 +772,7 @@ public class InvadersRelicRecoveryBot
         }
     }
 
-    public RelicRecoveryVuMark GetVuforiaTargets(boolean UseFrontCam){
+    public RelicRecoveryVuMark getVuforiaTargets(boolean UseFrontCam){
         VuforiaLocalizer vuforia;
         /*
          * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
@@ -857,5 +857,39 @@ public class InvadersRelicRecoveryBot
         telemetry.update();
         return vuMark;
 
+    }
+    enum TurnDirection {Left, Right}
+
+    //Move in a straight line forward or backwards
+    //speed is positive for forward, negative for backwards
+    //speed can be between -1.0 and 1.0
+    void moveStraight(double speed){
+        leftDrive.setPower(speed);
+        rightDrive.setPower(speed);
+    }
+
+    private void tankTurn(double speed, TurnDirection direction){
+        if (direction == TurnDirection.Left){
+            leftDrive.setPower(-speed);
+            rightDrive.setPower(speed);
+        } else {
+            leftDrive.setPower(speed);
+            rightDrive.setPower(-speed);
+        }
+    }
+
+    private void forwardTurn(double speed, TurnDirection direction){
+        if (direction == TurnDirection.Left){
+            leftDrive.setPower(speed/2);
+            rightDrive.setPower(speed);
+        } else {
+            leftDrive.setPower(speed);
+            rightDrive.setPower(speed/2);
+        }
+    }
+
+    private void stopMotors(){
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
     }
 }

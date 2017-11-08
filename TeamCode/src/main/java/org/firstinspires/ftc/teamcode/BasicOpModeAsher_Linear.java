@@ -36,6 +36,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -74,61 +76,18 @@ public class BasicOpModeAsher_Linear extends LinearOpMode {
     private InvadersRelicRecoveryBot homeCode = null;
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
 
-    enum TurnDirection {Left, Right}
 
-    //Move in a straight line forward or backwards
-    //speed is positive for forward, negative for backwards
-    //speed can be between -1.0 and 1.0
-    private void moveStraight(double speed){
-        leftDrive.setPower(speed);
-        rightDrive.setPower(speed);
-    }
 
-    private void tankTurn(double speed, TurnDirection direction){
-        if (direction == TurnDirection.Left){
-            leftDrive.setPower(-speed);
-            rightDrive.setPower(speed);
-        } else {
-            leftDrive.setPower(speed);
-            rightDrive.setPower(-speed);
-        }
-    }
-
-    private void forwardTurn(double speed, TurnDirection direction){
-        if (direction == TurnDirection.Left){
-            leftDrive.setPower(speed/2);
-            rightDrive.setPower(speed);
-        } else {
-            leftDrive.setPower(speed);
-            rightDrive.setPower(speed/2);
-        }
-    }
-
-    private void stopMotors(){
-        leftDrive.setPower(0);
-        rightDrive.setPower(0);
-    }
 
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
+        // Initialize the hardware variables.
         homeCode = new InvadersRelicRecoveryBot( );
-
-        leftDrive  = hardwareMap.get(DcMotor.class, "m2");
-        rightDrive = hardwareMap.get(DcMotor.class, "m1");
-
-        // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        homeCode.init(this);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -140,12 +99,31 @@ public class BasicOpModeAsher_Linear extends LinearOpMode {
             runtime.reset();
             // Send calculated power to wheels
             boolean e = true;
+            RelicRecoveryVuMark vuMark = homeCode.getVuforiaTargets(false);
+            if(vuMark == RelicRecoveryVuMark.LEFT)
+            {
+                //Drive to the left
+                homeCode.setDriveTrainPower(0.5);
+            }else if(vuMark == RelicRecoveryVuMark.RIGHT)
+            {
+                homeCode.setDriveTrainPower(0.3);
 
+            }else if(vuMark == RelicRecoveryVuMark.CENTER){
+                //Criss Cross Criss Cross
+                homeCode.setDriveTrainPower(0.2);
+            }else{
+                //Everybody clap your hands
+                homeCode.setDriveTrainPower(0.1);
+            }
             while(runtime.time() < 3) {
+
+
+
                 if (e) {
-                    moveStraight(.5);
+
+                    homeCode.moveStraight(.5);
                 } else {
-                    moveStraight(.1);
+                    homeCode.moveStraight(.1);
                 }
 
             }
@@ -157,7 +135,6 @@ public class BasicOpModeAsher_Linear extends LinearOpMode {
             telemetry.update();
         }
 
-        leftDrive.setPower(0);
-        rightDrive.setPower(0);
+
     }
 }

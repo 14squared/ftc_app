@@ -126,7 +126,7 @@ public class BasicOpModeAsher_Iterative extends OpMode
         //rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
-         leftPower  = -gamepad1.left_stick_y ;
+        leftPower  = -gamepad1.left_stick_y ;
          rightPower = -gamepad1.right_stick_y ;
         JewelPushPowerUp = -gamepad1.right_stick_x;
 
