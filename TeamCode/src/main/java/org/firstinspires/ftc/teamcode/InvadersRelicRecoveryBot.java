@@ -90,12 +90,9 @@ public class InvadersRelicRecoveryBot
     public DcMotor rightDrive  = null;
     public Servo leftGrab = null;
     public Servo rightGrab = null;
-    //public Servo jewelPush = null;
+    //public Servo jewelPushLeft = null;
+    //public Servo jewelPushRight = null;
     public DcMotor liftMotor = null;
-
-
-    public Servo   beaconLeft  = null;
-    public Servo   beaconRight  = null;
 
     public ModernRoboticsI2cRangeSensor UDSLeft = null;   // Default I2C Address: 0x26
     public ModernRoboticsI2cRangeSensor UDSRight = null;  // Default I2C Address: 0x28
@@ -115,15 +112,6 @@ public class InvadersRelicRecoveryBot
     public TouchSensor touchSensor = null;
 
 //FUNCTIONS
-
-    /**
-     * GyroTurn function allows our robot to do make precise +/- degrees turns using the gyro sensor
-     //* @param speed currently unused.
-     //* @param degrees indicates the number of degrees to turn left or right.  Positive numbers
-     *                will turn the robot right the specified degrees, negative numbers will turn the
-     *                robot left the specified number of degrees.
-     *
-     */
     public boolean isJewelRed(){
         ///@todo Add Color Sensing here when we create the color sensor
         return false;
@@ -133,6 +121,14 @@ public class InvadersRelicRecoveryBot
         return false;
     }
 
+    /**
+     * GyroTurn function allows our robot to do make precise +/- degrees turns using the gyro sensor
+     //* @param speed currently unused.
+     //* @param degrees indicates the number of degrees to turn left or right.  Positive numbers
+     *                will turn the robot right the specified degrees, negative numbers will turn the
+     *                robot left the specified number of degrees.
+     *
+     */
     public void GyroTurn(double speed, double degrees,int timeoutMs) {
         simpleGyroTurn(speed,degrees,timeoutMs);
     }
@@ -324,14 +320,6 @@ public class InvadersRelicRecoveryBot
         return (beaconSensorRight.red() >= 5);
     }
 
-    /*public void stop()
-    {
-        setCapBallMotorPower(0, CapBallState.OFF);
-        setSweeperPower(0, SweeperDirection.IN);
-        setLauncherState(LauncherState.OFF);
-        setDriveTrainPower(0);
-    }*/
-
     public void turnToAbsoluteHeading(double speed, double absoluteHeading, int timeoutMs) {
         simpleGyroTurn(speed,absoluteHeading-gyro.getIntegratedZValue(),timeoutMs);
     }
@@ -521,22 +509,16 @@ public class InvadersRelicRecoveryBot
         rightDrive = hwMap.get(DcMotor.class, "rightDrive");
         leftGrab = hwMap.get(Servo.class, "leftGrab");
         rightGrab = hwMap.get(Servo.class, "rightGrab");
-        //jewelPush = hwMap.get(Servo.class, "jewelPush");
+        //jewelPushLeft = hwMap.get(Servo.class, "jewelPushLeft");
+        //jewelPushRight = hwMap.get(Servo.class, "jewelPushRight");
         liftMotor = hwMap.get(DcMotor.class, "liftMotor");
-
 
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
-        //rightBallLauncher.setDirection(DcMotor.Direction.FORWARD);
-        //leftBallLauncher.setDirection(DcMotor.Direction.REVERSE);
-        //capBall.setDirection(DcMotorSimple.Direction.REVERSE);
-        //sweeper.setDirection(DcMotorSimple.Direction.FORWARD);
 
         // Set all motors to zero power
         setDriveTrainPower(0);
-        setCapBallMotorPower(0, CapBallState.UP);
-        /*setSweeperPower(0, SweeperDirection.IN);
-        setLauncherState(LauncherState.OFF);*/
+        liftMotor.setPower(0);
 
         // Set all non-driving motors to run without encoders.
         leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -544,16 +526,9 @@ public class InvadersRelicRecoveryBot
         leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        //rightBallLauncher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //leftBallLauncher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //capBall.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //sweeper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
         // Define installed servos
-        beaconLeft = hwMap.servo.get("beaconLeft");
-        beaconRight = hwMap.servo.get("beaconRight");
-        //ballElevator = hwMap.crservo.get("BallElevator");
-        //ballElevator.setPower(0.0);
+        //jewelPushLeft = hwMap.servo.get("jewelPushLeft");
+        //jewelPushRight = hwMap.servo.get("jewelPushRight");
 
         // Define our sensors
         touchSensor = hwMap.touchSensor.get("downLimit");
@@ -609,95 +584,8 @@ public class InvadersRelicRecoveryBot
         period.reset();
     }
 
-//Cold pizza normally.
-    public enum CapBallState {
-        UP,
-        DOWN,
-        OFF
-    }
-
-    public void setCapBallMotorPower(double power, CapBallState state)
-    {
-        // Early return if our config doesn't have a CapBall
-        //if(capBall == null) return;
-
-        /*switch(state) {
-            case UP:
-                capBall.setPower(Math.abs(power));
-                break;
-            case DOWN:
-                capBall.setPower(-Math.abs(power));
-                break;
-            case OFF:
-                capBall.setPower(0);
-                break;
-        }
-    }
-    */
-
-    /*public enum BallElevatorState {
-        UP,
-        DOWN,
-        OFF
-    }*/
-
-    /*public void setBallElevator(double power, BallElevatorState state)
-    {
-        // Early return if we don't have a ball elevator
-        if(ballElevator == null) return;
-
-        //@todo Write to a file what we're about to do to the motor here
-        switch(state) {
-            case UP:
-                // Set positive value regardless of power positive/negative
-                ballElevator.setPower(-Math.abs(power));
-                break;
-            case DOWN:
-                // Set negative value regardless of power positive/negative
-                ballElevator.setPower(Math.abs(power));
-                break;
-            case OFF:
-                ballElevator.setPower(0);
-                break;
-        }
-    }*/
-
-    //public enum LauncherState {
-      //  ON,
-        //OFF
-    }
-
-    //public void setLauncherState(LauncherState onOrOff){
-        double power = 0; // Initialize power to OFF condition
-        // If the onOrOff parameter equals ON, then set the power
-      //  if(onOrOff == LauncherState.ON)
-        {
-            // Launchers are always at full power
-            power = -1;
-        }
-        //if(rightBallLauncher != null) rightBallLauncher.setPower(power);
-        //if(leftBallLauncher != null) leftBallLauncher.setPower(power);
-    //}
-
-    //public enum SweeperDirection {
-        //IN,
-      //  OUT
-    //}
-
-    /*public void setSweeperPower(float power, SweeperDirection direction) {
-        if(sweeper != null) {
-            if(direction == SweeperDirection.IN) {
-                sweeper.setPower(-Math.abs(power));
-            }
-            else {
-                sweeper.setPower(Math.abs(power));
-            }
-        }
-    }*/
-
-
     /*
- *  Method to perfmorm a relative move, based on encoder counts.
+ *  Method to perform a relative move, based on encoder counts.
  *  Encoders are not reset as the move is based on the current position.
  *  Move will stop if any of three conditions occur:
  *  1) Move gets to the desired position
