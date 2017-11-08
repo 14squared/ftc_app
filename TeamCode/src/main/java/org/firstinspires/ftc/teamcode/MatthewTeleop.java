@@ -104,8 +104,8 @@ public class MatthewTeleop extends OpMode
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
-        double drive = -gamepad1.left_stick_y;
-        double turn  =  -gamepad1.right_stick_x;
+        double drive = gamepad1.left_stick_y;
+        double turn  =  gamepad1.right_stick_x;
 
 
         armPos = robot.liftMotor.getCurrentPosition();
@@ -131,24 +131,21 @@ public class MatthewTeleop extends OpMode
             }
 
 
-        if(gamepad1.left_trigger > 0.1){
-                robot.liftMotor.setPower(1);
+        robot.liftMotor.setPower(gamepad1.left_trigger);
+        robot.liftMotor.setPower(-gamepad1.right_trigger);
+        if (gamepad1.left_bumper == true){
+            robot.leftGrab.setPosition(1);
         }
-        if(gamepad1.left_bumper = true){
-            robot.liftMotor.setPower(-1);
-        }
-
-        if (gamepad1.right_trigger > 0){
-            robot.leftGrab.setPosition(0.6);
-            robot.rightGrab.setPosition(0.4);
-        }
-
-
-        if(gamepad1.right_bumper == true){
-            robot.rightGrab.setPosition(1);
+        else {
             robot.leftGrab.setPosition(0);
         }
 
+        if(gamepad1.right_bumper == true){
+            robot.rightGrab.setPosition(1);
+        }
+        else {
+            robot.rightGrab.setPosition(0);
+        }
 
         //robot.leftGrab.setPosition(gamepad1.left_trigger);
         //robot.rightGrab.setPosition(gamepad1.right_trigger);
