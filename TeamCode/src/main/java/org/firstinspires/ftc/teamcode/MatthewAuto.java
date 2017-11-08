@@ -87,7 +87,7 @@ public class MatthewAuto extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        RelicRecoveryVuMark seenVuMarks = robot.GetVuforiaTargets(false);
+        RelicRecoveryVuMark seenVuMarks = robot.getVuforiaTargets(false);
 
         switch (seenVuMarks) {
             case LEFT:
