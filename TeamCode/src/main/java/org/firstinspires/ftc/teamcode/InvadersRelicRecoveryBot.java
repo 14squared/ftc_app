@@ -4,10 +4,8 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -17,7 +15,6 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
@@ -90,17 +87,17 @@ public class InvadersRelicRecoveryBot
     public DcMotor rightDrive  = null;
     public Servo leftGrab = null;
     public Servo rightGrab = null;
-    //public Servo jewelPushLeft = null;
-    //public Servo jewelPushRight = null;
+    public Servo jewelPushLeft = null;
+    public Servo jewelPushRight = null;
     public DcMotor liftMotor = null;
 
     public ModernRoboticsI2cRangeSensor UDSLeft = null;   // Default I2C Address: 0x26
     public ModernRoboticsI2cRangeSensor UDSRight = null;  // Default I2C Address: 0x28
 
-    public ColorSensor beaconSensorLeft = null;
+    public ColorSensor jewelSensorLeft = null;
     public FtcI2cDeviceState beaconSensorLeftState;
 
-    public ColorSensor beaconSensorRight = null;
+    public ColorSensor jewelSensorRight = null;
     public FtcI2cDeviceState beaconSensorRightState;
 
     public ColorSensor floorSensor = null;
@@ -305,19 +302,19 @@ public class InvadersRelicRecoveryBot
 //    }
 
     public boolean doIseeBlueLeft () {
-        return (beaconSensorLeft.blue() >= 5);
+        return (jewelSensorLeft.blue() >= 5);
     }
 
     public boolean doIseeRedLeft () {
-        return (beaconSensorLeft.red() >= 5);
+        return (jewelSensorLeft.red() >= 5);
     }
 
     public boolean doIseeBlueRight () {
-        return (beaconSensorRight.blue() >= 5);
+        return (jewelSensorRight.blue() >= 5);
     }
 
     public boolean doIseeRedRight () {
-        return (beaconSensorRight.red() >= 5);
+        return (jewelSensorRight.red() >= 5);
     }
 
     public void turnToAbsoluteHeading(double speed, double absoluteHeading, int timeoutMs) {
@@ -527,26 +524,26 @@ public class InvadersRelicRecoveryBot
         rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Define installed servos
-        //jewelPushLeft = hwMap.servo.get("jewelPushLeft");
-        //jewelPushRight = hwMap.servo.get("jewelPushRight");
+        jewelPushLeft = hwMap.servo.get("jewelPushLeft");
+        jewelPushRight = hwMap.servo.get("jewelPushRight");
 
         // Define our sensors
         touchSensor = hwMap.touchSensor.get("downLimit");
         UDSLeft = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSLeft");
         UDSRight = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSRight");
-        beaconSensorLeft = hwMap.colorSensor.get("beaconSensorLeft");
-        beaconSensorRight = hwMap.colorSensor.get("beaconSensorRight");
+        jewelSensorLeft = hwMap.colorSensor.get("jewelSensorLeft");
+        jewelSensorRight = hwMap.colorSensor.get("jewelSensorRight");
         floorSensor = hwMap.colorSensor.get("floorSensor");
 
         // Custom I2C Addresses Go Here!
         ///@todo Need to validate that UDSLeft.setI2cAddress is working with new SDK.  Hasn't been tested since VelocityVortex championship
         UDSLeft.setI2cAddress(I2cAddr.create8bit(0x26));
         floorSensor.setI2cAddress(I2cAddr.create8bit(0x3A));
-        beaconSensorRight.setI2cAddress(I2cAddr.create8bit(0x36));
+        jewelSensorRight.setI2cAddress(I2cAddr.create8bit(0x36));
 
         // Initialize Color Sensor LEDs to off
-        beaconSensorLeft.enableLed(false);
-        beaconSensorRight.enableLed(false);
+        jewelSensorLeft.enableLed(false);
+        jewelSensorRight.enableLed(false);
         floorSensor.enableLed(false);
 
         gyro = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("gyroSensor");

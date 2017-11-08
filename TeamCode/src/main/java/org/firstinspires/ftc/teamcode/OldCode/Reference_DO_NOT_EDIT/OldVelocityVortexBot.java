@@ -685,8 +685,8 @@ public class OldVelocityVortexBot
         touchSensor = hwMap.touchSensor.get("downLimit");
         UDSLeft = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSLeft");
         UDSRight = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSRight");
-        beaconSensorLeft = hwMap.colorSensor.get("beaconSensorLeft");
-        beaconSensorRight = hwMap.colorSensor.get("beaconSensorRight");
+        beaconSensorLeft = hwMap.colorSensor.get("jewelSensorLeft");
+        beaconSensorRight = hwMap.colorSensor.get("jewelSensorRight");
         floorSensor = hwMap.colorSensor.get("floorSensor");
 
         // Custom I2C Addresses Go Here!
