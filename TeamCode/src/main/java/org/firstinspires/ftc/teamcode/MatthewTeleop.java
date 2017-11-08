@@ -53,7 +53,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="Matthew Iterative OpMode", group="Iterative Opmode")
 //@Disabled
-public class BasicIterativeOpmodeMatthew extends OpMode
+public class MatthewTeleop extends OpMode
 {
     // Declare OpMode members.
     InvadersRelicRecoveryBot robot = new InvadersRelicRecoveryBot();
@@ -65,10 +65,11 @@ public class BasicIterativeOpmodeMatthew extends OpMode
      */
     @Override
     public void init() {
+        robot.init(this);
         telemetry.addData("Status", "Initialized");
-        robot.leftGrab.setDirection(Servo.Direction.FORWARD);
-        robot.rightGrab.setDirection(Servo.Direction.REVERSE);
-        telemetry.addData("Status", "Initialized");
+        //robot.leftGrab.setDirection(Servo.Direction.FORWARD);
+        //robot.rightGrab.setDirection(Servo.Direction.REVERSE);
+
 
     }
 
@@ -95,33 +96,63 @@ public class BasicIterativeOpmodeMatthew extends OpMode
         // Setup a variable for each drive wheel to save power level for telemetry
         double leftPower;
         double rightPower;
-        
+        double armPower;
+        double armPos;
 
         // Choose to drive using either Tank Mode, or POV Mode
         // Comment out the method that's not used.  The default below is POV.
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
-        double drive = -gamepad1.left_stick_y;
+        double drive = gamepad1.left_stick_y;
         double turn  =  gamepad1.right_stick_x;
-        leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-        rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
+
+
+        armPos = robot.liftMotor.getCurrentPosition();
 
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
         // leftPower  = -gamepad1.left_stick_y ;
         // rightPower = -gamepad1.right_stick_y ;
 
-        // Send calculated power to wheels
-        robot.leftDrive.setPower(leftPower);
-        robot.rightDrive.setPower(rightPower);
+        //This is where we figure out if we should switch the direction of the controls or not.
+        //This initial if statement keeps us from suddenly reversing when the arm passes 180. The direction change only takes effect once the driver has stopped moving the robot.
+        //@ TODO: 11/5/2017 Figure out how to make it so that the controls don't change unless we are stopped. This will be tricky because of the way this loop works.
+            if (armPos < 180) {
+                leftPower = Range.clip(drive - turn, -1.0, 1.0);
+                rightPower = Range.clip(drive + turn, -1.0, 1.0);
+                robot.leftDrive.setPower(leftPower);
+                robot.rightDrive.setPower(rightPower);
+            } else {
+                leftPower = Range.clip(drive + turn, -1.0, 1.0);
+                rightPower = Range.clip(drive - turn, -1.0, 1.0);
+                robot.leftDrive.setPower(-leftPower);
+                robot.rightDrive.setPower(-rightPower);
+            }
 
-        robot.leftGrab.setPosition(gamepad1.left_trigger);
-        robot.rightGrab.setPosition(gamepad1.right_trigger);
+
+        robot.liftMotor.setPower(gamepad1.left_trigger);
+        robot.liftMotor.setPower(-gamepad1.right_trigger);
+        if (gamepad1.left_bumper == true){
+            robot.leftGrab.setPosition(1);
+        }
+        else {
+            robot.leftGrab.setPosition(0);
+        }
+
+        if(gamepad1.right_bumper == true){
+            robot.rightGrab.setPosition(1);
+        }
+        else {
+            robot.rightGrab.setPosition(0);
+        }
+
+        //robot.leftGrab.setPosition(gamepad1.left_trigger);
+        //robot.rightGrab.setPosition(gamepad1.right_trigger);
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+        //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
     }
 
     /*
