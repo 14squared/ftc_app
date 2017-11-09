@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -595,7 +594,7 @@ public class InvadersRelicRecoveryBot
                 //floorSensor = hwMap.colorSensor.get("floorSensor");
                 //gyro = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("gyroSensor");
 
-        if(leftDrive != null) leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        if(leftDrive != null) leftDrive.setDirection(DcMotor.Direction.REVERSE);
         if(rightDrive != null) rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
         // Set all motors to zero power
