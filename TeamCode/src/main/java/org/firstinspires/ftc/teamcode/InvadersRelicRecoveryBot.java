@@ -111,10 +111,23 @@ public class InvadersRelicRecoveryBot
 //FUNCTIONS
     public boolean isRightJewelRed(){
         ///@todo Add Color Sensing here when we create the color sensor
-        return false;
+        boolean jewelColorRed = false;
+        if(jewelSensorRight.red() > 200)
+        {
+
+            jewelColorRed = true;
+            //Move robot arm right
+        }
+        return jewelColorRed;
     }
+
+
     public boolean isRightJewelBlue(){
         ///@todo Add Color Sensing here when we create the color sensor
+        boolean jewelColorBlue = false;
+    if(jewelSensorRight.blue() > 200){
+        jewelColorBlue = true;
+    }
         return false;
     }public boolean isLeftJewelRed(){
     ///@todo Add Color Sensing here when we create the color sensor
