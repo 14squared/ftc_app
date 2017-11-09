@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -136,6 +137,27 @@ public class InvadersRelicRecoveryBot
     public boolean isLeftJewelBlue(){
         ///@todo Add Color Sensing here when we create the color sensor
         return false;
+    }
+
+    public enum JewelPush {Left, Right}
+
+    public void setJewelArmPosition(double servoPosition, JewelPush robotSide)
+    {
+        telemetry.addData(
+                "setJewelArmPosition",
+                "pos: %.02f, side: %s",
+                servoPosition,
+                robotSide == JewelPush.Right ? "RIGHT" : "LEFT");
+        if(robotSide == JewelPush.Left)
+        {
+            //Sets left jewel arm position
+            jewelPushLeft.setPosition(servoPosition);
+        }
+        else
+        {
+            //Set right jewel arm position
+            jewelPushRight.setPosition(servoPosition);
+        }
     }
 
 
@@ -380,10 +402,10 @@ public class InvadersRelicRecoveryBot
         setDriveTrainPower(0);
     }
 
-    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
-    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+    static double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
+    static double     DRIVE_GEAR_REDUCTION    = 1.0;      // This is < 1.0 if geared UP
+    static double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
+    static double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
     static final double     P_TURN_COEFF            = 0.1;     // Larger is more responsive, but also less stable
@@ -521,60 +543,126 @@ public class InvadersRelicRecoveryBot
         // Save reference to the active OpMode
         this.activeOpMode = activeOpMode;
 
+        try {
+            // Define and Initialize Drive Motors
+            leftDrive = hwMap.get(DcMotor.class, "leftDrive");
+            rightDrive = hwMap.get(DcMotor.class, "rightDrive");
 
-        // Define and Initialize Motors
-        leftDrive = hwMap.get(DcMotor.class, "leftDrive");
-        rightDrive = hwMap.get(DcMotor.class, "rightDrive");
-        leftGrab = hwMap.get(Servo.class, "leftGrab");
-        rightGrab = hwMap.get(Servo.class, "rightGrab");
-        //jewelPushLeft = hwMap.get(Servo.class, "jewelPushLeft");
-        //jewelPushRight = hwMap.get(Servo.class, "jewelPushRight");
-        liftMotor = hwMap.get(DcMotor.class, "liftMotor");
+            telemetry.addData("Gear Reduction (L)", "%.02f", leftDrive.getMotorType().getGearing());
+            telemetry.addData("Encoder PPR (L)", "%.02f", leftDrive.getMotorType().getTicksPerRev());
 
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+            telemetry.addData("Gear Reduction (R)", "%.02f", rightDrive.getMotorType().getGearing());
+            telemetry.addData("Encoder PPR (R)", "%.02f", rightDrive.getMotorType().getTicksPerRev());
+
+            COUNTS_PER_MOTOR_REV = leftDrive.getMotorType().getTicksPerRev();
+            DRIVE_GEAR_REDUCTION = leftDrive.getMotorType().getGearing();
+            COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
+        }
+        catch (IllegalArgumentException e)
+        {
+            // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
+            // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
+            telemetry.addData("'leftDrive' or 'rightDrive' not defined in config", e);
+        }
+
+        try {
+            liftMotor = hwMap.get(DcMotor.class, "liftMotor");
+        }
+        catch (IllegalArgumentException e)
+        {
+            // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
+            // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
+            telemetry.addData("'liftMotor' not defined in config", e);
+        }
+
+        try {
+            // Define installed servos
+            leftGrab = hwMap.get(Servo.class, "leftGrab");
+            rightGrab = hwMap.get(Servo.class, "rightGrab");
+        }
+        catch (IllegalArgumentException e)
+        {
+            // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
+            // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
+            telemetry.addData("'leftGrab' or 'rightGrab' not defined in config", e);
+        }
+
+        try {
+            jewelPushLeft = hwMap.get(Servo.class, "jewelPushLeft");
+            jewelPushRight = hwMap.get(Servo.class, "jewelPushRight");
+        }
+        catch (IllegalArgumentException e)
+        {
+            // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
+            // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
+            telemetry.addData("'jewelPushLeft' or 'jewelPushRight' not defined in config'", e);
+        }
+
+        try {
+            // Define our sensors
+            jewelSensorLeft = hwMap.colorSensor.get("jewelSensorLeft");
+            jewelSensorRight = hwMap.colorSensor.get("jewelSensorRight");
+        }
+        catch (IllegalArgumentException e)
+        {
+            // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
+            // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
+            telemetry.addData("'jewelSensorLeft' or 'jewelSensorRight' not defined in config", e);
+        }
+
+            // These sensors are leftovers from the VelocityVortex game - we may add these kinds
+            // of sensors to our RelicRecovery bot in the future.  Leaving for reference.
+                //touchSensor = hwMap.touchSensor.get("downLimit");
+                //UDSLeft = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSLeft");
+                //UDSRight = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSRight");
+                //floorSensor = hwMap.colorSensor.get("floorSensor");
+                //gyro = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("gyroSensor");
+
+        if(leftDrive != null) leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        if(rightDrive != null) rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         // Set all motors to zero power
         setDriveTrainPower(0);
-        liftMotor.setPower(0);
+        if(liftMotor != null)
+        {
+            liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            liftMotor.setPower(0);
+        }
 
         // Set all non-driving motors to run without encoders.
-        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        if(leftDrive != null) {
+            leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }
 
-        // Define installed servos
-        jewelPushLeft = hwMap.servo.get("jewelPushLeft");
-        jewelPushRight = hwMap.servo.get("jewelPushRight");
-
-        // Define our sensors
-        touchSensor = hwMap.touchSensor.get("downLimit");
-        UDSLeft = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSLeft");
-        UDSRight = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSRight");
-        jewelSensorLeft = hwMap.colorSensor.get("jewelSensorLeft");
-        jewelSensorRight = hwMap.colorSensor.get("jewelSensorRight");
-        floorSensor = hwMap.colorSensor.get("floorSensor");
+        if(rightDrive != null) {
+            rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }
 
         // Custom I2C Addresses Go Here!
         ///@todo Need to validate that UDSLeft.setI2cAddress is working with new SDK.  Hasn't been tested since VelocityVortex championship
-        UDSLeft.setI2cAddress(I2cAddr.create8bit(0x26));
-        floorSensor.setI2cAddress(I2cAddr.create8bit(0x3A));
-        jewelSensorRight.setI2cAddress(I2cAddr.create8bit(0x36));
+        if(UDSLeft != null) UDSLeft.setI2cAddress(I2cAddr.create8bit(0x26));
+        if(floorSensor != null) floorSensor.setI2cAddress(I2cAddr.create8bit(0x3A));
+        if(jewelSensorRight != null) jewelSensorRight.setI2cAddress(I2cAddr.create8bit(0x36));
 
         // Initialize Color Sensor LEDs to off
-        jewelSensorLeft.enableLed(false);
-        jewelSensorRight.enableLed(false);
-        floorSensor.enableLed(false);
+        if(jewelSensorLeft != null) jewelSensorLeft.enableLed(false);
+        if(jewelSensorRight != null) jewelSensorRight.enableLed(false);
+        if(floorSensor != null) floorSensor.enableLed(false);
 
-        gyro = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("gyroSensor");
-        gyro.calibrate();
+        // If we have a gyro on our robot, stop for a moment to calibrate and reset to 0
+        if(gyro != null) {
+            gyro.calibrate();
 
-        // make sure the gyro is calibrated before continuing
-        while (gyro.isCalibrating())  {
-            //sleepMs(50);
+            // make sure the gyro is calibrated before continuing
+            while (gyro.isCalibrating()) {
+                //sleepMs(50);
+            }
+            gyro.resetZAxisIntegrator();
         }
-        gyro.resetZAxisIntegrator();
     }
 
     /***

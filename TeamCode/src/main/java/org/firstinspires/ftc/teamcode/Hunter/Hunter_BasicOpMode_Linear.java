@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;/* Copyright (c) 2017 FIRST. All rights reserved.
+/* Copyright (c) 2017 FIRST. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted (subject to the limitations in the disclaimer below) provided that
@@ -27,108 +27,85 @@ package org.firstinspires.ftc.teamcode;/* Copyright (c) 2017 FIRST. All rights r
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package org.firstinspires.ftc.teamcode.Hunter;
+
 //package org.firstinspires.ftc.robotcontroller.external.samples;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-
+import com.qualcomm.robotcore.util.Range;
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
  * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
  * class is instantiated on the Robot Controller and executed.
- * <p>
+ *
  * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
  * It includes all the skeletal structure that all linear OpModes contain.
- * <p>
+ *
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "Test Autonomous Matthew", group = "Linear Opmode")
+@TeleOp(name="HunterAutoOp", group="Linear Opmode")
 //@Disabled
-/* Spin To Win:
 
-1. Lower Jewel Arm
-2. Read Jewel Color
-3.If blue move arm this way:
+public class Hunter_BasicOpMode_Linear extends LinearOpMode {
 
-  Else if Red move arm that way.
-4. Raise Jewel
-5. Drive to VuMark
-6. Read VuMark
-7. Calculate Cryptobox distance with VuMark = X.
-8. Drive Straight. Distance = X.
-9. Turn to Cryptobox
-10. Put block in
-11. Drive straight into triangle.
-12. Block Enemy Targets
-*/
-public class MatthewAuto extends LinearOpMode {
-    InvadersRelicRecoveryBot robot = new InvadersRelicRecoveryBot();
-
-
-    // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    //private DcMotor robot.leftDrive = null;
-    //private DcMotor robot.rightDrive = null;
-    //InvadersRelicRecoveryBot robot = new InvadersRelicRecoveryBot();
+    private DcMotor leftDrive = null;
+    private DcMotor rightDrive = null;
 
-    private void stopAll() {
-        robot.leftDrive.setPower(0);
-        robot.rightDrive.setPower(0);
+    enum TurnDirection {Left,Right}
+
+    public void moveStraight(double speed) {
+        leftDrive.setPower(speed);
+        rightDrive.setPower(speed);
+    }
+    public void tankTurn(double speed, TurnDirection direction) {
+        if (direction == TurnDirection.Left) {
+            leftDrive.setPower(-speed);
+            rightDrive.setPower(speed);
+        }
+
     }
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
         telemetry.addData("Status", "Initialized");
+        telemetry.update();
 
-        // Initialize the InvadersRelicRecoveryBot hardware variable.
-        robot.init(this);
+        leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
+        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+
+        leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
-        telemetry.update();
-        robot.encoderDrive(0.3, 18, 18, 10);
-     /*   RelicRecoveryVuMark seenVuMarks = robot.getVuforiaTargets(false);
 
-       robot.leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-       robot.rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-       int endposright = robot.rightDrive.getCurrentPosition() + 10000;
-       int endposleft = robot.leftDrive.getCurrentPosition() + 10000;
-       robot.rightDrive.setTargetPosition(endposright);
-       robot.leftDrive.setTargetPosition(endposleft);
-       robot.leftDrive.setPower(0.3);
-       robot.rightDrive.setPower(0.3);
-       robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-       robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        switch (seenVuMarks) {
-            case LEFT:
-
-                break;
-            case RIGHT:
-                break;
-            case CENTER:
-                break;
-            case UNKNOWN:
-                break;
-                }
-                */
-
-
-
-
+        // run until the end of the match (driver presses STOP)
+        while (runtime.time() < 3) {
+            moveStraight(.5);
+            rightDrive.setPower(.8);
+        }
+        while (runtime.time() >= 3); {
+            leftDrive.setPower(0);
+            rightDrive.setPower(0);
+        }
+        while (runtime.time() >= 5) {
+            leftDrive.setPower(5);
+            rightDrive.setPower(.25);
+        }
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("Motors", "left (%.2f), right (%.2f)");
+            telemetry.update();
 
     }
-
 }
-
