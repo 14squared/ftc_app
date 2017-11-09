@@ -88,6 +88,7 @@ public class MatthewAuto extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         RelicRecoveryVuMark seenVuMarks = robot.getVuforiaTargets(false);
+        robot.encoderDrive(0.3, 18, 18, 10);
 
         switch (seenVuMarks) {
             case LEFT:
