@@ -125,6 +125,22 @@ public class InvadersRelicRecoveryBot
         return false;
     }
 
+    public enum JewelPush {Left, Right}
+
+    public void setJewelArmPosition(double servoPosition, JewelPush robotSide)
+    {
+        if(robotSide == JewelPush.Left)
+        {
+            //Sets left jewel arm position
+            jewelPushLeft.setPosition(servoPosition);
+        }
+        else
+        {
+            //Set right jewel arm position
+            jewelPushRight.setPosition(servoPosition);
+        }
+    }
+
 
     /**
      * GyroTurn function allows our robot to do make precise +/- degrees turns using the gyro sensor
