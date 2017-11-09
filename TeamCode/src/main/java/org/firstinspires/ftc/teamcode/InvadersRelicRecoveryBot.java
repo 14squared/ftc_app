@@ -524,60 +524,110 @@ public class InvadersRelicRecoveryBot
         // Save reference to the active OpMode
         this.activeOpMode = activeOpMode;
 
+        try {
+            // Define and Initialize Drive Motors
+            leftDrive = hwMap.get(DcMotor.class, "leftDrive");
+            rightDrive = hwMap.get(DcMotor.class, "rightDrive");
+        }
+        catch (IllegalArgumentException e)
+        {
+            // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
+            // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
+            telemetry.addData("'leftDrive' or 'rightDrive' not defined in config", e);
+        }
 
-        // Define and Initialize Motors
-        leftDrive = hwMap.get(DcMotor.class, "leftDrive");
-        rightDrive = hwMap.get(DcMotor.class, "rightDrive");
-        leftGrab = hwMap.get(Servo.class, "leftGrab");
-        rightGrab = hwMap.get(Servo.class, "rightGrab");
-        //jewelPushLeft = hwMap.get(Servo.class, "jewelPushLeft");
-        //jewelPushRight = hwMap.get(Servo.class, "jewelPushRight");
-        liftMotor = hwMap.get(DcMotor.class, "liftMotor");
+        try {
+            liftMotor = hwMap.get(DcMotor.class, "liftMotor");
+        }
+        catch (IllegalArgumentException e)
+        {
+            // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
+            // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
+            telemetry.addData("'liftMotor' not defined in config", e);
+        }
 
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        try {
+            // Define installed servos
+            leftGrab = hwMap.get(Servo.class, "leftGrab");
+            rightGrab = hwMap.get(Servo.class, "rightGrab");
+        }
+        catch (IllegalArgumentException e)
+        {
+            // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
+            // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
+            telemetry.addData("'leftGrab' or 'rightGrab' not defined in config", e);
+        }
+
+        try {
+            jewelPushLeft = hwMap.get(Servo.class, "jewelPushLeft");
+            jewelPushRight = hwMap.get(Servo.class, "jewelPushRight");
+        }
+        catch (IllegalArgumentException e)
+        {
+            // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
+            // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
+            telemetry.addData("'jewelPushLeft' or 'jewelPushRight' not defined in config'", e);
+        }
+
+        try {
+            // Define our sensors
+            jewelSensorLeft = hwMap.colorSensor.get("jewelSensorLeft");
+            jewelSensorRight = hwMap.colorSensor.get("jewelSensorRight");
+        }
+        catch (IllegalArgumentException e)
+        {
+            // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
+            // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
+            telemetry.addData("'jewelSensorLeft' or 'jewelSensorRight' not defined in config", e);
+        }
+
+            // These sensors are leftovers from the VelocityVortex game - we may add these kinds
+            // of sensors to our RelicRecovery bot in the future.  Leaving for reference.
+                //touchSensor = hwMap.touchSensor.get("downLimit");
+                //UDSLeft = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSLeft");
+                //UDSRight = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSRight");
+                //floorSensor = hwMap.colorSensor.get("floorSensor");
+                //gyro = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("gyroSensor");
+
+        if(leftDrive != null) leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        if(rightDrive != null) rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
         // Set all motors to zero power
         setDriveTrainPower(0);
-        liftMotor.setPower(0);
+        if(liftMotor != null) liftMotor.setPower(0);
 
         // Set all non-driving motors to run without encoders.
-        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        if(leftDrive != null) {
+            leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
 
-        // Define installed servos
-        jewelPushLeft = hwMap.servo.get("jewelPushLeft");
-        jewelPushRight = hwMap.servo.get("jewelPushRight");
-
-        // Define our sensors
-        touchSensor = hwMap.touchSensor.get("downLimit");
-        UDSLeft = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSLeft");
-        UDSRight = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSRight");
-        jewelSensorLeft = hwMap.colorSensor.get("jewelSensorLeft");
-        jewelSensorRight = hwMap.colorSensor.get("jewelSensorRight");
-        floorSensor = hwMap.colorSensor.get("floorSensor");
+        if(rightDrive != null) {
+            rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
 
         // Custom I2C Addresses Go Here!
         ///@todo Need to validate that UDSLeft.setI2cAddress is working with new SDK.  Hasn't been tested since VelocityVortex championship
-        UDSLeft.setI2cAddress(I2cAddr.create8bit(0x26));
-        floorSensor.setI2cAddress(I2cAddr.create8bit(0x3A));
-        jewelSensorRight.setI2cAddress(I2cAddr.create8bit(0x36));
+        if(UDSLeft != null) UDSLeft.setI2cAddress(I2cAddr.create8bit(0x26));
+        if(floorSensor != null) floorSensor.setI2cAddress(I2cAddr.create8bit(0x3A));
+        if(jewelSensorRight != null) jewelSensorRight.setI2cAddress(I2cAddr.create8bit(0x36));
 
         // Initialize Color Sensor LEDs to off
-        jewelSensorLeft.enableLed(false);
-        jewelSensorRight.enableLed(false);
-        floorSensor.enableLed(false);
+        if(jewelSensorLeft != null) jewelSensorLeft.enableLed(false);
+        if(jewelSensorRight != null) jewelSensorRight.enableLed(false);
+        if(floorSensor != null) floorSensor.enableLed(false);
 
-        gyro = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("gyroSensor");
-        gyro.calibrate();
+        // If we have a gyro on our robot, stop for a moment to calibrate and reset to 0
+        if(gyro != null) {
+            gyro.calibrate();
 
-        // make sure the gyro is calibrated before continuing
-        while (gyro.isCalibrating())  {
-            //sleepMs(50);
+            // make sure the gyro is calibrated before continuing
+            while (gyro.isCalibrating()) {
+                //sleepMs(50);
+            }
+            gyro.resetZAxisIntegrator();
         }
-        gyro.resetZAxisIntegrator();
     }
 
     /***
