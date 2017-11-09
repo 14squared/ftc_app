@@ -129,6 +129,11 @@ public class InvadersRelicRecoveryBot
 
     public void setJewelArmPosition(double servoPosition, JewelPush robotSide)
     {
+        telemetry.addData(
+                "setJewelArmPosition",
+                "pos: %.02f, side: %s",
+                servoPosition,
+                robotSide == JewelPush.Right ? "RIGHT" : "LEFT");
         if(robotSide == JewelPush.Left)
         {
             //Sets left jewel arm position
