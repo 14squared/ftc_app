@@ -42,15 +42,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
  * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
  * class is instantiated on the Robot Controller and executed.
- *
+ * <p>
  * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
  * It includes all the skeletal structure that all linear OpModes contain.
- *
+ * <p>
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Test Autonomous Matthew", group="Linear Opmode")
+@TeleOp(name = "Test Autonomous Matthew", group = "Linear Opmode")
 //@Disabled
 /* Spin To Win:
 
@@ -72,6 +72,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 public class MatthewAuto extends LinearOpMode {
     InvadersRelicRecoveryBot robot = new InvadersRelicRecoveryBot();
 
+
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     //private DcMotor robot.leftDrive = null;
@@ -86,9 +87,27 @@ public class MatthewAuto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
+
+        // Initialize the InvadersRelicRecoveryBot hardware variable.
+        robot.init(this);
+
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
+        runtime.reset();
+
         telemetry.update();
         RelicRecoveryVuMark seenVuMarks = robot.getVuforiaTargets(false);
-        robot.encoderDrive(0.3, 18, 18, 10);
+
+       robot.leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+       robot.rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+       int endposright = robot.rightDrive.getCurrentPosition() + 10000;
+       int endposleft = robot.leftDrive.getCurrentPosition() + 10000;
+       robot.rightDrive.setTargetPosition(endposright);
+       robot.leftDrive.setTargetPosition(endposleft);
+       robot.leftDrive.setPower(0.3);
+       robot.rightDrive.setPower(0.3);
+       robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+       robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         switch (seenVuMarks) {
             case LEFT:
