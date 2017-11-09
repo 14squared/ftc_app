@@ -388,10 +388,10 @@ public class InvadersRelicRecoveryBot
         setDriveTrainPower(0);
     }
 
-    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
-    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+    static double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
+    static double     DRIVE_GEAR_REDUCTION    = 1.0;      // This is < 1.0 if geared UP
+    static double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
+    static double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
     static final double     P_TURN_COEFF            = 0.1;     // Larger is more responsive, but also less stable
@@ -533,6 +533,16 @@ public class InvadersRelicRecoveryBot
             // Define and Initialize Drive Motors
             leftDrive = hwMap.get(DcMotor.class, "leftDrive");
             rightDrive = hwMap.get(DcMotor.class, "rightDrive");
+
+            telemetry.addData("Gear Reduction (L)", "%.02f", leftDrive.getMotorType().getGearing());
+            telemetry.addData("Encoder PPR (L)", "%.02f", leftDrive.getMotorType().getTicksPerRev());
+
+            telemetry.addData("Gear Reduction (R)", "%.02f", rightDrive.getMotorType().getGearing());
+            telemetry.addData("Encoder PPR (R)", "%.02f", rightDrive.getMotorType().getTicksPerRev());
+
+            COUNTS_PER_MOTOR_REV = leftDrive.getMotorType().getTicksPerRev();
+            DRIVE_GEAR_REDUCTION = leftDrive.getMotorType().getGearing();
+            COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
         }
         catch (IllegalArgumentException e)
         {
