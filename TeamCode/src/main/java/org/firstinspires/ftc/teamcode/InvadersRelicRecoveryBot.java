@@ -599,17 +599,23 @@ public class InvadersRelicRecoveryBot
 
         // Set all motors to zero power
         setDriveTrainPower(0);
-        if(liftMotor != null) liftMotor.setPower(0);
+        if(liftMotor != null)
+        {
+            liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            liftMotor.setPower(0);
+        }
 
         // Set all non-driving motors to run without encoders.
         if(leftDrive != null) {
             leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
 
         if(rightDrive != null) {
             rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
 
         // Custom I2C Addresses Go Here!
