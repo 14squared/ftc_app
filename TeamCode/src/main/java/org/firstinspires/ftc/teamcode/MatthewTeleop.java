@@ -133,8 +133,8 @@ public class MatthewTeleop extends OpMode
         //@ TODO: 11/5/2017 Figure out how to make it so that the controls don't change unless we are stopped. This will be tricky because of the way this loop works.
             if (armPos < 180) {
                 if(fineMode == true){
-                    leftPower = Range.clip(drive - turn, -0.5, 0.5);
-                    rightPower = Range.clip(drive + turn, -0.5, 0.5);
+                    leftPower = Range.clip(drive - turn, -0.3, 0.3);
+                    rightPower = Range.clip(drive + turn, -0.3, 0.3);
                     robot.leftDrive.setPower(leftPower);
                     robot.rightDrive.setPower(rightPower);
 
