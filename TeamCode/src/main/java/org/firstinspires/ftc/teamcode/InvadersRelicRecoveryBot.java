@@ -4,6 +4,7 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -91,6 +92,8 @@ public class InvadersRelicRecoveryBot
     public Servo jewelPushLeft = null;
     public Servo jewelPushRight = null;
     public DcMotor liftMotor = null;
+    public CRServo CRGripper = null;
+
 
     public ModernRoboticsI2cRangeSensor UDSLeft = null;   // Default I2C Address: 0x26
     public ModernRoboticsI2cRangeSensor UDSRight = null;  // Default I2C Address: 0x28
@@ -556,8 +559,10 @@ public class InvadersRelicRecoveryBot
 
             COUNTS_PER_MOTOR_REV = leftDrive.getMotorType().getTicksPerRev();
             DRIVE_GEAR_REDUCTION = leftDrive.getMotorType().getGearing();
-            COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
+            COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV) / (WHEEL_DIAMETER_INCHES * 3.1415);
         }
+
+
         catch (IllegalArgumentException e)
         {
             // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
@@ -590,6 +595,8 @@ public class InvadersRelicRecoveryBot
         try {
             jewelPushLeft = hwMap.get(Servo.class, "jewelPushLeft");
             jewelPushRight = hwMap.get(Servo.class, "jewelPushRight");
+            CRGripper = hwMap.get(CRServo.class, "CRGripper");
+            CRGripper.setDirection(DcMotorSimple.Direction.FORWARD);
         }
         catch (IllegalArgumentException e)
         {
@@ -618,14 +625,14 @@ public class InvadersRelicRecoveryBot
                 //floorSensor = hwMap.colorSensor.get("floorSensor");
                 //gyro = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("gyroSensor");
 
-        if(leftDrive != null) leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        if(rightDrive != null) rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        if(leftDrive != null) leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        if(rightDrive != null) rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
         // Set all motors to zero power
         setDriveTrainPower(0);
         if(liftMotor != null)
         {
-            liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             liftMotor.setPower(0);
         }
 
@@ -640,6 +647,7 @@ public class InvadersRelicRecoveryBot
             rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         }
 
         // Custom I2C Addresses Go Here!

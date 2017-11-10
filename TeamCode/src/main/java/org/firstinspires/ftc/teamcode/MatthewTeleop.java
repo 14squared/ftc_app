@@ -142,11 +142,11 @@ public class MatthewTeleop extends OpMode
 
             } else {
                 if(fineMode == true){
-                    robot.leftDrive.setPower(-leftPower/2);
-                    robot.rightDrive.setPower(-rightPower/2);
+                    robot.leftDrive.setPower(leftPower/2);
+                    robot.rightDrive.setPower(rightPower/2);
                 } else{
-                    robot.leftDrive.setPower(-leftPower);
-                    robot.rightDrive.setPower(-rightPower);
+                    robot.leftDrive.setPower(leftPower);
+                    robot.rightDrive.setPower(rightPower);
                 }
 
             }
@@ -156,15 +156,16 @@ public class MatthewTeleop extends OpMode
         robot.liftMotor.setPower(-gamepad1.right_trigger);
 
         if (gamepad1.right_bumper){
-            robot.leftGrab.setPosition(0.6);
-            robot.rightGrab.setPosition(0.4);
+           robot.CRGripper.setPower(-1);
+        } else if(gamepad1.left_bumper){
+            robot.CRGripper.setPower(1);
+        }
+        else{
+            robot.CRGripper.setPower(0);
         }
 
 
-        if(gamepad1.left_bumper){
-            robot.rightGrab.setPosition(1);
-            robot.leftGrab.setPosition(0);
-        }
+
 
         //robot.leftGrab.setPosition(gamepad1.left_trigger);
         //robot.rightGrab.setPosition(gamepad1.right_trigger);
