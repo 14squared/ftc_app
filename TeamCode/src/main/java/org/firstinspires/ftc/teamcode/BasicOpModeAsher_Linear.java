@@ -52,25 +52,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Auto Testing 1", group="Linear Opmode")
+@TeleOp(name="AsherBlue1", group="Linear Opmode")
 //@Disabled
-/* Spin To Win:
-
-1. Lower Jewel Arm
-2. Read Jewel Color
-3.If blue move arm this way:
-
-  Else if Red move arm that way.
-4. Raise Jewel
-5. Drive to VuMark
-6. Read VuMark
-7. Calculate Cryptobox distance with VuMark = X.
-8. Drive Straight. Distance = X.
-9. Turn to Cryptobox
-10. Put block in
-11. Drive straight into triangle.
-12. Block Enemy Targets
-*/
 public class BasicOpModeAsher_Linear extends LinearOpMode {
 
     private InvadersRelicRecoveryBot homeCode = null;
@@ -97,9 +80,36 @@ public class BasicOpModeAsher_Linear extends LinearOpMode {
         while (opModeIsActive()) {
 
             runtime.reset();
-            // Send calculated power to wheels
-            boolean e = true;
+
+            /* Spin To Win: */
+            //1. Lower Jewel Arm
+            homeCode.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Left);
+
+            //2. Read Jewel Color
+            boolean iSawRed = homeCode.isLeftJewelRed();
+            boolean iSawBlue = homeCode.isLeftJewelBlue();
+
+            // 3.If Red move arm this way:
+            if(iSawRed)
+            {
+                //@todo this wayodo wiggle the robot
+            }
+            //Else if blue move arm that way.
+            else if(iSawBlue)
+            {
+                //@todo wiggle the robot the other way
+            }
+            //4. Raise Jewel Arm
+            homeCode.setJewelArmPosition(0, InvadersRelicRecoveryBot.JewelPush.Left);
+
+            //   5. Drive to VuMark
+            //@todo Decide whether to drive to the VuMark
+
+            //   6. Read VuMark
             RelicRecoveryVuMark vuMark = homeCode.getVuforiaTargets(false);
+
+            //   7. Calculate Cryptobox distance with VuMark = X.
+            //   8. Drive Straight. Distance = X.
             if(vuMark == RelicRecoveryVuMark.LEFT)
             {
                 //Drive to the left
@@ -115,6 +125,19 @@ public class BasicOpModeAsher_Linear extends LinearOpMode {
                 //Everybody clap your hands
                 homeCode.setDriveTrainPower(0.1);
             }
+
+
+
+
+            //   9. Turn to Cryptobox
+            //   10. Put block in
+            //   11. Drive straight into triangle.
+            //   12. Block Enemy Targets
+
+
+            // Send calculated power to wheels
+            boolean e = true;
+
             while(runtime.time() < 3) {
 
 
