@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -100,7 +101,8 @@ public class MatthewTeleop extends OpMode
         double rightPower;
         double armPower;
         double armPos;
-
+        robot.rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        robot.leftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
 
 
         // Choose to drive using either Tank Mode, or POV Mode
@@ -108,8 +110,8 @@ public class MatthewTeleop extends OpMode
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
-        //double drive = gamepad1.left_stick_y;
-        //double turn  =  gamepad1.right_stick_x;
+        double drive = gamepad1.left_stick_y;
+        double turn  =  gamepad1.right_stick_x;
 
 
         armPos = robot.liftMotor.getCurrentPosition();
@@ -131,12 +133,18 @@ public class MatthewTeleop extends OpMode
         //@ TODO: 11/5/2017 Figure out how to make it so that the controls don't change unless we are stopped. This will be tricky because of the way this loop works.
             if (armPos < 180) {
                 if(fineMode == true){
-                    robot.leftDrive.setPower(leftPower/2);
-                    robot.rightDrive.setPower(rightPower/2);
-                }
-                else{
+                    leftPower = Range.clip(drive - turn, -0.5, 0.5);
+                    rightPower = Range.clip(drive + turn, -0.5, 0.5);
                     robot.leftDrive.setPower(leftPower);
                     robot.rightDrive.setPower(rightPower);
+
+                }
+                else{
+                    leftPower = Range.clip(drive - turn, -1.0, 1.0);
+                    rightPower = Range.clip(drive + turn, -1.0, 1.0);
+                    robot.leftDrive.setPower(leftPower);
+                    robot.rightDrive.setPower(rightPower);
+
                 }
 
 
