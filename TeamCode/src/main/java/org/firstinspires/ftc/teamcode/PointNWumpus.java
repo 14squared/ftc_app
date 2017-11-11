@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 FIRST. All rights reserved.
+package org.firstinspires.ftc.teamcode;/* Copyright (c) 2017 FIRST. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted (subject to the limitations in the disclaimer below) provided that
@@ -27,89 +27,81 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+//package org.firstinspires.ftc.robotcontroller.external.samples;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
+
 
 /**
- * This file contains an example of an iterative (Non-Linear) "OpMode".
- * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
- * The names of OpModes appear on the menu of the FTC Driver Station.
- * When an selection is made from the menu, the corresponding OpMode
+ * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
+ * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
+ * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
  * class is instantiated on the Robot Controller and executed.
- *
+ * <p>
  * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
- * It includes all the skeletal structure that all iterative OpModes contain.
- *
+ * It includes all the skeletal structure that all linear OpModes contain.
+ * <p>
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="ReadTheSensor", group="Iterative Opmode")
+@Autonomous(name = "Point 'N' Wumpus", group = "Linear Opmode")
 //@Disabled
-public class ReadTheColorSensor extends OpMode
-{
-    // Declare OpMode members.
+/* Spin To Win:
+
+1. Lower Jewel Arm
+2. Read Jewel Color
+3.If blue move arm this way:
+
+  Else if Red move arm that way.
+4. Raise Jewel
+5. Drive to VuMark
+6. Read VuMark
+7. Calculate Cryptobox distance with VuMark = X.
+8. Drive Straight. Distance = X.
+9. Turn to Cryptobox
+10. Put block in
+11. Drive straight into triangle.
+12. Block Enemy Targets
+*/
+public class PointNWumpus extends LinearOpMode {
     InvadersRelicRecoveryBot robot = new InvadersRelicRecoveryBot();
+
+
+    // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
+    //private DcMotor robot.leftDrive = null;
+    //private DcMotor robot.rightDrive = null;
+    //InvadersRelicRecoveryBot robot = new InvadersRelicRecoveryBot();
 
+    private void stopAll() {
+        robot.leftDrive.setPower(0);
+        robot.rightDrive.setPower(0);
+    }
 
-    /*
-     * Code to run ONCE when the driver hits INIT
-     */
     @Override
-    public void init() {
-        robot.init(this);
+    public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
-        //robot.leftGrab.setDirection(Servo.Direction.FORWARD);
-        //robot.rightGrab.setDirection(Servo.Direction.REVERSE);
 
+        // Initialize the InvadersRelicRecoveryBot hardware variable.
+        robot.init(this);
 
-
-    }
-
-    /*
-     * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
-     */
-    @Override
-    public void init_loop() {
-    }
-    boolean fineMode = false;
-    /*
-     * Code to run ONCE when the driver hits PLAY
-     */
-    @Override
-    public void start() {
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
         runtime.reset();
-    }
+
+        telemetry.update();
+
+        robot.encoderDrive(0.3, 14.5, 14.5, 20);
 
 
-    /*
-     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
-     */
-    @Override
-    public void loop() {
-    int RedValue = robot.jewelSensorRight.red();
-    int BlueValue = robot.jewelSensorRight.blue();
 
-    telemetry.addData("Right red value", RedValue);
-    telemetry.addData("Right blue value", BlueValue);
-    telemetry.update();
 
-    }
 
-    /*
-     * Code to run ONCE after the driver hits STOP
-     */
-    @Override
-    public void stop() {
+
     }
 
 }
+
