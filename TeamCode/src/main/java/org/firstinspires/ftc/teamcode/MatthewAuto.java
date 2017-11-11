@@ -97,7 +97,13 @@ public class MatthewAuto extends LinearOpMode {
         runtime.reset();
 
         telemetry.update();
-        robot.encoderDrive(0.3, 18, 18, 10);
+
+        robot.encoderDrive(0.3, 18, 18, 20);
+        /*if(doISeeBlue == true){
+            robot.encoderDrive(0.3, -2,-2, 5);
+        } else {
+            robot.encoderDrive(0.1, 0.1, 0.1, 1);
+        }*/
      /*   RelicRecoveryVuMark seenVuMarks = robot.getVuforiaTargets(false);
 
        robot.leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
