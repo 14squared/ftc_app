@@ -32,7 +32,6 @@ package org.firstinspires.ftc.teamcode.Hunter;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -45,7 +44,6 @@ public class Hunter_BasicOpMode_Iterative extends OpMode
     private InvadersRelicRecoveryBot robot = null;
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
-    private DcMotor Arm = null;
     private Servo leftServo = null;
     private Servo rightServo = null;
     /*
@@ -60,13 +58,11 @@ public class Hunter_BasicOpMode_Iterative extends OpMode
 
         leftDrive = hardwareMap.get(DcMotor.class, "leftDrive");
         rightDrive = hardwareMap.get(DcMotor.class, "rightDrive");
-        Arm = hardwareMap.get(DcMotor.class, "Arm");
         leftServo = hardwareMap.get(Servo.class, "leftServo");
         rightServo = hardwareMap.get(Servo.class, "rightServo");
 
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
-        Arm.setDirection(DcMotor.Direction.FORWARD);
         leftServo.setDirection(Servo.Direction.FORWARD);
         rightServo.setDirection(Servo.Direction.REVERSE);
 
