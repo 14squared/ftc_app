@@ -53,7 +53,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="ReadTheSensor", group="Iterative Opmode")
-//@Disabled
+@Disabled
 public class ReadTheColorSensor extends OpMode
 {
     // Declare OpMode members.

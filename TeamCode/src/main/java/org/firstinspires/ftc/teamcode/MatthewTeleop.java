@@ -55,7 +55,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="Matthew Iterative OpMode", group="Iterative Opmode")
-//@Disabled
+@Disabled
 public class MatthewTeleop extends OpMode
 {
     // Declare OpMode members.

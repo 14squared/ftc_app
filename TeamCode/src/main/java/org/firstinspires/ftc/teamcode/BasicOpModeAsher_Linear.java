@@ -53,7 +53,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  */
 
 @TeleOp(name="AsherBlue1", group="Linear Opmode")
-//@Disabled
+@Disabled
 public class BasicOpModeAsher_Linear extends LinearOpMode {
 
     private InvadersRelicRecoveryBot homeCode = null;
