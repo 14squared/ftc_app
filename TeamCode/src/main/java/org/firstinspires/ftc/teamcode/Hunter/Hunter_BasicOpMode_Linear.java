@@ -38,71 +38,43 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-/**
- * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
- * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
- * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
- * class is instantiated on the Robot Controller and executed.
- *
- * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
- * It includes all the skeletal structure that all linear OpModes contain.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
+import org.firstinspires.ftc.teamcode.InvadersRelicRecoveryBot;
 
-@TeleOp(name="HunterAutoOp", group="Linear Opmode")
+@TeleOp(name="HunterAutoOpBlue2", group="Linear Opmode")
 //@Disabled
 
 public class Hunter_BasicOpMode_Linear extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
-
-    enum TurnDirection {Left,Right}
-
-    public void moveStraight(double speed) {
-        leftDrive.setPower(speed);
-        rightDrive.setPower(speed);
-    }
-    public void tankTurn(double speed, TurnDirection direction) {
-        if (direction == TurnDirection.Left) {
-            leftDrive.setPower(-speed);
-            rightDrive.setPower(speed);
-        }
-
-    }
-
+    private InvadersRelicRecoveryBot robot = null;
     @Override
-    public void runOpMode() {
+    public void runOpMode()
+    {
+
         telemetry.addData("Status", "Initialized");
         telemetry.update();
+        robot = new InvadersRelicRecoveryBot();
+        robot.init(this);
 
-        leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
-
-        // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
+        //Left side Blue team
 
+        //1. Lower Jewel Arm
+        robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
+        //2. Read Jewel Color
 
-        // run until the end of the match (driver presses STOP)
-        while (runtime.time() < 3) {
-            moveStraight(.5);
-            rightDrive.setPower(.8);
-        }
-        while (runtime.time() >= 3); {
-            leftDrive.setPower(0);
-            rightDrive.setPower(0);
-        }
-        while (runtime.time() >= 5) {
-            leftDrive.setPower(5);
-            rightDrive.setPower(.25);
-        }
+        //3.If jewel is blue, do this:
+        robot.rightDrive.setPower(-0.1);
+        robot.rightDrive.setPower(0);
+        //Else, do this:
+        robot.rightDrive.setPower(0.1);
+        robot.rightDrive.setPower(0);
+        //4. Contract jewel arm
+        robot.setJewelArmPosition(0, InvadersRelicRecoveryBot.JewelPush.Right);
+        //5. VuMark - REMOVED
+        //6. Drive into Cryptobox triangular area
+
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)");
             telemetry.update();
