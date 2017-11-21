@@ -874,7 +874,7 @@ public class InvadersRelicRecoveryBot
         rightDrive.setPower(speed);
     }
 
-    private void tankTurn(double speed, TurnDirection direction){
+    public void tankTurn(double speed, TurnDirection direction){
         if (direction == TurnDirection.Left){
             leftDrive.setPower(-speed);
             rightDrive.setPower(speed);
@@ -884,7 +884,7 @@ public class InvadersRelicRecoveryBot
         }
     }
 
-    private void forwardTurn(double speed, TurnDirection direction){
+    public void forwardTurn(double speed, TurnDirection direction){
         if (direction == TurnDirection.Left){
             leftDrive.setPower(speed/2);
             rightDrive.setPower(speed);
@@ -894,7 +894,7 @@ public class InvadersRelicRecoveryBot
         }
     }
 
-    private void stopMotors(){
+    public void stopMotors(){
         leftDrive.setPower(0);
         rightDrive.setPower(0);
     }
