@@ -113,47 +113,6 @@ public class InvadersRelicRecoveryBot
     public TouchSensor touchSensor = null;
 
 //FUNCTIONS
-    public boolean isRightJewelRed(){
-
-        boolean jewelColorRed = false;
-        if(jewelSensorRight.red() > 200)
-        {
-            jewelColorRed = true;
-        }
-        return jewelColorRed;
-    }
-
-
-    public boolean isRightJewelBlue(){
-
-        boolean jewelColorBlue = false;
-        if(jewelSensorRight.blue() > 200)
-        {
-           jewelColorBlue = true;
-        }
-        return false;
-    }
-
-    public boolean isLeftJewelRed(){
-
-        boolean jewelSensorRed = false;
-        if(jewelSensorLeft.red() > 200)
-        {
-            jewelSensorRed = true;
-        }
-    return false;
-    }
-
-    public boolean isLeftJewelBlue(){
-
-        boolean jewelSensorBlue = false;
-        if(jewelSensorLeft.blue() > 200)
-        {
-            jewelSensorBlue = true;
-        }
-        return false;
-    }
-
     public enum JewelPush {Left, Right}
 
     public void setJewelArmPosition(double servoPosition, JewelPush robotSide)
@@ -359,20 +318,81 @@ public class InvadersRelicRecoveryBot
 //        }
 //    }
 
-    public boolean doIseeBlueLeft () {
-        return (jewelSensorLeft.blue() >= 5);
+    public boolean isLeftJewelBlue()
+    {
+        boolean blueLeft=false;
+        int red = jewelSensorLeft.red();
+        int green = jewelSensorLeft.green();
+        int blue = jewelSensorLeft.blue();
+        telemetry.addData("Color", "R-%d, G-%d, B-%d", red, green, blue);
+        red=red-5;
+        if((blue > red)||(green > red)&&(red <= 40))
+        {
+            telemetry.addLine("Blue Ball");
+            blueLeft=true;
+        }
+        else if(red > blue)
+        {
+            telemetry.addLine("Red Ball");
+        }
+        return blueLeft;
     }
-
-    public boolean doIseeRedLeft () {
-        return (jewelSensorLeft.red() >= 5);
+    public boolean isRightJewelBlue()
+    {
+        boolean blueRight=false;
+        int red = jewelSensorRight.red();
+        int green = jewelSensorRight.green();
+        int blue = jewelSensorRight.blue();
+        telemetry.addData("Color", "R-%d, G-%d, B-%d", red, green, blue);
+        red=red-5;
+        if((blue > red)||(green > red)&&(red <= 40))
+        {
+            telemetry.addLine("Blue Ball");
+            blueRight=true;
+        }
+        else if(red > blue)
+        {
+            telemetry.addLine("Red Ball");
+        }
+        return blueRight;
     }
-
-    public boolean doIseeBlueRight () {
-        return (jewelSensorRight.blue() >= 5);
+    public boolean isLeftJewelRed()
+    {
+        boolean redLeft=false;
+        int red = jewelSensorLeft.red();
+        int green = jewelSensorLeft.green();
+        int blue = jewelSensorLeft.blue();
+        telemetry.addData("Color", "R-%d, G-%d, B-%d", red, green, blue);
+        red=red-5;
+        if((blue > red)||(green > red)&&(red <= 40))
+        {
+            telemetry.addLine("Blue Ball");
+        }
+        else if(red > blue)
+        {
+            telemetry.addLine("Red Ball");
+            redLeft=true;
+        }
+        return redLeft;
     }
-
-    public boolean doIseeRedRight () {
-        return (jewelSensorRight.red() >= 5);
+    public boolean isRightJewelRed()
+    {
+        boolean redRight=false;
+        int red = jewelSensorRight.red();
+        int green = jewelSensorRight.green();
+        int blue = jewelSensorRight.blue();
+        telemetry.addData("Color", "R-%d, G-%d, B-%d", red, green, blue);
+        red=red-5;
+        if((blue > red)||(green > red)&&(red <= 40))
+        {
+            telemetry.addLine("Blue Ball");
+        }
+        else if(red > blue)
+        {
+            telemetry.addLine("Red Ball");
+            redRight=true;
+        }
+        return redRight;
     }
 
     public void turnToAbsoluteHeading(double speed, double absoluteHeading, int timeoutMs) {
@@ -592,21 +612,21 @@ public class InvadersRelicRecoveryBot
             telemetry.addData("'liftMotor' not defined in config", e);
         }
 
-        try {
-            // Define installed servos
-            leftGrab = hwMap.get(Servo.class, "leftGrab");
-            rightGrab = hwMap.get(Servo.class, "rightGrab");
-        }
-        catch (IllegalArgumentException e)
-        {
-            // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
-            // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
-            telemetry.addData("'leftGrab' or 'rightGrab' not defined in config", e);
-        }
+//        try {
+//            // Define installed servos
+//            leftGrab = hwMap.get(Servo.class, "leftGrab");
+//            rightGrab = hwMap.get(Servo.class, "rightGrab");
+//        }
+//        catch (IllegalArgumentException e)
+//        {
+//            // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
+//            // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
+//            telemetry.addData("'leftGrab' or 'rightGrab' not defined in config", e);
+//        }
 
         try {
-            jewelPushLeft = hwMap.get(Servo.class, "jewelPushLeft");
-            jewelPushRight = hwMap.get(Servo.class, "jewelPushRight");
+//            jewelPushLeft = hwMap.get(Servo.class, "jewelPushLeft");
+//            jewelPushRight = hwMap.get(Servo.class, "jewelPushRight");
             CRGripper = hwMap.get(CRServo.class, "CRGripper");
             CRGripper.setDirection(DcMotorSimple.Direction.FORWARD);
         }
@@ -617,17 +637,17 @@ public class InvadersRelicRecoveryBot
             telemetry.addData("'jewelPushLeft' or 'jewelPushRight' not defined in config'", e);
         }
 
-        try {
-            // Define our sensors
-            jewelSensorLeft = hwMap.colorSensor.get("jewelSensorLeft");
-            jewelSensorRight = hwMap.colorSensor.get("jewelSensorRight");
-        }
-        catch (IllegalArgumentException e)
-        {
-            // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
-            // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
-            telemetry.addData("'jewelSensorLeft' or 'jewelSensorRight' not defined in config", e);
-        }
+//        try {
+//            // Define our sensors
+//            jewelSensorLeft = hwMap.colorSensor.get("jewelSensorLeft");
+//            jewelSensorRight = hwMap.colorSensor.get("jewelSensorRight");
+//        }
+//        catch (IllegalArgumentException e)
+//        {
+//            // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
+//            // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
+//            telemetry.addData("'jewelSensorLeft' or 'jewelSensorRight' not defined in config", e);
+//        }
 
             // These sensors are leftovers from the VelocityVortex game - we may add these kinds
             // of sensors to our RelicRecovery bot in the future.  Leaving for reference.
@@ -662,27 +682,27 @@ public class InvadersRelicRecoveryBot
 
         }
 
-        // Custom I2C Addresses Go Here!
-        ///@todo Need to validate that UDSLeft.setI2cAddress is working with new SDK.  Hasn't been tested since VelocityVortex championship
-        if(UDSLeft != null) UDSLeft.setI2cAddress(I2cAddr.create8bit(0x26));
-        if(floorSensor != null) floorSensor.setI2cAddress(I2cAddr.create8bit(0x3A));
-        if(jewelSensorRight != null) jewelSensorRight.setI2cAddress(I2cAddr.create8bit(0x36));
-
-        // Initialize Color Sensor LEDs to off
-        if(jewelSensorLeft != null) jewelSensorLeft.enableLed(false);
-        if(jewelSensorRight != null) jewelSensorRight.enableLed(false);
-        if(floorSensor != null) floorSensor.enableLed(false);
-
-        // If we have a gyro on our robot, stop for a moment to calibrate and reset to 0
-        if(gyro != null) {
-            gyro.calibrate();
-
-            // make sure the gyro is calibrated before continuing
-            while (gyro.isCalibrating()) {
-                //sleepMs(50);
-            }
-            gyro.resetZAxisIntegrator();
-        }
+//        // Custom I2C Addresses Go Here!
+//        ///@todo Need to validate that UDSLeft.setI2cAddress is working with new SDK.  Hasn't been tested since VelocityVortex championship
+//        if(UDSLeft != null) UDSLeft.setI2cAddress(I2cAddr.create8bit(0x26));
+//        if(floorSensor != null) floorSensor.setI2cAddress(I2cAddr.create8bit(0x3A));
+//        if(jewelSensorRight != null) jewelSensorRight.setI2cAddress(I2cAddr.create8bit(0x36));
+//
+//        // Initialize Color Sensor LEDs to off
+//        if(jewelSensorLeft != null) jewelSensorLeft.enableLed(false);
+//        if(jewelSensorRight != null) jewelSensorRight.enableLed(false);
+//        if(floorSensor != null) floorSensor.enableLed(false);
+//
+//        // If we have a gyro on our robot, stop for a moment to calibrate and reset to 0
+//        if(gyro != null) {
+//            gyro.calibrate();
+//
+//            // make sure the gyro is calibrated before continuing
+//            while (gyro.isCalibrating()) {
+//                //sleepMs(50);
+//            }
+//            gyro.resetZAxisIntegrator();
+//        }
     }
 
     /***
@@ -872,18 +892,18 @@ public class InvadersRelicRecoveryBot
         return vuMark;
 
     }
-    enum TurnDirection {Left, Right}
+    public enum TurnDirection {Left, Right}
 
     //Move in a straight line forward or backwards
     //speed is positive for forward, negative for backwards
     //speed can be between -1.0 and 1.0
-    void moveStraight(double speed){
+    public void moveStraight(double speed){
         leftDrive.setPower(speed);
         rightDrive.setPower(speed);
     }
 
-    private void tankTurn(double speed, TurnDirection direction){
-        if (direction == TurnDirection.Left){
+    public void tankTurn(double speed, TurnDirection direction) {
+        if (direction == TurnDirection.Left) {
             leftDrive.setPower(-speed);
             rightDrive.setPower(speed);
         } else {
@@ -892,7 +912,25 @@ public class InvadersRelicRecoveryBot
         }
     }
 
-    private void forwardTurn(double speed, TurnDirection direction){
+    public void tankTurn(double speed, TurnDirection direction, long milliseconds){
+        ElapsedTime gameTimer = new ElapsedTime();
+        gameTimer.reset();
+        if (direction == TurnDirection.Left){
+            leftDrive.setPower(-speed);
+            rightDrive.setPower(speed);
+        } else {
+            leftDrive.setPower(speed);
+            rightDrive.setPower(-speed);
+        }
+        try {
+            gameTimer.wait(milliseconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        stopMotors();
+    }
+
+    public void forwardTurn(double speed, TurnDirection direction){
         if (direction == TurnDirection.Left){
             leftDrive.setPower(speed/2);
             rightDrive.setPower(speed);
@@ -902,7 +940,7 @@ public class InvadersRelicRecoveryBot
         }
     }
 
-    private void stopMotors(){
+    public void stopMotors(){
         leftDrive.setPower(0);
         rightDrive.setPower(0);
     }
