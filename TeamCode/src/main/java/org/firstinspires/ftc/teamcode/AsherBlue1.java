@@ -53,14 +53,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  */
 
 @TeleOp(name="AsherBlue1", group="Linear Opmode")
-<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AsherBlue1.java
 //@Disabled
 public class AsherBlue1 extends LinearOpMode {
-=======
-@Disabled
-public class BasicOpModeAsher_Linear extends LinearOpMode {
->>>>>>> 99cc016967952b0916227674056e6a1db178d6b6:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/BasicOpModeAsher_Linear.java
-
     private InvadersRelicRecoveryBot homeCode = null;
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
