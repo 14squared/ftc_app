@@ -53,8 +53,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  */
 
 @TeleOp(name="AsherBlue1", group="Linear Opmode")
+<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AsherBlue1.java
 //@Disabled
+public class AsherBlue1 extends LinearOpMode {
+=======
+@Disabled
 public class BasicOpModeAsher_Linear extends LinearOpMode {
+>>>>>>> 99cc016967952b0916227674056e6a1db178d6b6:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/BasicOpModeAsher_Linear.java
 
     private InvadersRelicRecoveryBot homeCode = null;
     // Declare OpMode members.
@@ -92,12 +97,18 @@ public class BasicOpModeAsher_Linear extends LinearOpMode {
             // 3.If Red move arm this way:
             if(iSawRed)
             {
-                //@todo this wayodo wiggle the robot
+                //@todo wiggle the robot this way
+                homeCode.tankTurn(0.5, InvadersRelicRecoveryBot.TurnDirection.Right);
+                homeCode.sleepMs(100);
+                homeCode.stopMotors();
             }
             //Else if blue move arm that way.
             else if(iSawBlue)
             {
                 //@todo wiggle the robot the other way
+                homeCode.tankTurn(0.5, InvadersRelicRecoveryBot.TurnDirection.Left);
+                homeCode.sleepMs(100);
+                homeCode.stopMotors();
             }
             //4. Raise Jewel Arm
             homeCode.setJewelArmPosition(0, InvadersRelicRecoveryBot.JewelPush.Left);
@@ -130,26 +141,16 @@ public class BasicOpModeAsher_Linear extends LinearOpMode {
 
 
             //   9. Turn to Cryptobox
+            homeCode.encoderDrive(0.2,36,36,9);
+
             //   10. Put block in
+
             //   11. Drive straight into triangle.
             //   12. Block Enemy Targets
 
 
             // Send calculated power to wheels
-            boolean e = true;
 
-            while(runtime.time() < 3) {
-
-
-
-                if (e) {
-
-                    homeCode.moveStraight(.5);
-                } else {
-                    homeCode.moveStraight(.1);
-                }
-
-            }
 
 
             // Show the elapsed game time and wheel power.

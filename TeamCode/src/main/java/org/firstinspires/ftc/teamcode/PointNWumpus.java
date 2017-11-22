@@ -32,11 +32,7 @@ package org.firstinspires.ftc.teamcode;/* Copyright (c) 2017 FIRST. All rights r
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 
 /**
@@ -52,7 +48,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "Test Autonomous Matthew", group = "Linear Opmode")
+@Autonomous(name = "Point 'N' Wumpus", group = "Linear Opmode")
 @Disabled
 /* Spin To Win:
 
@@ -71,7 +67,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 11. Drive straight into triangle.
 12. Block Enemy Targets
 */
-public class MatthewAuto extends LinearOpMode {
+public class PointNWumpus extends LinearOpMode {
     InvadersRelicRecoveryBot robot = new InvadersRelicRecoveryBot();
 
 
@@ -99,37 +95,8 @@ public class MatthewAuto extends LinearOpMode {
 
         telemetry.update();
 
-        robot.encoderDrive(0.3, 18, 18, 20);
-        /*if(doISeeBlue == true){
-            robot.encoderDrive(0.3, -2,-2, 5);
-        } else {
-            robot.encoderDrive(0.1, 0.1, 0.1, 1);
-        }*/
-     /*   RelicRecoveryVuMark seenVuMarks = robot.getVuforiaTargets(false);
+        robot.encoderDrive(0.3, 14.5, 14.5, 20);
 
-       robot.leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-       robot.rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-       int endposright = robot.rightDrive.getCurrentPosition() + 10000;
-       int endposleft = robot.leftDrive.getCurrentPosition() + 10000;
-       robot.rightDrive.setTargetPosition(endposright);
-       robot.leftDrive.setTargetPosition(endposleft);
-       robot.leftDrive.setPower(0.3);
-       robot.rightDrive.setPower(0.3);
-       robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-       robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        switch (seenVuMarks) {
-            case LEFT:
-
-                break;
-            case RIGHT:
-                break;
-            case CENTER:
-                break;
-            case UNKNOWN:
-                break;
-                }
-                */
 
 
 

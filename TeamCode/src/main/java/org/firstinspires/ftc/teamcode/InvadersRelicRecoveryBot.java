@@ -93,6 +93,7 @@ public class InvadersRelicRecoveryBot
     public Servo jewelPushRight = null;
     public DcMotor liftMotor = null;
     public CRServo CRGripper = null;
+    //public Servo Gripper = null;
 
 
     public ModernRoboticsI2cRangeSensor UDSLeft = null;   // Default I2C Address: 0x26
@@ -901,7 +902,6 @@ public class InvadersRelicRecoveryBot
         leftDrive.setPower(speed);
         rightDrive.setPower(speed);
     }
-
     public void tankTurn(double speed, TurnDirection direction) {
         if (direction == TurnDirection.Left) {
             leftDrive.setPower(-speed);
