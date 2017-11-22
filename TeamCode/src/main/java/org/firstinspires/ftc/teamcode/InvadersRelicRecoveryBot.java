@@ -92,8 +92,7 @@ public class InvadersRelicRecoveryBot
     public Servo jewelPushLeft = null;
     public Servo jewelPushRight = null;
     public DcMotor liftMotor = null;
-    public CRServo CRGripper = null;
-    //public Servo Gripper = null;
+    public Servo Gripper = null;
 
 
     public ModernRoboticsI2cRangeSensor UDSLeft = null;   // Default I2C Address: 0x26
@@ -628,8 +627,7 @@ public class InvadersRelicRecoveryBot
         try {
 //            jewelPushLeft = hwMap.get(Servo.class, "jewelPushLeft");
 //            jewelPushRight = hwMap.get(Servo.class, "jewelPushRight");
-            CRGripper = hwMap.get(CRServo.class, "CRGripper");
-            CRGripper.setDirection(DcMotorSimple.Direction.FORWARD);
+            Gripper = hwMap.get(Servo.class, "Gripper");
         }
         catch (IllegalArgumentException e)
         {
