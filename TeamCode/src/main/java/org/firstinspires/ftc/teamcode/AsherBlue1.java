@@ -53,6 +53,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  */
 
 @TeleOp(name="AsherBlue1", group="Linear Opmode")
+
 //@Disabled
 public class AsherBlue1 extends LinearOpMode {
     private InvadersRelicRecoveryBot homeCode = null;
@@ -107,43 +108,43 @@ public class AsherBlue1 extends LinearOpMode {
             //4. Raise Jewel Arm
             homeCode.setJewelArmPosition(0, InvadersRelicRecoveryBot.JewelPush.Left);
 
-            //   5. Drive to VuMark
-            //@todo Decide whether to drive to the VuMark
-
-            //   6. Read VuMark
-            RelicRecoveryVuMark vuMark = homeCode.getVuforiaTargets(false);
-
-            //   7. Calculate Cryptobox distance with VuMark = X.
-            //   8. Drive Straight. Distance = X.
-            if(vuMark == RelicRecoveryVuMark.LEFT)
-            {
-                //Drive to the left
-                homeCode.setDriveTrainPower(0.5);
-            }else if(vuMark == RelicRecoveryVuMark.RIGHT)
-            {
-                homeCode.setDriveTrainPower(0.3);
-
-            }else if(vuMark == RelicRecoveryVuMark.CENTER){
-                //Criss Cross Criss Cross
-                homeCode.setDriveTrainPower(0.2);
-            }else{
-                //Everybody clap your hands
-                homeCode.setDriveTrainPower(0.1);
-            }
-
-
-
-
-            //   9. Turn to Cryptobox
-            homeCode.encoderDrive(0.2,36,36,9);
-
-            //   10. Put block in
-
-            //   11. Drive straight into triangle.
-            //   12. Block Enemy Targets
-
-
-            // Send calculated power to wheels
+//            //   5. Drive to VuMark
+//            //@todo Decide whether to drive to the VuMark
+//
+//            //   6. Read VuMark
+//            RelicRecoveryVuMark vuMark = homeCode.getVuforiaTargets(false);
+//
+//            //   7. Calculate Cryptobox distance with VuMark = X.
+//            //   8. Drive Straight. Distance = X.
+//            if(vuMark == RelicRecoveryVuMark.LEFT)
+//            {
+//                //Drive to the left
+//                homeCode.setDriveTrainPower(0.5);
+//            }else if(vuMark == RelicRecoveryVuMark.RIGHT)
+//            {
+//                homeCode.setDriveTrainPower(0.3);
+//
+//            }else if(vuMark == RelicRecoveryVuMark.CENTER){
+//                //Criss Cross Criss Cross
+//                homeCode.setDriveTrainPower(0.2);
+//            }else{
+//                //Everybody clap your hands
+//                homeCode.setDriveTrainPower(0.1);
+//            }
+//
+//
+//
+//
+//            //   9. Turn to Cryptobox
+//            homeCode.encoderDrive(0.2,36,36,9);
+//
+//            //   10. Put block in
+//
+//            //   11. Drive straight into triangle.
+//            //   12. Block Enemy Targets
+//
+//
+//            // Send calculated power to wheels
 
 
 
