@@ -612,17 +612,17 @@ public class InvadersRelicRecoveryBot
             telemetry.addData("'liftMotor' not defined in config", e);
         }
 
-//        try {
-//            // Define installed servos
-//            leftGrab = hwMap.get(Servo.class, "leftGrab");
-//            rightGrab = hwMap.get(Servo.class, "rightGrab");
-//        }
-//        catch (IllegalArgumentException e)
-//        {
-//            // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
-//            // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
-//            telemetry.addData("'leftGrab' or 'rightGrab' not defined in config", e);
-//        }
+        try {
+            // Define installed servos
+            leftGrab = hwMap.get(Servo.class, "leftGrab");
+            rightGrab = hwMap.get(Servo.class, "rightGrab");
+        }
+        catch (IllegalArgumentException e)
+        {
+            // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
+            // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
+            telemetry.addData("'leftGrab' or 'rightGrab' not defined in config", e);
+        }
 
         try {
             jewelPushLeft = hwMap.get(Servo.class, "jewelPushLeft");
