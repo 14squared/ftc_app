@@ -162,8 +162,10 @@ public class MatthewTeleop extends OpMode
             }
 
 
+
         robot.liftMotor.setPower(gamepad1.left_trigger);
         robot.liftMotor.setPower(-gamepad1.right_trigger);
+
 
         if (gamepad1.right_bumper){
             robot.Gripper.setPosition(robot.Gripper.getPosition() -0.1);
@@ -171,6 +173,7 @@ public class MatthewTeleop extends OpMode
         } else if(gamepad1.left_bumper){
             robot.Gripper.setPosition(robot.Gripper.getPosition() + 0.1);
         }
+
 
 
 

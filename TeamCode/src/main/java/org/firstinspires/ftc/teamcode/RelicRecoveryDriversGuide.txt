@@ -1,0 +1,7 @@
+The left joystick is moves the robot forwards and backwards
+The right joystick turns the robot right and left
+
+gamepad.a turns FineMode off(robot goes faster but not very precise)
+gamepad.b turns FineMode on(robot goes slower but more precise)
+gamepad.right_trigger raises the lift
+gamepad.left_trigger lowers the lift

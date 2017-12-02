@@ -29,6 +29,7 @@ package org.firstinspires.ftc.teamcode;/* Copyright (c) 2017 FIRST. All rights r
 
 //package org.firstinspires.ftc.robotcontroller.external.samples;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -52,7 +53,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="AsherBlue1", group="Linear Opmode")
+@Autonomous(name="AsherBlue1", group="Linear Opmode")
 
 //@Disabled
 public class AsherBlue1 extends LinearOpMode {
@@ -83,31 +84,35 @@ public class AsherBlue1 extends LinearOpMode {
 
             /* Spin To Win: */
             //1. Lower Jewel Arm
-            homeCode.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Left);
-
-            //2. Read Jewel Color
-            boolean iSawRed = homeCode.isLeftJewelRed();
-            boolean iSawBlue = homeCode.isLeftJewelBlue();
-
-            // 3.If Red move arm this way:
-            if(iSawRed)
-            {
-                //@todo wiggle the robot this way
-                homeCode.tankTurn(0.5, InvadersRelicRecoveryBot.TurnDirection.Right);
-                homeCode.sleepMs(100);
-                homeCode.stopMotors();
-            }
-            //Else if blue move arm that way.
-            else if(iSawBlue)
-            {
-                //@todo wiggle the robot the other way
-                homeCode.tankTurn(0.5, InvadersRelicRecoveryBot.TurnDirection.Left);
-                homeCode.sleepMs(100);
-                homeCode.stopMotors();
-            }
-            //4. Raise Jewel Arm
             homeCode.setJewelArmPosition(0, InvadersRelicRecoveryBot.JewelPush.Left);
 
+//            //2. Read Jewel Color
+//            boolean iSawRed = true;//homeCode.isLeftJewelRed();
+//            boolean iSawBlue = false; //homeCode.isLeftJewelBlue();
+//
+//            // 3.If Red move arm this way:
+//            if(iSawRed)
+//            {
+//                //@todo wiggle the robot this way
+//                homeCode.tankTurn(0.5, InvadersRelicRecoveryBot.TurnDirection.Right);
+//                homeCode.sleepMs(400);
+//
+//                homeCode.stopMotors();
+//            }
+//            //Else if blue move arm that way.
+//            else if(iSawBlue)
+//            {
+//                //@todo wiggle the robot the other way
+//                homeCode.tankTurn(0.5, InvadersRelicRecoveryBot.TurnDirection.Left);
+//                homeCode.sleepMs(400);
+//
+//                homeCode.stopMotors();
+//            }
+            //4. Raise Jewel Arm
+            homeCode.sleepMs(5000);
+            homeCode.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Left);
+            //@todo Add delay for arm to move
+            homeCode.sleepMs(3000);
 //            //   5. Drive to VuMark
 //            //@todo Decide whether to drive to the VuMark
 //
@@ -152,6 +157,7 @@ public class AsherBlue1 extends LinearOpMode {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.update();
+            break;
         }
 
 

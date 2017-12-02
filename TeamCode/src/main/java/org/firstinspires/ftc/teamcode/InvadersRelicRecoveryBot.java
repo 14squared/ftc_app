@@ -625,9 +625,9 @@ public class InvadersRelicRecoveryBot
 //        }
 
         try {
-//            jewelPushLeft = hwMap.get(Servo.class, "jewelPushLeft");
-//            jewelPushRight = hwMap.get(Servo.class, "jewelPushRight");
-            Gripper = hwMap.get(Servo.class, "Gripper");
+            jewelPushLeft = hwMap.get(Servo.class, "jewelPushLeft");
+            jewelPushRight = hwMap.get(Servo.class, "jewelPushRight");
+//            Gripper = hwMap.get(Servo.class, "Gripper");
         }
         catch (IllegalArgumentException e)
         {
@@ -636,17 +636,17 @@ public class InvadersRelicRecoveryBot
             telemetry.addData("'jewelPushLeft' or 'jewelPushRight' not defined in config'", e);
         }
 
-//        try {
-//            // Define our sensors
-//            jewelSensorLeft = hwMap.colorSensor.get("jewelSensorLeft");
-//            jewelSensorRight = hwMap.colorSensor.get("jewelSensorRight");
-//        }
-//        catch (IllegalArgumentException e)
-//        {
-//            // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
-//            // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
-//            telemetry.addData("'jewelSensorLeft' or 'jewelSensorRight' not defined in config", e);
-//        }
+        try {
+            // Define our sensors
+            jewelSensorLeft = hwMap.colorSensor.get("jewelSensorLeft");
+            jewelSensorRight = hwMap.colorSensor.get("jewelSensorRight");
+        }
+        catch (IllegalArgumentException e)
+        {
+            // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
+            // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
+            telemetry.addData("'jewelSensorLeft' or 'jewelSensorRight' not defined in config", e);
+        }
 
             // These sensors are leftovers from the VelocityVortex game - we may add these kinds
             // of sensors to our RelicRecovery bot in the future.  Leaving for reference.
@@ -661,11 +661,11 @@ public class InvadersRelicRecoveryBot
 
         // Set all motors to zero power
         setDriveTrainPower(0);
-        if(liftMotor != null)
-        {
-            liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            liftMotor.setPower(0);
-        }
+//        if(liftMotor != null)
+//        {
+//            liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//            liftMotor.setPower(0);
+//        }
 
         // Set all non-driving motors to run without encoders.
         if(leftDrive != null) {
@@ -896,6 +896,16 @@ public class InvadersRelicRecoveryBot
     //Move in a straight line forward or backwards
     //speed is positive for forward, negative for backwards
     //speed can be between -1.0 and 1.0
+    public void raiseLift(double power){
+        liftMotor.setPower(power);
+    }
+    public void lowerLift(double power){
+        liftMotor.setPower(-power);
+    }
+    public void stopLift(){
+        liftMotor.setPower(0);
+    }
+
     public void moveStraight(double speed){
         leftDrive.setPower(speed);
         rightDrive.setPower(speed);
