@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsTouchSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -583,6 +584,10 @@ public class InvadersRelicRecoveryBot
             leftDrive = hwMap.get(DcMotor.class, "leftDrive");
             rightDrive = hwMap.get(DcMotor.class, "rightDrive");
 
+            // Set opposite motor directions for the Drive Train
+            rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+            leftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+
             telemetry.addData("Gear Reduction (L)", "%.02f", leftDrive.getMotorType().getGearing());
             telemetry.addData("Encoder PPR (L)", "%.02f", leftDrive.getMotorType().getTicksPerRev());
 
@@ -593,8 +598,6 @@ public class InvadersRelicRecoveryBot
             DRIVE_GEAR_REDUCTION = leftDrive.getMotorType().getGearing();
             COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV) / (WHEEL_DIAMETER_INCHES * 3.1415);
         }
-
-
         catch (IllegalArgumentException e)
         {
             // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
@@ -604,6 +607,7 @@ public class InvadersRelicRecoveryBot
 
         try {
             liftMotor = hwMap.get(DcMotor.class, "liftMotor");
+            //liftMototCutoff = hwMap.get()
         }
         catch (IllegalArgumentException e)
         {
@@ -616,6 +620,14 @@ public class InvadersRelicRecoveryBot
             // Define installed servos
             leftGrab = hwMap.get(Servo.class, "leftGrab");
             rightGrab = hwMap.get(Servo.class, "rightGrab");
+
+            // Set opposite rotation directions for the grabber servos
+            leftGrab.setDirection(Servo.Direction.FORWARD);
+            rightGrab.setDirection(Servo.Direction.REVERSE);
+
+            // Open up the grabber servos to fit in our 18" profile
+            leftGrab.setPosition(0.9);
+            rightGrab.setPosition(0.9);
         }
         catch (IllegalArgumentException e)
         {

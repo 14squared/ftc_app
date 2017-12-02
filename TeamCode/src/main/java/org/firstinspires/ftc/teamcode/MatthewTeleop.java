@@ -55,13 +55,16 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="Matthew Iterative OpMode", group="Iterative Opmode")
-@Disabled
+//@Disabled
 public class MatthewTeleop extends OpMode
 {
     // Declare OpMode members.
     InvadersRelicRecoveryBot robot = new InvadersRelicRecoveryBot();
     private ElapsedTime runtime = new ElapsedTime();
 
+    // fineMode is used to scale back the control speed of the motors.  This allows the driver
+    // to make more precise changes to the robot mechanisms (better aiming, less jostling, etc).
+    boolean fineMode = false;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -70,11 +73,7 @@ public class MatthewTeleop extends OpMode
     public void init() {
         robot.init(this);
         telemetry.addData("Status", "Initialized");
-        //robot.leftGrab.setDirection(Servo.Direction.FORWARD);
-        //robot.rightGrab.setDirection(Servo.Direction.REVERSE);
-
-
-
+        robot.sleepMs(3000);
     }
 
     /*
@@ -83,13 +82,19 @@ public class MatthewTeleop extends OpMode
     @Override
     public void init_loop() {
     }
-    boolean fineMode = false;
+
     /*
      * Code to run ONCE when the driver hits PLAY
      */
     @Override
     public void start() {
         runtime.reset();
+        telemetry.clearAll();
+        telemetry.addLine("TODO: Send Lift Home");
+        /*@todo Add code to 'home' the lifter back to the down position (ideally,
+         * we'd use the pushbutton sensor.  This will allow us to limit the total
+         * height we try to lift and prevent us from snapping the lift string.
+        */
     }
 
 
@@ -101,22 +106,14 @@ public class MatthewTeleop extends OpMode
         // Setup a variable for each drive wheel to save power level for telemetry
         double leftPower;
         double rightPower;
-        double armPower;
-        double armPos;
-        robot.rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-        robot.leftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-
-
-        // Choose to drive using either Tank Mode, or POV Mode
-        // Comment out the method that's not used.  The default below is POV.
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
-        double drive = gamepad1.left_stick_y;
-        double turn  =  gamepad1.right_stick_x;
+        double drive = -gamepad1.left_stick_y;
+        double turn  =  -gamepad1.right_stick_x;
 
-
-        armPos = robot.liftMotor.getCurrentPosition();
+        // Keep track of the liftPosition (we want to make sure we don't go too high)
+        double liftPosition = robot.liftMotor.getCurrentPosition();
 
         if(gamepad1.a == true){
             fineMode = false;
@@ -125,72 +122,57 @@ public class MatthewTeleop extends OpMode
             fineMode = true;
         }
 
-        // Tank Mode uses one stick to control each wheel.
-        // - This requires no math, but it is hard to drive forward slowly and keep straight.
-         leftPower  = -gamepad1.left_stick_y ;
-         rightPower = -gamepad1.right_stick_y ;
+        if(fineMode == true){
+            leftPower = Range.clip(drive - turn, -0.3, 0.3);
+            rightPower = Range.clip(drive + turn, -0.3, 0.3);
+            robot.leftDrive.setPower(leftPower);
+            robot.rightDrive.setPower(rightPower);
 
-        //This is where we figure out if we should switch the direction of the controls or not.
-        //This initial if statement keeps us from suddenly reversing when the arm passes 180. The direction change only takes effect once the driver has stopped moving the robot.
-        //@ TODO: 11/5/2017 Figure out how to make it so that the controls don't change unless we are stopped. This will be tricky because of the way this loop works.
-            if (armPos < 180) {
-                if(fineMode == true){
-                    leftPower = Range.clip(drive - turn, -0.3, 0.3);
-                    rightPower = Range.clip(drive + turn, -0.3, 0.3);
-                    robot.leftDrive.setPower(leftPower);
-                    robot.rightDrive.setPower(rightPower);
+        }
+        else {
+            leftPower = Range.clip(drive - turn, -1.0, 1.0);
+            rightPower = Range.clip(drive + turn, -1.0, 1.0);
+            robot.leftDrive.setPower(leftPower);
+            robot.rightDrive.setPower(rightPower);
+        }
 
-                }
-                else{
-                    leftPower = Range.clip(drive - turn, -1.0, 1.0);
-                    rightPower = Range.clip(drive + turn, -1.0, 1.0);
-                    robot.leftDrive.setPower(leftPower);
-                    robot.rightDrive.setPower(rightPower);
-
-                }
-
-
-            } else {
-                if(fineMode == true){
-                    robot.leftDrive.setPower(leftPower/2);
-                    robot.rightDrive.setPower(rightPower/2);
-                } else{
-                    robot.leftDrive.setPower(leftPower);
-                    robot.rightDrive.setPower(rightPower);
-                }
-
-            }
+        // Look at the left and right triggers to decide whether to raise/lower the lift
+        if(gamepad1.left_trigger > 0.05)
+        {
+            robot.liftMotor.setPower(-gamepad1.left_trigger);
+        }
+        else if(gamepad1.right_trigger > 0.05)
+        {
+            robot.liftMotor.setPower(gamepad1.right_trigger);
+        }
+        else
+        {
+            robot.liftMotor.setPower(0);
+        }
 
 
-
-        robot.liftMotor.setPower(gamepad1.left_trigger);
-        robot.liftMotor.setPower(-gamepad1.right_trigger);
-
-
+        // Look at the left/right bumpers to decide whether to open/close the glyph-gripper
+        double leftServoPos = robot.leftGrab.getPosition();
+        double rightServoPos = robot.leftGrab.getPosition();
         if (gamepad1.right_bumper == true) {
-            double leftServoPos = robot.leftGrab.getPosition();
-            double rightServoPos = robot.leftGrab.getPosition();
-            robot.leftGrab.setPosition(leftServoPos + 0.1);
-            robot.rightGrab.setPosition(rightServoPos + 0.1);
+            // Only increment the grip position if isn't already at its maximum
+            //if(leftServoPos <= 0.99) robot.leftGrab.setPosition(leftServoPos+0.01);
+            //if(rightServoPos <= 0.99) robot.rightGrab.setPosition(rightServoPos+0.01);
+            robot.rightGrab.setPosition(0.3);
+            robot.leftGrab.setPosition(0.3);
         }
-        if (gamepad1.left_bumper == true) {
-            double leftServoPos = robot.leftGrab.getPosition();
-            double rightServoPos = robot.leftGrab.getPosition();
-            robot.leftGrab.setPosition(leftServoPos - 0.1);
-            robot.rightGrab.setPosition(rightServoPos - 0.1);
+        else if (gamepad1.left_bumper == true) {
+            //if(leftServoPos > 0.01) robot.leftGrab.setPosition(leftServoPos-0.01);
+            //if(rightServoPos > 0.01) robot.leftGrab.setPosition(rightServoPos-0.01);
+            robot.rightGrab.setPosition(0.9);
+            robot.leftGrab.setPosition(0.9);
         }
-
-
-
-
-
-
-        //robot.leftGrab.setPosition(gamepad1.left_trigger);
-        //robot.rightGrab.setPosition(gamepad1.right_trigger);
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+        telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+        telemetry.addData("Lifter", "position %.2f", liftPosition);
+        telemetry.addData("Grippers", "left (%.2f), right (%.2f)", leftServoPos, rightServoPos);
     }
 
     /*
