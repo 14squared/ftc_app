@@ -44,8 +44,8 @@ public class Hunter_BasicOpMode_Iterative extends OpMode
     private InvadersRelicRecoveryBot robot = null;
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
-    private Servo leftServo = null;
-    private Servo rightServo = null;
+    private Servo leftGrab = null;
+    private Servo rightGrab = null;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -58,13 +58,13 @@ public class Hunter_BasicOpMode_Iterative extends OpMode
 
         leftDrive = hardwareMap.get(DcMotor.class, "leftDrive");
         rightDrive = hardwareMap.get(DcMotor.class, "rightDrive");
-        leftServo = hardwareMap.get(Servo.class, "leftServo");
-        rightServo = hardwareMap.get(Servo.class, "rightServo");
+        leftGrab = hardwareMap.get(Servo.class, "leftGrab");
+        rightGrab = hardwareMap.get(Servo.class, "rightGrab");
 
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
-        leftServo.setDirection(Servo.Direction.FORWARD);
-        rightServo.setDirection(Servo.Direction.REVERSE);
+        leftGrab.setDirection(Servo.Direction.FORWARD);
+        rightGrab.setDirection(Servo.Direction.REVERSE);
 
         telemetry.addData("Status", "Initialized");
     }
@@ -95,16 +95,16 @@ public class Hunter_BasicOpMode_Iterative extends OpMode
         leftPower = -gamepad1.left_stick_y;
         rightPower = -gamepad1.right_stick_y;
         if (gamepad1.right_bumper == true) {
-            double leftServoPos = leftServo.getPosition();
-            double rightServoPos = leftServo.getPosition();
-            leftServo.setPosition(leftServoPos + 0.1);
-            rightServo.setPosition(rightServoPos + 0.1);
+            double leftServoPos = leftGrab.getPosition();
+            double rightServoPos = leftGrab.getPosition();
+            leftGrab.setPosition(leftServoPos + 0.1);
+            rightGrab.setPosition(rightServoPos + 0.1);
         }
         if (gamepad1.left_bumper == true) {
-            double leftServoPos = leftServo.getPosition();
-            double rightServoPos = leftServo.getPosition();
-            leftServo.setPosition(leftServoPos - 0.1);
-            rightServo.setPosition(rightServoPos - 0.1);
+            double leftServoPos = leftGrab.getPosition();
+            double rightServoPos = leftGrab.getPosition();
+            leftGrab.setPosition(leftServoPos - 0.1);
+            rightGrab.setPosition(rightServoPos - 0.1);
         }
         if (gamepad1.a == true)
         {

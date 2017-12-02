@@ -38,6 +38,7 @@ public class Hunter_JewelOpMode extends OpMode
 {
     private ElapsedTime runtime = new ElapsedTime();
     private ColorSensor jewelSensorRight = null;
+    private ColorSensor jewelSensorLeft = null;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -47,7 +48,7 @@ public class Hunter_JewelOpMode extends OpMode
         telemetry.addData("Status", "Initializing");
 
         jewelSensorRight = hardwareMap.get(ColorSensor.class, "jewelSensorRight");
-
+        jewelSensorLeft = hardwareMap.get(ColorSensor.class, "jewelSensorLeft");
         telemetry.addData("Status", "Initialized");
     }
     /*
@@ -70,25 +71,32 @@ public class Hunter_JewelOpMode extends OpMode
      */
     @Override
     public void loop() {
-        int red = jewelSensorRight.red();
-        int green = jewelSensorRight.green();
-        int blue = jewelSensorRight.blue();
-        telemetry.addData("Color", "R-%d, G-%d, B-%d", red, green, blue);
-        red=red-5;
-        if((blue > red)||(green > red)&&(red <= 40))
+        int rightRed = jewelSensorRight.red();
+        int rightGreen = jewelSensorRight.green();
+        int rightBlue = jewelSensorRight.blue();
+        int leftRed = jewelSensorLeft.red();
+        int leftGreen = jewelSensorLeft.green();
+        int leftBlue = jewelSensorLeft.blue();
+        telemetry.addData("Color", "R-Red-%d, R-Green-%d, R-Blue-%d", rightRed, rightGreen, rightBlue);
+        rightRed=rightRed-5;
+        if((rightBlue > rightRed)||(rightGreen > rightRed)&&(rightRed <= 40))
         {
-            telemetry.addLine("Blue Ball");
+            telemetry.addLine("Right: Blue Ball");
         }
-        else if(red > blue)
+        else if(rightRed > rightBlue)
         {
-            telemetry.addLine("Red Ball");
+            telemetry.addLine("Right: Red Ball");
         }
-        else
+        telemetry.addData("Color", "L-Red-%d, L-Green-%d, L-Blue-%d", leftRed, leftGreen, leftBlue);
+        leftRed=leftRed-5;
+        if((leftBlue > leftRed)||(leftGreen > leftRed)&&(leftRed <= 40))
         {
-            telemetry.addLine("Inconclusive");
+            telemetry.addLine("Left: Blue Ball");
         }
-
-
+        else if(leftRed > leftBlue)
+        {
+            telemetry.addLine("Left: Red Ball");
+        }
         telemetry.addData("Status", "Run Time: " + runtime.toString());
     }
     /*
