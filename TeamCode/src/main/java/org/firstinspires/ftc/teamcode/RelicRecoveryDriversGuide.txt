@@ -5,3 +5,5 @@ gamepad.a turns FineMode off(robot goes faster but not very precise)
 gamepad.b turns FineMode on(robot goes slower but more precise)
 gamepad.right_trigger raises the lift
 gamepad.left_trigger lowers the lift
+gamepad.right_bumper closes the glyph grabber
+gamepad.left_bumper opens the glyph grabber
