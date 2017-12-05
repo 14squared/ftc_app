@@ -53,10 +53,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="AsherBlue1", group="Linear Opmode")
+@Autonomous(name="AsherRed1", group="Linear Opmode")
 
 //@Disabled
-public class AsherBlue1 extends LinearOpMode {
+public class AsherRed1 extends LinearOpMode {
     private InvadersRelicRecoveryBot homeCode = null;
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -112,7 +112,7 @@ public class AsherBlue1 extends LinearOpMode {
            homeCode.sleepMs(5000);
            homeCode.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Left);
 //            //@todo Add delay for arm to move
-//            homeCode.sleepMs(3000);
+            homeCode.sleepMs(3000);
             //   5. Drive to VuMark
             //@todo Decide whether to drive to the VuMark
 //
