@@ -85,29 +85,28 @@ public class AsherBlue1 extends LinearOpMode {
             /* Spin To Win: */
             //1. Lower Jewel Arm
             homeCode.setJewelArmPosition(0, InvadersRelicRecoveryBot.JewelPush.Left);
+            homeCode.sleepMs(3000);
 
-////            2. Read Jewel Color
-//            boolean iSawRed = true;//homeCode.isLeftJewelRed();
-//            boolean iSawBlue = false; //homeCode.isLeftJewelBlue();
-//
-//           // 3.If Red move arm this way:
-//            if(iSawRed)
-//            {
-//                //@todo wiggle the robot this way
-//                homeCode.tankTurn(0.5, InvadersRelicRecoveryBot.TurnDirection.Right);
-//                homeCode.sleepMs(400);
-//
-//                homeCode.stopMotors();
-//            }
-//            //Else if blue move arm that way.
-//            else if(iSawBlue)
-//            {
-//                //@todo wiggle the robot the other way
-//                homeCode.tankTurn(0.5, InvadersRelicRecoveryBot.TurnDirection.Left);
-//                homeCode.sleepMs(400);
-//
-//             homeCode.stopMotors();
-//           }
+            //2. Read Jewel Color
+            boolean iSawRed = homeCode.isLeftJewelRed();
+            boolean iSawBlue = homeCode.isLeftJewelBlue();
+
+           // 3.If Red move arm this way:
+            if(iSawRed)
+            {
+                //@todo wiggle the robot this way
+                homeCode.tankTurn(0.5, InvadersRelicRecoveryBot.TurnDirection.Right);
+                homeCode.sleepMs(400);
+                homeCode.stopMotors();
+            }
+            //Else if blue move arm that way.
+            else if(iSawBlue)
+            {
+                //@todo wiggle the robot the other way
+                homeCode.tankTurn(0.5, InvadersRelicRecoveryBot.TurnDirection.Left);
+                homeCode.sleepMs(400);
+                homeCode.stopMotors();
+           }
           //4. Raise Jewel Arm
            homeCode.sleepMs(5000);
            homeCode.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Left);
