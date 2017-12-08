@@ -53,10 +53,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="AsherBlue1", group="Linear Opmode")
+@Autonomous(name="AsherRed2", group="Linear Opmode")
 
 //@Disabled
-public class AsherBlue1 extends LinearOpMode {
+public class AsherRed2 extends LinearOpMode {
     private InvadersRelicRecoveryBot homeCode = null;
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -84,7 +84,7 @@ public class AsherBlue1 extends LinearOpMode {
 
             /* Spin To Win: */
             //1. Lower Jewel Arm
-            homeCode.setJewelArmPosition(0, InvadersRelicRecoveryBot.JewelPush.Right);
+            homeCode.setJewelArmPosition(0.22, InvadersRelicRecoveryBot.JewelPush.Right);
             homeCode.sleepMs(3000);
 
             //2. Read Jewel Color
