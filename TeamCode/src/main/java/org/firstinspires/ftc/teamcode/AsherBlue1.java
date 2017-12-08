@@ -95,16 +95,16 @@ public class AsherBlue1 extends LinearOpMode {
             if(iSawRed)
             {
                 //@todo wiggle the robot this way
-                homeCode.tankTurn(0.5, InvadersRelicRecoveryBot.TurnDirection.Right);
-                homeCode.sleepMs(500);
+                homeCode.tankTurn(0.25, InvadersRelicRecoveryBot.TurnDirection.Right);
+                homeCode.sleepMs(1000);
                 homeCode.stopMotors();
             }
             //Else if blue move arm that way.
             else if(iSawBlue)
             {
                 //@todo wiggle the robot the other way
-                homeCode.tankTurn(0.5, InvadersRelicRecoveryBot.TurnDirection.Left);
-                homeCode.sleepMs(500);
+                homeCode.tankTurn(0.25, InvadersRelicRecoveryBot.TurnDirection.Left);
+                homeCode.sleepMs(1000);
                 homeCode.stopMotors();
            }
           //4. Raise Jewel Arm
