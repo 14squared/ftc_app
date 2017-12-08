@@ -2,15 +2,13 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsTouchSensor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -78,14 +76,7 @@ public class InvadersRelicRecoveryBot
      */
     public ElapsedTime period  = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
-
-
-    // Add the new Motors/Servos from the .txt file into the Relic
-
-
-
     /* Public OpMode members. */
-
     public DcMotor leftDrive   = null;
     public DcMotor rightDrive  = null;
     public Servo leftGrab = null;
@@ -93,8 +84,7 @@ public class InvadersRelicRecoveryBot
     public Servo jewelPushLeft = null;
     public Servo jewelPushRight = null;
     public DcMotor liftMotor = null;
-    public Servo Gripper = null;
-
+    public DigitalChannel liftMotorCutoff = null;
 
     public ModernRoboticsI2cRangeSensor UDSLeft = null;   // Default I2C Address: 0x26
     public ModernRoboticsI2cRangeSensor UDSRight = null;  // Default I2C Address: 0x28
@@ -110,8 +100,6 @@ public class InvadersRelicRecoveryBot
 
     public ModernRoboticsI2cGyro gyro = null;
     public FtcI2cDeviceState gyroState;
-
-    public TouchSensor touchSensor = null;
 
 //FUNCTIONS
     public enum JewelPush {Left, Right}
@@ -607,7 +595,10 @@ public class InvadersRelicRecoveryBot
 
         try {
             liftMotor = hwMap.get(DcMotor.class, "liftMotor");
-            //liftMototCutoff = hwMap.get()
+
+            // get a reference to our pushbutton sensor and set it to input mode
+            liftMotorCutoff = hwMap.get(DigitalChannel.class, "liftMotorCutoff");
+            liftMotorCutoff.setMode(DigitalChannel.Mode.INPUT);
         }
         catch (IllegalArgumentException e)
         {
