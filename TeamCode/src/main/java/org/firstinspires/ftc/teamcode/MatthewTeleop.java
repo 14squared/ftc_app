@@ -167,7 +167,19 @@ public class MatthewTeleop extends OpMode
             robot.rightGrab.setPosition(0.9);
             robot.leftGrab.setPosition(0.9);
         }
-
+/*        if (gamepad1.x == true)
+        {
+            robot.setJewelArmPosition(0, InvadersRelicRecoveryBot.JewelPush.Left);
+            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
+        }
+        else if (gamepad1.y == true)
+        {
+            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Left);
+            robot.setJewelArmPosition(0, InvadersRelicRecoveryBot.JewelPush.Right);
+        }
+        robot.isLeftJewelBlue();
+        robot.isRightJewelBlue();
+*/
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
