@@ -7,3 +7,8 @@ gamepad.right_trigger raises the lift
 gamepad.left_trigger lowers the lift
 gamepad.right_bumper closes the glyph grabber
 gamepad.left_bumper opens the glyph grabber
+
+xX--This is for the opmode that uses two controllers--Xx
+***
+**Controller One - Robot Positioning**
+Left stick - Robot forwards and backwards.
