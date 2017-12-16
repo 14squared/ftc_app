@@ -53,10 +53,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="AsherBlue2", group="Linear Opmode")
+@Autonomous(name="AsherBlue2__Cryptobox", group="Linear Opmode")
 
 //@Disabled
-public class AsherBlue2 extends LinearOpMode {
+public class AsherBlue2__Cryptobox extends LinearOpMode {
     private InvadersRelicRecoveryBot homeCode = null;
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -85,7 +85,13 @@ public class AsherBlue2 extends LinearOpMode {
             /* Spin To Win: */
             //   6. Read VuMark
             RelicRecoveryVuMark vuMark = homeCode.getVuforiaTargets(false);
+            vuMark = RelicRecoveryVuMark.LEFT;
+            homeCode.encoderDrive(0.3,10,10,2);
 
+            homeCode.stopMotors();
+            homeCode.tankTurn(0.25,InvadersRelicRecoveryBot.TurnDirection.Left);
+            homeCode.sleepMs(2000);
+            homeCode.stopMotors();
 
             /*//1. Lower Jewel Arm
             homeCode.setJewelArmPosition(0.22, InvadersRelicRecoveryBot.JewelPush.Left);
@@ -117,7 +123,7 @@ public class AsherBlue2 extends LinearOpMode {
             //   5. Drive to VuMark
             //@todo Decide whether to drive to the VuMark
 //
-//
+//            
 
 //
 //                 7. Calculate Cryptobox distance with VuMark = X.
@@ -126,6 +132,9 @@ public class AsherBlue2 extends LinearOpMode {
             {
                 //Drive to the left
                 homeCode.setDriveTrainPower(0.5);
+
+
+
             }else if(vuMark == RelicRecoveryVuMark.RIGHT)
             {
                 homeCode.setDriveTrainPower(0.3);

@@ -617,8 +617,8 @@ public class InvadersRelicRecoveryBot
             rightGrab.setDirection(Servo.Direction.REVERSE);
 
             // Open up the grabber servos to fit in our 18" profile
-            leftGrab.setPosition(0.9);
-            rightGrab.setPosition(0.9);
+            leftGrab.setPosition(0.3);
+            rightGrab.setPosition(0.3);
         }
         catch (IllegalArgumentException e)
         {
