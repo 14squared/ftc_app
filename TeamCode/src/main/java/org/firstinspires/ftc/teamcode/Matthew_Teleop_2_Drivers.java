@@ -29,14 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.widget.GridLayout;
-
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -54,9 +48,9 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Matthew Iterative OpMode", group="Iterative Opmode")
+@TeleOp(name="Matthew Teleop 2 Drivers", group="Iterative Opmode")
 //@Disabled
-public class MatthewTeleop extends OpMode
+public class Matthew_Teleop_2_Drivers extends OpMode
 {
     // Declare OpMode members.
     InvadersRelicRecoveryBot robot = new InvadersRelicRecoveryBot();
@@ -65,6 +59,7 @@ public class MatthewTeleop extends OpMode
     // fineMode is used to scale back the control speed of the motors.  This allows the driver
     // to make more precise changes to the robot mechanisms (better aiming, less jostling, etc).
     boolean fineMode = false;
+    boolean fineMode2 = false;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -115,6 +110,62 @@ public class MatthewTeleop extends OpMode
         // Keep track of the liftPosition (we want to make sure we don't go too high)
         double liftPosition = robot.liftMotor.getCurrentPosition();
 
+
+
+
+
+        // Look at the left and right triggers to decide whether to raise/lower the lift
+
+
+
+        // Look at the left/right bumpers to decide whether to open/close the glyph-gripper
+        double leftServoPos = robot.leftGrab.getPosition();
+        double rightServoPos = robot.leftGrab.getPosition();
+
+/*        if (gamepad1.x == true)
+        {
+            robot.setJewelArmPosition(0, InvadersRelicRecoveryBot.JewelPush.Left);
+            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
+        }
+        else if (gamepad1.y == true)
+        {
+            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Left);
+            robot.setJewelArmPosition(0, InvadersRelicRecoveryBot.JewelPush.Right);
+        }
+        robot.isLeftJewelBlue();
+        robot.isRightJewelBlue();
+*/
+
+        //Arm Operator Controls
+
+
+        robot.liftMotor.setPower(-gamepad2.left_trigger);
+
+        robot.liftMotor.setPower(gamepad2.right_trigger);
+
+        if(gamepad2.a == true){
+            fineMode = true;
+        }
+        else {
+            fineMode = false;
+        }
+
+        if (gamepad2.right_bumper == true) {
+            // Only increment the grip position if isn't already at its maximum
+            //if(leftServoPos <= 0.99) robot.leftGrab.setPosition(leftServoPos+0.01);
+            //if(rightServoPos <= 0.99) robot.rightGrab.setPosition(rightServoPos+0.01);
+            robot.rightGrab.setPosition(0.3);
+            robot.leftGrab.setPosition(0.3);
+        }
+        else if (gamepad2.left_bumper == true) {
+            //if(leftServoPos > 0.01) robot.leftGrab.setPosition(leftServoPos-0.01);
+            //if(rightServoPos > 0.01) robot.leftGrab.setPosition(rightServoPos-0.01);
+            robot.rightGrab.setPosition(0.9);
+            robot.leftGrab.setPosition(0.9);
+        }
+
+        //Driver Controls
+
         if(gamepad1.a == true){
             fineMode = false;
         }
@@ -136,50 +187,23 @@ public class MatthewTeleop extends OpMode
             robot.rightDrive.setPower(rightPower);
         }
 
-        // Look at the left and right triggers to decide whether to raise/lower the lift
-        if(gamepad1.left_trigger > 0.05)
-        {
-            robot.liftMotor.setPower(-gamepad1.left_trigger);
+        if(fineMode2 == true){
+            leftPower = Range.clip(drive - turn, -0.3, 0.3);
+            rightPower = Range.clip(drive + turn, -0.3, 0.3);
+            robot.leftDrive.setPower(leftPower);
+            robot.rightDrive.setPower(rightPower);
+
         }
-        else if(gamepad1.right_trigger > 0.05)
-        {
-            robot.liftMotor.setPower(gamepad1.right_trigger);
-        }
-        else
-        {
-            robot.liftMotor.setPower(0);
+        else {
+            leftPower = Range.clip(drive - turn, -1.0, 1.0);
+            rightPower = Range.clip(drive + turn, -1.0, 1.0);
+            robot.leftDrive.setPower(leftPower);
+            robot.rightDrive.setPower(rightPower);
         }
 
 
-        // Look at the left/right bumpers to decide whether to open/close the glyph-gripper
-        double leftServoPos = robot.leftGrab.getPosition();
-        double rightServoPos = robot.leftGrab.getPosition();
-        if (gamepad1.right_bumper == true) {
-            // Only increment the grip position if isn't already at its maximum
-            //if(leftServoPos <= 0.99) robot.leftGrab.setPosition(leftServoPos+0.01);
-            //if(rightServoPos <= 0.99) robot.rightGrab.setPosition(rightServoPos+0.01);
-            robot.rightGrab.setPosition(0.3);
-            robot.leftGrab.setPosition(0.3);
-        }
-        else if (gamepad1.left_bumper == true) {
-            //if(leftServoPos > 0.01) robot.leftGrab.setPosition(leftServoPos-0.01);
-            //if(rightServoPos > 0.01) robot.leftGrab.setPosition(rightServoPos-0.01);
-            robot.rightGrab.setPosition(0.9);
-            robot.leftGrab.setPosition(0.9);
-        }
-/*        if (gamepad1.x == true)
-        {
-            robot.setJewelArmPosition(0, InvadersRelicRecoveryBot.JewelPush.Left);
-            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
-        }
-        else if (gamepad1.y == true)
-        {
-            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Left);
-            robot.setJewelArmPosition(0, InvadersRelicRecoveryBot.JewelPush.Right);
-        }
-        robot.isLeftJewelBlue();
-        robot.isRightJewelBlue();
-*/
+
+
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);

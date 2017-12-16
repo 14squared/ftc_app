@@ -53,10 +53,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="RedAutonomousOp", group="Linear Opmode")
+@Autonomous(name="BlueAutonomousOp", group="Linear Opmode")
 
 //@Disabled
-public class AsherRed2 extends LinearOpMode {
+public class BlueAutoOp extends LinearOpMode {
     private InvadersRelicRecoveryBot homeCode = null;
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -84,45 +84,45 @@ public class AsherRed2 extends LinearOpMode {
 
             /* Spin To Win: */
             //1. Lower Jewel Arm
-            homeCode.setJewelArmPosition(0.22, InvadersRelicRecoveryBot.JewelPush.Right);
+            homeCode.setJewelArmPosition(0.78, InvadersRelicRecoveryBot.JewelPush.Left);
             homeCode.sleepMs(3000);
 
             //2. Read Jewel Color
-            boolean iSawRed = homeCode.isRightJewelRed();
-            boolean iSawBlue = homeCode.isRightJewelBlue();
+            boolean iSawRed = homeCode.isLeftJewelRed();
+            boolean iSawBlue = homeCode.isLeftJewelBlue();
 
-           // 3.If Red move arm this way:
+            // 3.If Red move arm this way:
             if(iSawRed)
             {
                 //@todo wiggle the robot this way
-                homeCode.encoderDrive( 0.60, 4, 4, 2);
+                homeCode.encoderDrive( 0.60, -4, -4, 2);
                 homeCode.sleepMs(1000);
                 homeCode.stopMotors();
-                homeCode.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
+                homeCode.setJewelArmPosition(0, InvadersRelicRecoveryBot.JewelPush.Left);
                 homeCode.sleepMs(2000);
-                homeCode.encoderDrive(1, 12, 12, 5);
+                homeCode.encoderDrive(1, 20, 20, 5);
                 homeCode.stopMotors();
             }
             //Else if blue move arm that way.
             else if(iSawBlue)
             {
                 //@todo wiggle the robot the other way
-                homeCode.encoderDrive( 0.60, -4, -4, 2);
+                homeCode.encoderDrive( 0.60, 4, 4, 2);
                 homeCode.sleepMs(1000);
                 homeCode.stopMotors();
-                homeCode.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
+                homeCode.setJewelArmPosition(0, InvadersRelicRecoveryBot.JewelPush.Left);
                 homeCode.sleepMs(2000);
-                homeCode.encoderDrive(1, 20, 20, 5);
+                homeCode.encoderDrive(1, 16, 16, 5);
                 homeCode.stopMotors();
-           }
-           else
+            }
+            else
             {
-                homeCode.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
+                homeCode.setJewelArmPosition(0, InvadersRelicRecoveryBot.JewelPush.Right);
                 homeCode.sleepMs(2000);
                 homeCode.encoderDrive(1, 20, 20, 5);
                 homeCode.stopMotors();
             }
-          //4. Raise Jewel Arm
+            //4. Raise Jewel Arm
             //   5. Drive to VuMark
             //@todo Decide whether to drive to the VuMark
 //
