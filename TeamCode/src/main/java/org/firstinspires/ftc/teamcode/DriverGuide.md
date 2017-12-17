@@ -1,19 +1,22 @@
 # This is for the one controller OpMode
-The left joystick is moves the robot forwards and backwards
 
-The right joystick turns the robot right and left
+## Controller One - All of the controls
 
-gamepad.a turns FineMode off(robot goes faster but not very precise)
+- The left joystick is moves the robot forwards and backwards
 
-gamepad.b turns FineMode on(robot goes slower but more precise)
+- The right joystick turns the robot right and left
 
-gamepad.right_trigger raises the lift
+- gamepad.a turns FineMode off(robot goes faster but not very precise)
 
-gamepad.left_trigger lowers the lift
+- gamepad.b turns FineMode on(robot goes slower but more precise)
 
-gamepad.right_bumper closes the glyph grabber
+- gamepad.right_trigger raises the lift
 
-gamepad.left_bumper opens the glyph grabber
+- gamepad.left_trigger lowers the lift
+
+- gamepad.right_bumper closes the glyph grabber
+
+- gamepad.left_bumper opens the glyph grabber
 
 
 
