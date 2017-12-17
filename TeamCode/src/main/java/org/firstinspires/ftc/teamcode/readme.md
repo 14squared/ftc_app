@@ -36,7 +36,7 @@ To drive the robot, you must select a TeleOp Mode from the list in the robot con
 
 - Fine Mode Off - A (green)
 
----
+
 
 ### Controller Two - Arm Control
 
