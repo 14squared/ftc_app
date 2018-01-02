@@ -5,12 +5,12 @@
  */
 buildscript {
     repositories {
-<<<<<<< HEAD
+
        google()
-=======
+
         jcenter()
-        google()
->>>>>>> 9f7eecf36c0ccef1ddd1cb26dd40011d2a64b9b5
+
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
