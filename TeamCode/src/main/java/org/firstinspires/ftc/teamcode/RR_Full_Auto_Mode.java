@@ -32,11 +32,7 @@ package org.firstinspires.ftc.teamcode;/* Copyright (c) 2017 FIRST. All rights r
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 
 /**
@@ -52,7 +48,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "Test Autonomous Matthew", group = "Linear Opmode")
+@Autonomous(name = "Cube Placer", group = "Linear Opmode")
 @Disabled
 /* Spin To Win:
 
@@ -71,7 +67,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 11. Drive straight into triangle.
 12. Block Enemy Targets
 */
-public class MatthewAuto extends LinearOpMode {
+public class RR_Full_Auto_Mode extends LinearOpMode {
     InvadersRelicRecoveryBot robot = new InvadersRelicRecoveryBot();
 
 
@@ -99,37 +95,47 @@ public class MatthewAuto extends LinearOpMode {
 
         telemetry.update();
 
-        robot.encoderDrive(0.3, 18, 18, 20);
-        /*if(doISeeBlue == true){
-            robot.encoderDrive(0.3, -2,-2, 5);
-        } else {
-            robot.encoderDrive(0.1, 0.1, 0.1, 1);
-        }*/
-     /*   RelicRecoveryVuMark seenVuMarks = robot.getVuforiaTargets(false);
+        //Asher and Hunter's jewel knocking software.
 
-       robot.leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-       robot.rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-       int endposright = robot.rightDrive.getCurrentPosition() + 10000;
-       int endposleft = robot.leftDrive.getCurrentPosition() + 10000;
-       robot.rightDrive.setTargetPosition(endposright);
-       robot.leftDrive.setTargetPosition(endposleft);
-       robot.leftDrive.setPower(0.3);
-       robot.rightDrive.setPower(0.3);
-       robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-       robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.setJewelArmPosition(0.22, InvadersRelicRecoveryBot.JewelPush.Right);
+        robot.sleepMs(3000);
 
-        switch (seenVuMarks) {
-            case LEFT:
+        //2. Read Jewel Color
+        boolean iSawRed = robot.isRightJewelRed();
+        boolean iSawBlue = robot.isRightJewelBlue();
 
-                break;
-            case RIGHT:
-                break;
-            case CENTER:
-                break;
-            case UNKNOWN:
-                break;
-                }
-                */
+        // 3.If Red move arm this way:
+        if(iSawRed)
+        {
+            //@todo wiggle the robot this way
+            robot.encoderDrive( 0.60, 4, 4, 2);
+            robot.sleepMs(1000);
+            robot.stopMotors();
+            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
+            robot.sleepMs(2000);
+            robot.encoderDrive(1, 12, 12, 5);
+            robot.stopMotors();
+        }
+        //Else if blue move arm that way.
+        else if(iSawBlue)
+        {
+            //@todo wiggle the robot the other way
+            robot.encoderDrive( 0.60, -4, -4, 2);
+            robot.sleepMs(1000);
+            robot.stopMotors();
+            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
+            robot.sleepMs(2000);
+            robot.encoderDrive(1, 20, 20, 5);
+            robot.stopMotors();
+        }
+        else
+        {
+            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
+            robot.sleepMs(2000);
+            robot.encoderDrive(1, 20, 20, 5);
+            robot.stopMotors();
+        }
+
 
 
 
