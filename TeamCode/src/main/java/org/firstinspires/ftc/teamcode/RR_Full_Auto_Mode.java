@@ -29,14 +29,9 @@ package org.firstinspires.ftc.teamcode;/* Copyright (c) 2017 FIRST. All rights r
 
 //package org.firstinspires.ftc.robotcontroller.external.samples;
 
-import android.util.Log;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 
 /**
@@ -52,8 +47,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "Cube Placer", group = "Linear Opmode")
+@Autonomous(name = "Cube Placer 2", group = "Linear Opmode")
 //@Disabled
+
+
+
 /* Spin To Win:
 
 1. Lower Jewel Arm
@@ -71,9 +69,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 11. Drive straight into triangle.
 12. Block Enemy Targets
 */
-public class RL_Full_Auto_Mode extends LinearOpMode {
+public class RR_Full_Auto_Mode extends LinearOpMode {
     InvadersRelicRecoveryBot robot = new InvadersRelicRecoveryBot();
-    SensorBNO055IMU IMU = new SensorBNO055IMU();
 
 
     // Declare OpMode members.
@@ -99,6 +96,8 @@ public class RL_Full_Auto_Mode extends LinearOpMode {
         runtime.reset();
 
         telemetry.update();
+
+
 
         //Asher and Hunter's jewel knocking software.
 
@@ -165,11 +164,12 @@ public class RL_Full_Auto_Mode extends LinearOpMode {
 //            case UNKNOWN:
 //                Log.w("VuMarkIdentification", "No VuMark Found");
 //
-
-
 //        }
 
-
+            robot.encoderDrive(0.1, 13, 13, 10);
+            robot.encoderDrive(0.1, -6.5, 6.5, 10);
+            robot.encoderDrive(0.1, 2, 2, 10);
+            robot.encoderDrive(0.1, 6.5, -6.5, 10);
 
 
 

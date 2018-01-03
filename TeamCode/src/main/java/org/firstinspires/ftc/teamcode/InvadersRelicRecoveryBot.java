@@ -106,6 +106,8 @@ public class InvadersRelicRecoveryBot
     public ModernRoboticsI2cGyro gyro = null;
     public FtcI2cDeviceState gyroState;
 
+
+
 //FUNCTIONS
     public enum JewelPush {Left, Right}
 
