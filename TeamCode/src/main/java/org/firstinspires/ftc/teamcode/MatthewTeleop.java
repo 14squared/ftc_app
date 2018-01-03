@@ -116,10 +116,14 @@ public class MatthewTeleop extends OpMode
         double liftPosition = robot.liftMotor.getCurrentPosition();
 
         if(gamepad1.a == true){
-            fineMode = false;
+            robot.relicArm.setPower(1);
         }
-        if (gamepad1.b == true){
-            fineMode = true;
+        else if (gamepad1.b == true){
+            robot.relicArm.setPower(-1);
+        }
+        else
+        {
+            robot.relicArm.setPower(0);
         }
 
         if(fineMode == true){

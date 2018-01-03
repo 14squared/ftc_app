@@ -16,12 +16,15 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+
+import static org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark.UNKNOWN;
 
 /**
  * This is NOT an opmode.
@@ -85,6 +88,8 @@ public class InvadersRelicRecoveryBot
     public Servo jewelPushRight = null;
     public DcMotor liftMotor = null;
     public DigitalChannel liftMotorCutoff = null;
+    public DcMotor relicArm = null;
+
 
     public ModernRoboticsI2cRangeSensor UDSLeft = null;   // Default I2C Address: 0x26
     public ModernRoboticsI2cRangeSensor UDSRight = null;  // Default I2C Address: 0x28
@@ -571,10 +576,14 @@ public class InvadersRelicRecoveryBot
             // Define and Initialize Drive Motors
             leftDrive = hwMap.get(DcMotor.class, "leftDrive");
             rightDrive = hwMap.get(DcMotor.class, "rightDrive");
+            relicArm = hwMap.get(DcMotor.class, "relicArm");
+            relicArm.setDirection(DcMotorSimple.Direction.FORWARD);
 
             // Set opposite motor directions for the Drive Train
-            rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-            leftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+//            rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+//            leftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+            leftDrive.setDirection(DcMotor.Direction.REVERSE);
+            rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
             telemetry.addData("Gear Reduction (L)", "%.02f", leftDrive.getMotorType().getGearing());
             telemetry.addData("Encoder PPR (L)", "%.02f", leftDrive.getMotorType().getTicksPerRev());
@@ -630,7 +639,6 @@ public class InvadersRelicRecoveryBot
         try {
             jewelPushLeft = hwMap.get(Servo.class, "jewelPushLeft");
             jewelPushRight = hwMap.get(Servo.class, "jewelPushRight");
-//            Gripper = hwMap.get(Servo.class, "Gripper");
         }
         catch (IllegalArgumentException e)
         {
@@ -659,8 +667,6 @@ public class InvadersRelicRecoveryBot
                 //floorSensor = hwMap.colorSensor.get("floorSensor");
                 //gyro = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("gyroSensor");
 
-        if(leftDrive != null) leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        if(rightDrive != null) rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
         // Set all motors to zero power
         setDriveTrainPower(0);
@@ -681,7 +687,6 @@ public class InvadersRelicRecoveryBot
             rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
         }
 
 //        // Custom I2C Addresses Go Here!
@@ -809,6 +814,7 @@ public class InvadersRelicRecoveryBot
     }
 
     public RelicRecoveryVuMark getVuforiaTargets(boolean UseFrontCam){
+        OpenGLMatrix lastLocation = null;
         VuforiaLocalizer vuforia;
         /*
          * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
@@ -839,7 +845,7 @@ public class InvadersRelicRecoveryBot
          * Here we chose the back (HiRes) camera (for greater range), but
          * for a competition robot, the front camera might be more convenient.
          */
-        if(UseFrontCam = true) {
+        if(UseFrontCam == true) {
             parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
         }
         else {
@@ -871,24 +877,27 @@ public class InvadersRelicRecoveryBot
          * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
          */
 
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+        RelicRecoveryVuMark vuMark = UNKNOWN;
+        ElapsedTime vuMarkDetectTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+        vuMarkDetectTimer.reset();
+        while(vuMark == UNKNOWN && vuMarkDetectTimer.time() < 5000) {
+            vuMark = RelicRecoveryVuMark.from(relicTemplate);
 
-
-        switch(vuMark){
-            case LEFT:
-                telemetry.addData("VuMark LEFT", "is visible", vuMark);
-                break;
-            case CENTER:
-                telemetry.addData("VuMark CENTER", "is visible", vuMark);
-                break;
-            case RIGHT:
-                telemetry.addData("VuMark RIGHT", "is visible", vuMark);
-                break;
-            case UNKNOWN:
-                telemetry.addData("VuMark", "Not Found", vuMark);
-                break;
+            switch (vuMark) {
+                case LEFT:
+                    telemetry.addData("VuMark LEFT", "is visible", vuMark);
+                    break;
+                case CENTER:
+                    telemetry.addData("VuMark CENTER", "is visible", vuMark);
+                    break;
+                case RIGHT:
+                    telemetry.addData("VuMark RIGHT", "is visible", vuMark);
+                    break;
+                case UNKNOWN:
+                    telemetry.addData("VuMark", "Not Found", vuMark);
+                    break;
+            }
         }
-
 
         telemetry.update();
         return vuMark;

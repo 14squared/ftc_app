@@ -29,10 +29,14 @@ package org.firstinspires.ftc.teamcode;/* Copyright (c) 2017 FIRST. All rights r
 
 //package org.firstinspires.ftc.robotcontroller.external.samples;
 
+import android.util.Log;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 
 /**
@@ -67,7 +71,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 11. Drive straight into triangle.
 12. Block Enemy Targets
 */
-public class RR_Full_Auto_Mode extends LinearOpMode {
+public class RL_Full_Auto_Mode extends LinearOpMode {
     InvadersRelicRecoveryBot robot = new InvadersRelicRecoveryBot();
 
 
@@ -108,7 +112,7 @@ public class RR_Full_Auto_Mode extends LinearOpMode {
         if(iSawRed)
         {
             //@todo wiggle the robot this way
-            robot.encoderDrive( 0.60, 4, 4, 2);
+            robot.encoderDrive( 0.1, 4, 4, 2);
             robot.sleepMs(1000);
             robot.stopMotors();
             robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
@@ -120,7 +124,7 @@ public class RR_Full_Auto_Mode extends LinearOpMode {
         else if(iSawBlue)
         {
             //@todo wiggle the robot the other way
-            robot.encoderDrive( 0.60, -4, -4, 2);
+            robot.encoderDrive( 0.1, -4, -4, 2);
             robot.sleepMs(1000);
             robot.stopMotors();
             robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
@@ -136,12 +140,37 @@ public class RR_Full_Auto_Mode extends LinearOpMode {
             robot.stopMotors();
         }
 
+        //END Asher and Hunter's code
+        //Vuforia identification
 
+        RelicRecoveryVuMark visibleTargets = robot.getVuforiaTargets(false);
+
+        switch (visibleTargets){
+            case LEFT:
+                robot.encoderDrive(0.3, -10, 10, 10);
+                robot.encoderDrive(0.3, 34, 34, 10);
+                Log.i("VuMark Identification", "Left VuMark FOUND!");
+                break;
+            case RIGHT:
+                robot.encoderDrive(0.3, -3, 3, 10);
+                robot.encoderDrive(0.3, 20, 20, 10);
+                Log.i("VuMark Identification", "Right VuMark FOUND!");
+                break;
+            case CENTER:
+                robot.encoderDrive(0.3, -5, 5, 10);
+                robot.encoderDrive(0.3, 27, 27, 10);
+                Log.i("VuMark Identification", "Center VuMark FOUND!");
+                break;
+            case UNKNOWN:
+                Log.w("VuMarkIdentification", "No VuMark Found");
+                telemetry.addData("VuForia", "No VuMark Found");
+        }
 
 
 
 
     }
+
 
 }
 
