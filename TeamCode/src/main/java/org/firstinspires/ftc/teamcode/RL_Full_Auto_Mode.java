@@ -73,7 +73,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 */
 public class RL_Full_Auto_Mode extends LinearOpMode {
     InvadersRelicRecoveryBot robot = new InvadersRelicRecoveryBot();
-    SensorBNO055IMU IMU = new SensorBNO055IMU();
+    
 
 
     // Declare OpMode members.

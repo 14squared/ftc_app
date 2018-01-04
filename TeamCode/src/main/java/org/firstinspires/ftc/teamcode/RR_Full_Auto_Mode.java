@@ -167,9 +167,11 @@ public class RR_Full_Auto_Mode extends LinearOpMode {
 //        }
 
             robot.encoderDrive(0.1, 13, 13, 10);
-            robot.encoderDrive(0.1, -6.5, 6.5, 10);
+            robot.gyroTurn(0.1, 90);
+            //robot.encoderDrive(0.1, -6.5, 6.5, 10);
             robot.encoderDrive(0.1, 2, 2, 10);
-            robot.encoderDrive(0.1, 6.5, -6.5, 10);
+            robot.gyroTurn(0.1, -90);
+            //robot.encoderDrive(0.1, 6.5, -6.5, 10);
 
 
 

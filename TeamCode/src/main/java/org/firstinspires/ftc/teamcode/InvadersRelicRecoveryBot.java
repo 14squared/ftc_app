@@ -667,7 +667,7 @@ public class InvadersRelicRecoveryBot
                 //UDSLeft = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSLeft");
                 //UDSRight = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSRight");
                 //floorSensor = hwMap.colorSensor.get("floorSensor");
-                //gyro = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("gyroSensor");
+                gyro = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("gyroSensor");
 
 
         // Set all motors to zero power
