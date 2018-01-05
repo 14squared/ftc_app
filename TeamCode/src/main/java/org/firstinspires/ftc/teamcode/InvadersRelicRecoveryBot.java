@@ -1,5 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -17,7 +22,9 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -106,7 +113,11 @@ public class InvadersRelicRecoveryBot
     public ModernRoboticsI2cGyro gyro = null;
     public FtcI2cDeviceState gyroState;
 
-
+    public BNO055IMU imu;   // Internal to the Rev Robotics Expansion Hub
+    static public String IMU_CALIBRATION_FILE = "BNO055IMUCalibration.json";
+    // State used for updating telemetry
+    Orientation angles;
+    Acceleration gravity;
 
 //FUNCTIONS
     public enum JewelPush {Left, Right}
@@ -510,10 +521,16 @@ public class InvadersRelicRecoveryBot
      */
     public double getError(double targetAngle) {
 
-        double robotError;
-
-        // calculate error in -179 to +180 range  (
-        robotError = targetAngle - gyro.getIntegratedZValue();
+        double robotError = 0;
+        if(gyro != null) {
+            // calculate error in -179 to +180 range  (
+            robotError = targetAngle - gyro.getIntegratedZValue();
+        }
+        else if(imu != null)
+        {
+            robotError = targetAngle - imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+        }
+        telemetry.addData("robotError", robotError);
         while (robotError > 180)  robotError -= 360;
         while (robotError <= -180) robotError += 360;
         return robotError;
@@ -573,6 +590,32 @@ public class InvadersRelicRecoveryBot
 
         // Save reference to the active OpMode
         this.activeOpMode = activeOpMode;
+
+        try {
+            // Define and Initialze the IMU inside the Rev Robotics Expansion Hub
+            // Set up the parameters with which we will use our IMU. Note that integration
+            // algorithm here just reports accelerations to the logcat log; it doesn't actually
+            // provide positional information.
+            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+            parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+            parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+            parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+            parameters.loggingEnabled      = true;
+            parameters.loggingTag          = "IMU";
+            parameters.accelerationIntegrationAlgorithm = new InvadersAccelerationIntegrator();
+
+            // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+            // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+            // and named "imu".
+            imu = hwMap.get(BNO055IMU.class, "imu");
+            imu.initialize(parameters);
+        }
+        catch (IllegalArgumentException e)
+        {
+            // If we have a robot (e.g. SmallBot) that doesn't have the Expansion Hub Installed, then
+            // we throw an exception and can't test.  This try/catch block swallows that exception.
+            telemetry.addData("'imu' not defined in config", e);
+        }
 
         try {
             // Define and Initialize Drive Motors
@@ -667,8 +710,15 @@ public class InvadersRelicRecoveryBot
                 //UDSLeft = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSLeft");
                 //UDSRight = hwMap.get(ModernRoboticsI2cRangeSensor.class, "UDSRight");
                 //floorSensor = hwMap.colorSensor.get("floorSensor");
-                gyro = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("gyroSensor");
-
+//        try {
+//            gyro = hwMap.get(ModernRoboticsI2cGyro.class, "gyroSensor");
+//        }
+//        catch (IllegalArgumentException e)
+//        {
+//            // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
+//            // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
+//            telemetry.addData("'gyroSensor' is not defined in config", e);
+//        }
 
         // Set all motors to zero power
         setDriveTrainPower(0);

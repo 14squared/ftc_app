@@ -144,30 +144,30 @@ public class RL_Full_Auto_Mode extends LinearOpMode {
         //END Asher and Hunter's code
         //Vuforia identification
 
-        //RelicRecoveryVuMark visibleTargets = robot.getVuforiaTargets(false);
+        RelicRecoveryVuMark visibleTargets = RelicRecoveryVuMark.CENTER; //robot.getVuforiaTargets(false);
 
-//        switch (visibleTargets){
-//            case LEFT:
-//                robot.encoderDrive(0.1, 23, 23, 10);
-//                robot.encoderDrive(0.1, 6.5, -6.5,10);
-//                Log.i("VuMark Identification", "Left VuMark FOUND!");
-//                break;
-//            case CENTER:
-//                robot.encoderDrive(0.1, 19, 19, 10);
-//                robot.encoderDrive(0.1, 6.5, -6.5, 10);
-//                Log.i("VuMark Identification", "Right VuMark FOUND!");
-//                break;
-//            case RIGHT:
-//                robot.encoderDrive(0.1, 15, 15, 10);
-//                robot.encoderDrive(0.1, 6.5, -6.5, 10);
-//                Log.i("VuMark Identification", "Center VuMark FOUND!");
-//                break;
-//            case UNKNOWN:
-//                Log.w("VuMarkIdentification", "No VuMark Found");
-//
-
-
-//        }
+        switch (visibleTargets){
+            case LEFT:
+                robot.encoderDrive(0.1, 23, 23, 10);
+                //robot.encoderDrive(0.1, 6.5, -6.5,10);
+                robot.gyroTurn(0.1, 90);
+                Log.i("VuMark Identification", "Left VuMark FOUND!");
+                break;
+            case CENTER:
+                robot.encoderDrive(0.1, 19, 19, 10);
+                //robot.encoderDrive(0.1, 6.5, -6.5, 10);
+                robot.gyroTurn(0.1, 90);
+                Log.i("VuMark Identification", "Right VuMark FOUND!");
+                break;
+            case RIGHT:
+                robot.encoderDrive(0.1, 15, 15, 10);
+                //robot.encoderDrive(0.1, 6.5, -6.5, 10);
+                robot.gyroTurn(0.1, 90);
+                Log.i("VuMark Identification", "Center VuMark FOUND!");
+                break;
+            case UNKNOWN:
+                Log.w("VuMarkIdentification", "No VuMark Found");
+        }
 
 
 
