@@ -48,6 +48,8 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
+
+
 @TeleOp(name="Matthew Teleop 2 Drivers", group="Iterative Opmode")
 //@Disabled
 public class Matthew_Teleop_2_Drivers extends OpMode
@@ -60,6 +62,10 @@ public class Matthew_Teleop_2_Drivers extends OpMode
     // to make more precise changes to the robot mechanisms (better aiming, less jostling, etc).
     boolean fineMode = false;
     boolean fineMode2 = false;
+
+
+
+
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -90,6 +96,10 @@ public class Matthew_Teleop_2_Drivers extends OpMode
          * we'd use the pushbutton sensor.  This will allow us to limit the total
          * height we try to lift and prevent us from snapping the lift string.
         */
+
+
+
+
     }
 
 
@@ -109,6 +119,8 @@ public class Matthew_Teleop_2_Drivers extends OpMode
 
         // Keep track of the liftPosition (we want to make sure we don't go too high)
         double liftPosition = robot.liftMotor.getCurrentPosition();
+
+
 
 
 
@@ -164,6 +176,26 @@ public class Matthew_Teleop_2_Drivers extends OpMode
             robot.leftGrab.setPosition(0.9);
         }
 
+        if (gamepad2.x == true){
+
+        if(robot.relicGripperClaw.getPosition() <=.9){
+            robot.relicGripperClaw.setPosition(robot.relicGripperClaw.getPosition() + 0.1);
+        }
+        else {
+            robot.relicGripperClaw.setPosition(1);
+        }
+
+        }
+
+        if (gamepad2.y == true){
+            if (robot.relicGripperClaw.getPosition() >= 0.1){
+                robot.relicGripperClaw.setPosition(robot.relicGripperClaw.getPosition() - 0.1);
+            }
+            else {
+                robot.relicGripperClaw.setPosition(0);
+            }
+        }
+
         //Driver Controls
 
         if(gamepad1.a == true){
@@ -187,19 +219,10 @@ public class Matthew_Teleop_2_Drivers extends OpMode
             robot.rightDrive.setPower(rightPower);
         }
 
-        if(fineMode2 == true){
-            leftPower = Range.clip(drive - turn, -0.3, 0.3);
-            rightPower = Range.clip(drive + turn, -0.3, 0.3);
-            robot.leftDrive.setPower(leftPower);
-            robot.rightDrive.setPower(rightPower);
 
-        }
-        else {
-            leftPower = Range.clip(drive - turn, -1.0, 1.0);
-            rightPower = Range.clip(drive + turn, -1.0, 1.0);
-            robot.leftDrive.setPower(leftPower);
-            robot.rightDrive.setPower(rightPower);
-        }
+
+
+
 
 
 
