@@ -95,7 +95,9 @@ public class InvadersRelicRecoveryBot
     public Servo jewelPushRight = null;
     public DcMotor liftMotor = null;
     public DigitalChannel liftMotorCutoff = null;
-    public DcMotor relicArm = null;
+
+    public Servo relicGripper = null;
+    public DcMotor relicExtension = null;
 
 
     public ModernRoboticsI2cRangeSensor UDSLeft = null;   // Default I2C Address: 0x26
@@ -621,8 +623,8 @@ public class InvadersRelicRecoveryBot
             // Define and Initialize Drive Motors
             leftDrive = hwMap.get(DcMotor.class, "leftDrive");
             rightDrive = hwMap.get(DcMotor.class, "rightDrive");
-            relicArm = hwMap.get(DcMotor.class, "relicArm");
-            relicArm.setDirection(DcMotorSimple.Direction.FORWARD);
+            relicExtension = hwMap.get(DcMotor.class, "relicExtension");
+            relicExtension.setDirection(DcMotorSimple.Direction.FORWARD);
 
             // Set opposite motor directions for the Drive Train
 //            rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -702,6 +704,13 @@ public class InvadersRelicRecoveryBot
             // If we have a robot (e.g. SmallBot) that doesn't have all of the motors defined, then
             // we throw an exception and can't test the other, installed Motors.  This try/catch block swallows that exception.
             telemetry.addData("'jewelSensorLeft' or 'jewelSensorRight' not defined in config", e);
+        }
+        try {
+            relicExtension = hwMap.dcMotor.get("relicExtension");
+            relicGripper = hwMap.servo.get("relicGripper");
+        }
+        catch (IllegalArgumentException e){
+            telemetry.addData("Relic Arm hardware not defined in config", e);
         }
 
             // These sensors are leftovers from the VelocityVortex game - we may add these kinds
