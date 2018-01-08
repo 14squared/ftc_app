@@ -97,6 +97,7 @@ public class InvadersRelicRecoveryBot
     public DigitalChannel liftMotorCutoff = null;
 
     public Servo relicGripper = null;
+    public Servo relicGripperRotation = null;
     public DcMotor relicExtension = null;
 
 
@@ -623,8 +624,7 @@ public class InvadersRelicRecoveryBot
             // Define and Initialize Drive Motors
             leftDrive = hwMap.get(DcMotor.class, "leftDrive");
             rightDrive = hwMap.get(DcMotor.class, "rightDrive");
-            relicExtension = hwMap.get(DcMotor.class, "relicExtension");
-            relicExtension.setDirection(DcMotorSimple.Direction.FORWARD);
+
 
             // Set opposite motor directions for the Drive Train
 //            rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -707,7 +707,9 @@ public class InvadersRelicRecoveryBot
         }
         try {
             relicExtension = hwMap.dcMotor.get("relicExtension");
+            relicExtension.setDirection(DcMotorSimple.Direction.FORWARD);
             relicGripper = hwMap.servo.get("relicGripper");
+            relicGripperRotation = hwMap.servo.get("relicGripperRotate");
         }
         catch (IllegalArgumentException e){
             telemetry.addData("Relic Arm hardware not defined in config", e);

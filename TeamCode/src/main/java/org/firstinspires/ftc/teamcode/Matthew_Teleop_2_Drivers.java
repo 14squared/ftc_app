@@ -150,15 +150,15 @@ public class Matthew_Teleop_2_Drivers extends OpMode
         //Arm Operator Controls
 
 
-        robot.liftMotor.setPower(-gamepad2.left_trigger);
+        //robot.liftMotor.setPower(-gamepad2.left_trigger);
 
-        robot.liftMotor.setPower(gamepad2.right_trigger);
+        //robot.liftMotor.setPower(gamepad2.right_trigger);
 
-        if(gamepad2.a == true){
-            fineMode = true;
+        if (gamepad2.a == true){
+            robot.relicGripperRotation.setPosition(1);
         }
-        else {
-            fineMode = false;
+        if (gamepad2.b == true){
+            robot.relicGripperRotation.setPosition(0);
         }
 
         if (gamepad2.right_bumper == true) {
@@ -195,6 +195,9 @@ public class Matthew_Teleop_2_Drivers extends OpMode
             }
         }
 
+        robot.relicExtension.setPower(gamepad2.left_trigger);
+        robot.relicExtension.setPower(-gamepad2.right_trigger);
+
         //Driver Controls
 
         if(gamepad1.a == true){
@@ -217,6 +220,8 @@ public class Matthew_Teleop_2_Drivers extends OpMode
             robot.leftDrive.setPower(leftPower);
             robot.rightDrive.setPower(rightPower);
         }
+
+
 
 
 
