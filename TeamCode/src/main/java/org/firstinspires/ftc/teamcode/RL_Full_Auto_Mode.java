@@ -102,44 +102,44 @@ public class RL_Full_Auto_Mode extends LinearOpMode {
 
         //Asher and Hunter's jewel knocking software.
 
-//        robot.setJewelArmPosition(0.22, InvadersRelicRecoveryBot.JewelPush.Right);
-//        robot.sleepMs(3000);
-//
-//        //2. Read Jewel Color
-//        boolean iSawRed = robot.isRightJewelRed();
-//        boolean iSawBlue = robot.isRightJewelBlue();
-//
-//        // 3.If Red move arm this way:
-//        if(iSawRed)
-//        {
-//            //@todo wiggle the robot this way
-//            robot.encoderDrive( 0.1, 4, 4, 2);
-//            robot.sleepMs(1000);
-//            robot.stopMotors();
-//            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
-//            robot.sleepMs(2000);
-//            robot.encoderDrive(1, 12, 12, 5);
-//            robot.stopMotors();
-//        }
-//        //Else if blue move arm that way.
-//        else if(iSawBlue)
-//        {
-//            //@todo wiggle the robot the other way
-//            robot.encoderDrive( 0.1, -4, -4, 2);
-//            robot.sleepMs(1000);
-//            robot.stopMotors();
-//            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
-//            robot.sleepMs(2000);
-//            robot.encoderDrive(1, 20, 20, 5);
-//            robot.stopMotors();
-//        }
-//        else
-//        {
-//            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
-//            robot.sleepMs(2000);
-//            robot.encoderDrive(1, 20, 20, 5);
-//            robot.stopMotors();
-//        }
+        robot.setJewelArmPosition(0.22, InvadersRelicRecoveryBot.JewelPush.Right);
+        robot.sleepMs(3000);
+
+        //2. Read Jewel Color
+        boolean iSawRed = robot.isRightJewelRed();
+        boolean iSawBlue = robot.isRightJewelBlue();
+
+        // 3.If Red move arm this way:
+        if(iSawRed)
+        {
+            //@todo wiggle the robot this way
+            robot.encoderDrive( 0.1, 4, 4, 2);
+            robot.sleepMs(1000);
+            robot.stopMotors();
+            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
+            robot.sleepMs(2000);
+            robot.encoderDrive(1, 12, 12, 5);
+            robot.stopMotors();
+        }
+        //Else if blue move arm that way.
+        else if(iSawBlue)
+        {
+            //@todo wiggle the robot the other way
+            robot.encoderDrive( 0.1, -4, -4, 2);
+            robot.sleepMs(1000);
+            robot.stopMotors();
+            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
+            robot.sleepMs(2000);
+            robot.encoderDrive(1, 20, 20, 5);
+            robot.stopMotors();
+        }
+        else
+        {
+            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
+            robot.sleepMs(2000);
+            robot.encoderDrive(1, 20, 20, 5);
+            robot.stopMotors();
+        }
 
         //END Asher and Hunter's code
         //Vuforia identification
