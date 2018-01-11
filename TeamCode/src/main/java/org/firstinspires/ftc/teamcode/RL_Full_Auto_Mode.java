@@ -29,9 +29,14 @@ package org.firstinspires.ftc.teamcode;/* Copyright (c) 2017 FIRST. All rights r
 
 //package org.firstinspires.ftc.robotcontroller.external.samples;
 
+import android.util.Log;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 
 /**
@@ -47,11 +52,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "Cube Placer 2", group = "Linear Opmode")
+@Autonomous(name = "Cube Placer", group = "Linear Opmode")
 //@Disabled
-
-
-
 /* Spin To Win:
 
 1. Lower Jewel Arm
@@ -69,8 +71,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 11. Drive straight into triangle.
 12. Block Enemy Targets
 */
-public class RR_Full_Auto_Mode extends LinearOpMode {
+public class RL_Full_Auto_Mode extends LinearOpMode {
     InvadersRelicRecoveryBot robot = new InvadersRelicRecoveryBot();
+    
 
 
     // Declare OpMode members.
@@ -96,8 +99,6 @@ public class RR_Full_Auto_Mode extends LinearOpMode {
         runtime.reset();
 
         telemetry.update();
-
-
 
         //Asher and Hunter's jewel knocking software.
 
@@ -143,35 +144,32 @@ public class RR_Full_Auto_Mode extends LinearOpMode {
         //END Asher and Hunter's code
         //Vuforia identification
 
-        //RelicRecoveryVuMark visibleTargets = robot.getVuforiaTargets(false);
+        RelicRecoveryVuMark visibleTargets = RelicRecoveryVuMark.CENTER; //robot.getVuforiaTargets(false);
 
-//        switch (visibleTargets){
-//            case LEFT:
-//                robot.encoderDrive(0.1, 23, 23, 10);
-//                robot.encoderDrive(0.1, 6.5, -6.5,10);
-//                Log.i("VuMark Identification", "Left VuMark FOUND!");
-//                break;
-//            case CENTER:
-//                robot.encoderDrive(0.1, 19, 19, 10);
-//                robot.encoderDrive(0.1, 6.5, -6.5, 10);
-//                Log.i("VuMark Identification", "Right VuMark FOUND!");
-//                break;
-//            case RIGHT:
-//                robot.encoderDrive(0.1, 15, 15, 10);
-//                robot.encoderDrive(0.1, 6.5, -6.5, 10);
-//                Log.i("VuMark Identification", "Center VuMark FOUND!");
-//                break;
-//            case UNKNOWN:
-//                Log.w("VuMarkIdentification", "No VuMark Found");
-//
-//        }
+        switch (visibleTargets){
+            case LEFT:
+                robot.encoderDrive(0.1, 23, 23, 10);
+                //robot.encoderDrive(0.1, 6.5, -6.5,10);
+                robot.gyroTurn(0.1, 90);
+                Log.i("VuMark Identification", "Left VuMark FOUND!");
+                break;
+            case CENTER:
+                robot.encoderDrive(0.1, 19, 19, 10);
+                //robot.encoderDrive(0.1, 6.5, -6.5, 10);
+                robot.gyroTurn(0.1, 90);
+                Log.i("VuMark Identification", "Right VuMark FOUND!");
+                break;
+            case RIGHT:
+                robot.encoderDrive(0.1, 15, 15, 10);
+                //robot.encoderDrive(0.1, 6.5, -6.5, 10);
+                robot.gyroTurn(0.1, 90);
+                Log.i("VuMark Identification", "Center VuMark FOUND!");
+                break;
+            case UNKNOWN:
+                Log.w("VuMarkIdentification", "No VuMark Found");
+        }
 
-            robot.encoderDrive(0.1, 13, 13, 10);
-            robot.gyroTurn(0.1, 90);
-            //robot.encoderDrive(0.1, -6.5, 6.5, 10);
-            robot.encoderDrive(0.1, 2, 2, 10);
-            robot.gyroTurn(0.1, -90);
-            //robot.encoderDrive(0.1, 6.5, -6.5, 10);
+
 
 
 
