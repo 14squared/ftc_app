@@ -955,4 +955,8 @@ public class InvadersRelicRecoveryBot
         leftDrive.setPower(0);
         rightDrive.setPower(0);
     }
+    public void relicGrab(double speed,TurnDirection direction){
+        leftDrive.setPower(speed);
+        rightDrive.setPower(-speed);
+    }
 }

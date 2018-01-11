@@ -167,6 +167,7 @@ public class MatthewTeleop extends OpMode
             robot.rightGrab.setPosition(0.9);
             robot.leftGrab.setPosition(0.9);
         }
+
 /*        if (gamepad1.x == true)
         {
             robot.setJewelArmPosition(0, InvadersRelicRecoveryBot.JewelPush.Left);
