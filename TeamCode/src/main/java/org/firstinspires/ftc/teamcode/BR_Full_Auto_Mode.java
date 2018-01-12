@@ -29,13 +29,9 @@ package org.firstinspires.ftc.teamcode;/* Copyright (c) 2017 FIRST. All rights r
 
 //package org.firstinspires.ftc.robotcontroller.external.samples;
 
-import android.util.Log;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 
 /**
@@ -73,7 +69,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 11. Drive straight into triangle.
 12. Block Enemy Targets
 */
-public class RR_Full_Auto_Mode extends LinearOpMode {
+public class BR_Full_Auto_Mode extends LinearOpMode {
     InvadersRelicRecoveryBot robot = new InvadersRelicRecoveryBot();
 
 
@@ -104,74 +100,71 @@ public class RR_Full_Auto_Mode extends LinearOpMode {
 
 
         //Asher and Hunter's jewel knocking software.
-        RelicRecoveryVuMark visibleTargets = robot.getVuforiaTargets(false);
-        robot.setJewelArmPosition(0.22, InvadersRelicRecoveryBot.JewelPush.Right);
-        robot.sleepMs(3000);
 
-        //2. Read Jewel Color
-        boolean iSawRed = robot.isRightJewelRed();
-        boolean iSawBlue = robot.isRightJewelBlue();
-        int jewelMove = 0;
-        // 3.If Red move arm this way:
-        if(iSawRed)
-        {
-            jewelMove = 4;
-            //@todo wiggle the robot this way
-            robot.encoderDrive( 0.1, jewelMove, jewelMove, 2);
-            robot.sleepMs(1000);
-            robot.stopMotors();
-            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
-            //robot.sleepMs(2000);
-            //robot.encoderDrive(1, 12, 12, 5);
-            //robot.stopMotors();
-        }
-        //Else if blue move arm that way.
-        else if(iSawBlue)
-        {
-            jewelMove = -4;
-            //@todo wiggle the robot the other way
-            robot.encoderDrive( 0.1, jewelMove, jewelMove, 2);
-            robot.sleepMs(1000);
-            robot.stopMotors();
-            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
-            //robot.sleepMs(2000);
-            //robot.encoderDrive(1, 20, 20, 5);
-            //robot.stopMotors();
-        }
-        else
-        {
-            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
-            robot.sleepMs(2000);
-            robot.encoderDrive(1, 20, 20, 5);
-            robot.stopMotors();
-        }
+//        robot.setJewelArmPosition(0.22, InvadersRelicRecoveryBot.JewelPush.Right);
+//        robot.sleepMs(3000);
+//
+//        //2. Read Jewel Color
+//        boolean iSawRed = robot.isRightJewelRed();
+//        boolean iSawBlue = robot.isRightJewelBlue();
+//
+//        // 3.If Red move arm this way:
+//        if(iSawRed)
+//        {
+//            //@todo wiggle the robot this way
+//            robot.encoderDrive( 0.1, 4, 4, 2);
+//            robot.sleepMs(1000);
+//            robot.stopMotors();
+//            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
+//            robot.sleepMs(2000);
+//            robot.encoderDrive(1, 12, 12, 5);
+//            robot.stopMotors();
+//        }
+//        //Else if blue move arm that way.
+//        else if(iSawBlue)
+//        {
+//            //@todo wiggle the robot the other way
+//            robot.encoderDrive( 0.1, -4, -4, 2);
+//            robot.sleepMs(1000);
+//            robot.stopMotors();
+//            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
+//            robot.sleepMs(2000);
+//            robot.encoderDrive(1, 20, 20, 5);
+//            robot.stopMotors();
+//        }
+//        else
+//        {
+//            robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
+//            robot.sleepMs(2000);
+//            robot.encoderDrive(1, 20, 20, 5);
+//            robot.stopMotors();
+//        }
 
         //END Asher and Hunter's code
         //Vuforia identification
 
+        //RelicRecoveryVuMark visibleTargets = robot.getVuforiaTargets(false);
 
-
-        switch (visibleTargets){
-
-            case LEFT:
-                robot.encoderDrive(0.1, 23 - jewelMove, 23 - jewelMove, 10);
-                robot.encoderDrive(0.1, 6.5, -6.5,10);
-                Log.i("VuMark Identification", "Left VuMark FOUND!");
-                break;
-            case CENTER:
-                robot.encoderDrive(0.1, 19 - jewelMove, 19 - jewelMove, 10);
-                robot.encoderDrive(0.1, 6.5, -6.5, 10);
-                Log.i("VuMark Identification", "Right VuMark FOUND!");
-                break;
-            case RIGHT:
-                robot.encoderDrive(0.1, 15 - jewelMove, 15 - jewelMove, 10);
-                robot.encoderDrive(0.1, 6.5, -6.5, 10);
-                Log.i("VuMark Identification", "Center VuMark FOUND!");
-                break;
-            case UNKNOWN:
-                Log.w("VuMarkIdentification", "No VuMark Found");
-
-        }
+//        switch (visibleTargets){
+//            case LEFT:
+//                robot.encoderDrive(0.1, 23, 23, 10);
+//                robot.encoderDrive(0.1, 6.5, -6.5,10);
+//                Log.i("VuMark Identification", "Left VuMark FOUND!");
+//                break;
+//            case CENTER:
+//                robot.encoderDrive(0.1, 19, 19, 10);
+//                robot.encoderDrive(0.1, 6.5, -6.5, 10);
+//                Log.i("VuMark Identification", "Right VuMark FOUND!");
+//                break;
+//            case RIGHT:
+//                robot.encoderDrive(0.1, 15, 15, 10);
+//                robot.encoderDrive(0.1, 6.5, -6.5, 10);
+//                Log.i("VuMark Identification", "Center VuMark FOUND!");
+//                break;
+//            case UNKNOWN:
+//                Log.w("VuMarkIdentification", "No VuMark Found");
+//
+//        }
             robot.jewelPushRight.setPosition(0.75);
             robot.jewelPushLeft.setPosition(0.2);
             robot.encoderDrive(0.1, 10, 10, 10);
