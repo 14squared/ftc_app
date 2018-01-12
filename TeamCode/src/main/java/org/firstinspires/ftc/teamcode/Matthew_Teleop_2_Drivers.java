@@ -159,7 +159,7 @@ public class Matthew_Teleop_2_Drivers extends OpMode
         if (gamepad2.a == true){
             robot.relicGripperRotation.setPower(-1);
         }
-        else if (gamepad2.b == true){
+        else if (gamepad2.y == true){
             robot.relicGripperRotation.setPower(1);
         }
         else{
@@ -191,7 +191,7 @@ public class Matthew_Teleop_2_Drivers extends OpMode
 
         }
 
-        if (gamepad2.y == true){
+        if (gamepad2.b == true){
             if (robot.relicGripper.getPosition() >= 0.1){
                 robot.relicGripper.setPosition(robot.relicGripper.getPosition() - 0.1);
             }
