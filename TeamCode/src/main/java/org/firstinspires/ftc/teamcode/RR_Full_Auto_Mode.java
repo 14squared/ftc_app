@@ -51,7 +51,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "Cube Placer 2", group = "Linear Opmode")
+@Autonomous(name = "Red Right", group = "Linear Opmode")
 //@Disabled
 
 
