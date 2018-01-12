@@ -7,6 +7,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -97,7 +98,7 @@ public class InvadersRelicRecoveryBot
     public DigitalChannel liftMotorCutoff = null;
 
     public Servo relicGripper = null;
-    public Servo relicGripperRotation = null;
+    public CRServo relicGripperRotation = null;
     public DcMotor relicExtension = null;
 
 
@@ -709,7 +710,7 @@ public class InvadersRelicRecoveryBot
             relicExtension = hwMap.dcMotor.get("relicExtension");
             relicExtension.setDirection(DcMotorSimple.Direction.FORWARD);
             relicGripper = hwMap.servo.get("relicGripper");
-            relicGripperRotation = hwMap.servo.get("relicGripperRotate");
+            relicGripperRotation = hwMap.crservo.get("relicGripperRotate");
         }
         catch (IllegalArgumentException e){
             telemetry.addData("Relic Arm hardware not defined in config", e);

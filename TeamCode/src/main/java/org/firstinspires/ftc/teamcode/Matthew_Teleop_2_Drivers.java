@@ -155,10 +155,13 @@ public class Matthew_Teleop_2_Drivers extends OpMode
         //robot.liftMotor.setPower(gamepad2.right_trigger);
 
         if (gamepad2.a == true){
-            robot.relicGripperRotation.setPosition(1);
+            robot.relicGripperRotation.setPower(-1);
         }
-        if (gamepad2.b == true){
-            robot.relicGripperRotation.setPosition(0);
+        else if (gamepad2.b == true){
+            robot.relicGripperRotation.setPower(1);
+        }
+        else{
+          robot.relicGripperRotation.setPower(0);
         }
 
         if (gamepad2.right_bumper == true) {
