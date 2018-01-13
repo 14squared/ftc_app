@@ -52,25 +52,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "Cube Placer", group = "Linear Opmode")
+@Autonomous(name = "Red Left", group = "Linear Opmode")
 //@Disabled
-/* Spin To Win:
-
-1. Lower Jewel Arm
-2. Read Jewel Color
-3.If blue move arm this way:
-
-  Else if Red move arm that way.
-4. Raise Jewel
-5. Drive to VuMark
-6. Read VuMark
-7. Calculate Cryptobox distance with VuMark = X.
-8. Drive Straight. Distance = X.
-9. Turn to Cryptobox
-10. Put block in
-11. Drive straight into triangle.
-12. Block Enemy Targets
-*/
 public class RL_Full_Auto_Mode extends LinearOpMode {
     InvadersRelicRecoveryBot robot = new InvadersRelicRecoveryBot();
     
@@ -97,85 +80,68 @@ public class RL_Full_Auto_Mode extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-
         telemetry.update();
 
-        //Asher and Hunter's jewel knocking software.
+        // Read the vuMark before the robot moves
+        RelicRecoveryVuMark visibleTargets = RelicRecoveryVuMark.CENTER; //robot.getVuforiaTargets(false);
 
+        //grabber nonsense
+        robot.rightGrab.setPosition(0.9);
+        robot.leftGrab.setPosition(0.9);
+        robot.sleepMs(500);
+
+        // jewel nonsense
         robot.setJewelArmPosition(0.22, InvadersRelicRecoveryBot.JewelPush.Right);
         robot.sleepMs(3000);
 
-        //2. Read Jewel Color
         boolean iSawRed = robot.isRightJewelRed();
         boolean iSawBlue = robot.isRightJewelBlue();
-
-        // 3.If Red move arm this way:
-        if(iSawRed)
-        {
-            //@todo wiggle the robot this way
-            robot.encoderDrive( 0.1, 4, 4, 2);
+        int jewelMove = 0;
+        if (iSawRed) {
+            jewelMove = 4;
+            robot.encoderDrive(0.1, 4, 4, 2);
             robot.sleepMs(1000);
             robot.stopMotors();
             robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
             robot.sleepMs(2000);
-            robot.encoderDrive(1, 12, 12, 5);
             robot.stopMotors();
-        }
-        //Else if blue move arm that way.
-        else if(iSawBlue)
-        {
-            //@todo wiggle the robot the other way
-            robot.encoderDrive( 0.1, -4, -4, 2);
+        } else if (iSawBlue) {
+
+            jewelMove = -4;
+            robot.encoderDrive(0.1, -4, -4, 2);
             robot.sleepMs(1000);
             robot.stopMotors();
             robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
             robot.sleepMs(2000);
-            robot.encoderDrive(1, 20, 20, 5);
             robot.stopMotors();
-        }
-        else
-        {
+        } else {
+            jewelMove = 0;
             robot.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
             robot.sleepMs(2000);
-            robot.encoderDrive(1, 20, 20, 5);
             robot.stopMotors();
         }
-
-        //END Asher and Hunter's code
-        //Vuforia identification
-
-        RelicRecoveryVuMark visibleTargets = RelicRecoveryVuMark.CENTER; //robot.getVuforiaTargets(false);
-
-        switch (visibleTargets){
+        //Vu nonsense
+        switch (visibleTargets) {
             case LEFT:
-                robot.encoderDrive(0.1, 23, 23, 10);
-                //robot.encoderDrive(0.1, 6.5, -6.5,10);
-                robot.gyroTurn(0.1, 90);
+                robot.encoderDrive(0.1, 23 - jewelMove, 23 - jewelMove, 10);
+                robot.encoderDrive(0.1, 6.5, -6.5,10);
+                //robot.gyroTurn(0.1, 90);
                 Log.i("VuMark Identification", "Left VuMark FOUND!");
                 break;
             case CENTER:
-                robot.encoderDrive(0.1, 19, 19, 10);
-                //robot.encoderDrive(0.1, 6.5, -6.5, 10);
-                robot.gyroTurn(0.1, 90);
+                robot.encoderDrive(0.1, 19 - jewelMove, 19 - jewelMove, 10);
+                robot.encoderDrive(0.1, 6.5, -6.5, 10);
+                //robot.gyroTurn(0.1, 90);
                 Log.i("VuMark Identification", "Right VuMark FOUND!");
                 break;
             case RIGHT:
-                robot.encoderDrive(0.1, 15, 15, 10);
-                //robot.encoderDrive(0.1, 6.5, -6.5, 10);
-                robot.gyroTurn(0.1, 90);
+                robot.encoderDrive(0.1, 15 - jewelMove, 15 - jewelMove, 10);
+                robot.encoderDrive(0.1, 6.5, -6.5, 10);
+                //robot.gyroTurn(0.1, 90);
                 Log.i("VuMark Identification", "Center VuMark FOUND!");
                 break;
             case UNKNOWN:
                 Log.w("VuMarkIdentification", "No VuMark Found");
+            }
         }
-
-
-
-
-
-
     }
-
-
-}
-

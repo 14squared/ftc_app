@@ -110,6 +110,8 @@ public class Matthew_Teleop_2_Drivers extends OpMode
         // Setup a variable for each drive wheel to save power level for telemetry
         double leftPower;
         double rightPower;
+        robot.jewelPushLeft.setPosition(0.2);
+        robot.jewelPushRight.setPosition(0.8);
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
@@ -155,10 +157,13 @@ public class Matthew_Teleop_2_Drivers extends OpMode
         //robot.liftMotor.setPower(gamepad2.right_trigger);
 
         if (gamepad2.a == true){
-            robot.relicGripperRotation.setPosition(1);
+            robot.relicGripperRotation.setPower(-1);
         }
-        if (gamepad2.b == true){
-            robot.relicGripperRotation.setPosition(0);
+        else if (gamepad2.y == true){
+            robot.relicGripperRotation.setPower(1);
+        }
+        else{
+          robot.relicGripperRotation.setPower(0);
         }
 
         if (gamepad2.right_bumper == true) {
@@ -186,7 +191,7 @@ public class Matthew_Teleop_2_Drivers extends OpMode
 
         }
 
-        if (gamepad2.y == true){
+        if (gamepad2.b == true){
             if (robot.relicGripper.getPosition() >= 0.1){
                 robot.relicGripper.setPosition(robot.relicGripper.getPosition() - 0.1);
             }
@@ -194,6 +199,10 @@ public class Matthew_Teleop_2_Drivers extends OpMode
                 robot.relicGripper.setPosition(0);
             }
         }
+
+
+
+
 
         robot.relicExtension.setPower(gamepad2.left_trigger);
         robot.relicExtension.setPower(-gamepad2.right_trigger);
