@@ -406,7 +406,13 @@ public class InvadersRelicRecoveryBot
     }
 
     public void turnToAbsoluteHeading(double speed, double absoluteHeading, int timeoutMs) {
-        simpleGyroTurn(speed,absoluteHeading-gyro.getIntegratedZValue(),timeoutMs);
+        if (gyro != null) {
+            simpleGyroTurn(speed, absoluteHeading - gyro.getIntegratedZValue(), timeoutMs);
+        } else if(imu != null) {
+            simpleGyroTurn(speed, absoluteHeading - imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle, timeoutMs);
+        } else {
+            telemetry.addLine("ERR: turnToAbsoluteHeading - no gyro/imu present");
+        }
     }
 
     // Right/Clockwise = Positive Turn Degrees
@@ -419,7 +425,17 @@ public class InvadersRelicRecoveryBot
         // If turnDegrees == 100, then reset to 90 (which makes our robot turn 100)
         //turnDegrees *= .90;
 
-        int currentHeading = gyro.getIntegratedZValue();
+        int currentHeading = 0;
+        if(gyro != null) {
+            currentHeading = gyro.getIntegratedZValue();
+        } else if (imu != null) {
+            currentHeading = (int)imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+        }
+        else {
+            // Early return if no gyro present
+            telemetry.addLine("ERR: simpleGyroTurn - no gyro/imu present");
+            return;
+        }
         double targetHeading = currentHeading - turnDegrees;
 
         // Early Return (do nothing) if we are giving a zero degree turn
@@ -431,7 +447,11 @@ public class InvadersRelicRecoveryBot
         if(turnDegrees > 0) {
             setDriveTrainPower(speed,-speed);
             while ((period.time() < timeoutMs) && opModeIsActive()) {
-                currentHeading = gyro.getIntegratedZValue();
+                if(gyro != null) {
+                    currentHeading = gyro.getIntegratedZValue();
+                } else if (imu != null) {
+                    currentHeading = (int)imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+                }
                 // Exit our while loop because we're at our destination
                 if((currentHeading - targetHeading) <= 0) break;
             }
@@ -439,7 +459,11 @@ public class InvadersRelicRecoveryBot
         else {
             setDriveTrainPower(-speed,speed);
             while ((period.time() < timeoutMs) && opModeIsActive()) {
-                currentHeading = gyro.getIntegratedZValue();
+                if(gyro != null) {
+                    currentHeading = gyro.getIntegratedZValue();
+                } else if (imu != null) {
+                    currentHeading = (int)imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+                }
                 // Exit our while loop because we're at our destination
                 if((targetHeading - currentHeading) <= 0) break;
              }
