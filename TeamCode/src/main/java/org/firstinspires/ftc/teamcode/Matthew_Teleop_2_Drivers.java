@@ -122,11 +122,6 @@ public class Matthew_Teleop_2_Drivers extends OpMode
         double liftPosition = robot.liftMotor.getCurrentPosition();
 
 
-
-
-
-
-
         // Look at the left and right triggers to decide whether to raise/lower the lift
 
 
@@ -150,17 +145,21 @@ public class Matthew_Teleop_2_Drivers extends OpMode
 */
 
         //Arm Operator Controls
-
-
-        //robot.liftMotor.setPower(-gamepad2.left_trigger);
-
-        //robot.liftMotor.setPower(gamepad2.right_trigger);
+        if(gamepad2.right_stick_y < -0.1) {
+            robot.liftMotor.setPower(gamepad2.right_stick_y);
+        }
+        else if (gamepad2.right_stick_y > 0.1) {
+            robot.liftMotor.setPower(gamepad2.right_stick_y);
+        }
+        else {
+            robot.liftMotor.setPower(0);
+        }
 
         if (gamepad2.a == true){
-            robot.relicGripperRotation.setPower(-1);
+            robot.relicGripperRotation.setPower(1);
         }
         else if (gamepad2.y == true){
-            robot.relicGripperRotation.setPower(1);
+            robot.relicGripperRotation.setPower(-1);
         }
         else{
           robot.relicGripperRotation.setPower(0);
@@ -176,19 +175,17 @@ public class Matthew_Teleop_2_Drivers extends OpMode
         else if (gamepad2.left_bumper == true) {
             //if(leftServoPos > 0.01) robot.leftGrab.setPosition(leftServoPos-0.01);
             //if(rightServoPos > 0.01) robot.leftGrab.setPosition(rightServoPos-0.01);
-            robot.rightGrab.setPosition(0.9);
-            robot.leftGrab.setPosition(0.9);
+            robot.rightGrab.setPosition(0.8);
+            robot.leftGrab.setPosition(0.8);
         }
 
         if (gamepad2.x == true){
-
-        if(robot.relicGripper.getPosition() <=.9){
-            robot.relicGripper.setPosition(robot.relicGripper.getPosition() + 0.1);
-        }
-        else {
-            robot.relicGripper.setPosition(1);
-        }
-
+            if(robot.relicGripper.getPosition() <=.9){
+                robot.relicGripper.setPosition(robot.relicGripper.getPosition() + 0.1);
+            }
+            else {
+                robot.relicGripper.setPosition(1);
+            }
         }
 
         if (gamepad2.b == true){
@@ -203,9 +200,18 @@ public class Matthew_Teleop_2_Drivers extends OpMode
 
 
 
-
+    if(gamepad2.left_trigger > 0.15)
+    {
         robot.relicExtension.setPower(gamepad2.left_trigger);
+    }
+    else if (gamepad2.right_trigger > 0.15)
+    {
         robot.relicExtension.setPower(-gamepad2.right_trigger);
+    }
+    else
+    {
+        robot.relicExtension.setPower(0);
+    }
 
         //Driver Controls
 
