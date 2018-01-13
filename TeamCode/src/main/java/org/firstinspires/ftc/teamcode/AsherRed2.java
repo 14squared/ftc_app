@@ -43,8 +43,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
- * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
  * class is instantiated on the Robot Controller and executed.
+ * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
  *
  * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
  * It includes all the skeletal structure that all linear OpModes contain.
@@ -72,13 +72,17 @@ public class AsherRed2 extends LinearOpMode {
         // Initialize the hardware variables.
         homeCode = new InvadersRelicRecoveryBot( );
         homeCode.init(this);
+        homeCode.setJewelArmPosition(0, InvadersRelicRecoveryBot.JewelPush.Left);
+        homeCode.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
+        homeCode.leftGrab.setPosition(0.3);
+        homeCode.rightGrab.setPosition(0.3);
 
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
+        //while (opModeIsActive()) {
 
             runtime.reset();
 
@@ -91,7 +95,7 @@ public class AsherRed2 extends LinearOpMode {
             boolean iSawRed = homeCode.isRightJewelRed();
             boolean iSawBlue = homeCode.isRightJewelBlue();
 
-           // 3.If Red move arm this way:
+            // 3.If Red move arm this way:
             if(iSawRed)
             {
                 //@todo wiggle the robot this way
@@ -100,7 +104,7 @@ public class AsherRed2 extends LinearOpMode {
                 homeCode.stopMotors();
                 homeCode.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
                 homeCode.sleepMs(2000);
-                homeCode.encoderDrive(1, 12, 12, 5);
+                homeCode.encoderDrive(1, 8, 8, 5);
                 homeCode.stopMotors();
             }
             //Else if blue move arm that way.
@@ -112,17 +116,17 @@ public class AsherRed2 extends LinearOpMode {
                 homeCode.stopMotors();
                 homeCode.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
                 homeCode.sleepMs(2000);
-                homeCode.encoderDrive(1, 20, 20, 5);
+                homeCode.encoderDrive(1, 16, 16, 5);
                 homeCode.stopMotors();
-           }
-           else
+            }
+            else
             {
                 homeCode.setJewelArmPosition(1, InvadersRelicRecoveryBot.JewelPush.Right);
                 homeCode.sleepMs(2000);
-                homeCode.encoderDrive(1, 20, 20, 5);
+                homeCode.encoderDrive(1, 12, 12, 5);
                 homeCode.stopMotors();
             }
-          //4. Raise Jewel Arm
+            //4. Raise Jewel Arm
             //   5. Drive to VuMark
             //@todo Decide whether to drive to the VuMark
 //
@@ -167,8 +171,8 @@ public class AsherRed2 extends LinearOpMode {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.update();
-            break;
-        }
+         //   break;
+        //}
 
 
     }

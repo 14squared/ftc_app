@@ -619,31 +619,31 @@ public class InvadersRelicRecoveryBot
         // Save reference to the active OpMode
         this.activeOpMode = activeOpMode;
 
-        try {
-            // Define and Initialze the IMU inside the Rev Robotics Expansion Hub
-            // Set up the parameters with which we will use our IMU. Note that integration
-            // algorithm here just reports accelerations to the logcat log; it doesn't actually
-            // provide positional information.
-            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-            parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-            parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-            parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-            parameters.loggingEnabled      = true;
-            parameters.loggingTag          = "IMU";
-            parameters.accelerationIntegrationAlgorithm = new InvadersAccelerationIntegrator();
-
-            // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-            // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-            // and named "imu".
-            imu = hwMap.get(BNO055IMU.class, "imu");
-            imu.initialize(parameters);
-        }
-        catch (IllegalArgumentException e)
-        {
-            // If we have a robot (e.g. SmallBot) that doesn't have the Expansion Hub Installed, then
-            // we throw an exception and can't test.  This try/catch block swallows that exception.
-            telemetry.addData("'imu' not defined in config", e);
-        }
+//        try {
+//            // Define and Initialze the IMU inside the Rev Robotics Expansion Hub
+//            // Set up the parameters with which we will use our IMU. Note that integration
+//            // algorithm here just reports accelerations to the logcat log; it doesn't actually
+//            // provide positional information.
+//            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+//            parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+//            parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+//            parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+//            parameters.loggingEnabled      = true;
+//            parameters.loggingTag          = "IMU";
+//            parameters.accelerationIntegrationAlgorithm = new InvadersAccelerationIntegrator();
+//
+//            // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+//            // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+//            // and named "imu".
+//            imu = hwMap.get(BNO055IMU.class, "imu");
+//            imu.initialize(parameters);
+//        }
+//        catch (IllegalArgumentException e)
+//        {
+//            // If we have a robot (e.g. SmallBot) that doesn't have the Expansion Hub Installed, then
+//            // we throw an exception and can't test.  This try/catch block swallows that exception.
+//            telemetry.addData("'imu' not defined in config", e);
+//        }
 
         try {
             // Define and Initialize Drive Motors
@@ -677,9 +677,9 @@ public class InvadersRelicRecoveryBot
         try {
             liftMotor = hwMap.get(DcMotor.class, "liftMotor");
 
-            // get a reference to our pushbutton sensor and set it to input mode
-            liftMotorCutoff = hwMap.get(DigitalChannel.class, "liftMotorCutoff");
-            liftMotorCutoff.setMode(DigitalChannel.Mode.INPUT);
+//            // get a reference to our pushbutton sensor and set it to input mode
+//            liftMotorCutoff = hwMap.get(DigitalChannel.class, "liftMotorCutoff");
+//            liftMotorCutoff.setMode(DigitalChannel.Mode.INPUT);
         }
         catch (IllegalArgumentException e)
         {
@@ -698,8 +698,8 @@ public class InvadersRelicRecoveryBot
             rightGrab.setDirection(Servo.Direction.REVERSE);
 
             // Open up the grabber servos to fit in our 18" profile
-            leftGrab.setPosition(0.3);
-            rightGrab.setPosition(0.3);
+            leftGrab.setPosition(0.8);
+            rightGrab.setPosition(0.8);
         }
         catch (IllegalArgumentException e)
         {
